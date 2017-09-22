@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LetToolBar">
+        <attr name="leftButtonIcon" format="reference"/>
+        <attr name="rightButtonIcon" format="reference"/>
+        <attr name="rightButtonText" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="swipeEnable" format="boolean"/>
+        <attr name="ios" format="boolean"/>
+        <attr name="leftSwipe" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="TimeView">
+        <attr name="titles" format="string"/>
+        <attr name="titleColors" format="color"/>
+        <attr name="titleSizes" format="dimension"/>
+    </declare-styleable>
+    !--自定星级控件-->
+    <declare-styleable name="StarView">
+        <attr name="mImageWidth" format="dimension"/>
+        <attr name="mImageHeight" format="dimension" />
+        <attr name="mDefaultImageId" format="reference" />
+        <attr name="mClickImageId" format="reference" />
+        <attr name="mMargin" format="dimension" />
+        <attr name="mStarNum" format="integer" />
+        <attr name="mStarChoose" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="TagFlowLayout">
+        <attr name="auto_select_effect" format="boolean"></attr>
+        <attr name="max_select" format="integer"></attr>
+        <attr name="gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>
