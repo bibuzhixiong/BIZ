@@ -1,7 +1,8 @@
 package com.woosii.biz.ui.login.presenter;
 
 import com.woosii.biz.api.Api;
-import com.woosii.biz.base.bean.json.RegisterInfoBean;
+import com.woosii.biz.base.bean.LoginBean;
+import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.rx.RxSubscriber;
 import com.woosii.biz.ui.login.contract.LoginContract;
 
@@ -16,9 +17,9 @@ public class LoginPresenter extends LoginContract.Presenter {
     public void getRegisterCode(Map<String, String> map) {
         mView.showLoading();
         addSubscrebe(Api.getInstance().getRegisterCode(map),
-                new RxSubscriber<RegisterInfoBean>(mContext,false) {
+                new RxSubscriber<BaseInfoBean>(mContext,false) {
                     @Override
-                    protected void onSuccess(RegisterInfoBean registerInfoBean) {
+                    protected void onSuccess(BaseInfoBean registerInfoBean) {
                         mView.hideLoading();
                         if(registerInfoBean.getCode()==1){
                                 mView.getRegisterCodeSuccess(registerInfoBean);
@@ -40,12 +41,36 @@ public class LoginPresenter extends LoginContract.Presenter {
     public void register(Map<String, String> map) {
         mView.showLoading();
         addSubscrebe(Api.getInstance().register(map),
-                new RxSubscriber<RegisterInfoBean>(mContext,false) {
+                new RxSubscriber<BaseInfoBean>(mContext,false) {
                     @Override
-                    protected void onSuccess(RegisterInfoBean registerInfoBean) {
+                    protected void onSuccess(BaseInfoBean registerInfoBean) {
                         mView.hideLoading();
                         if(registerInfoBean.getCode()==3){
                             mView.registerSuccess(registerInfoBean);
+                        }else{
+                            mView.loadFail(registerInfoBean.getMessage());
+
+
+                        }
+                    }
+                    @Override
+                    protected void onFailure(String message) {
+                        mView.hideLoading();
+                        mView.loadFail(message);
+                    }
+                });
+    }
+
+    @Override
+    public void loginByPassword(Map<String, String> map) {
+        mView.showLoading();
+        addSubscrebe(Api.getInstance().loginByPassword(map),
+                new RxSubscriber<LoginBean>(mContext,false) {
+                    @Override
+                    protected void onSuccess(LoginBean registerInfoBean) {
+                        mView.hideLoading();
+                        if(registerInfoBean.getCode()==1){
+                            mView.loginByPassword(registerInfoBean);
                         }else{
                             mView.loadFail(registerInfoBean.getMessage());
 

@@ -4,11 +4,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
-import com.woosii.biz.base.bean.json.RegisterInfoBean;
+import com.woosii.biz.base.bean.LoginBean;
+import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.ui.login.contract.LoginContract;
 import com.woosii.biz.ui.login.presenter.LoginPresenter;
 import com.woosii.biz.utils.CheckUtils;
@@ -40,8 +42,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     EditText etPassword;
     @Bind(R.id.bt_sure)
     Button btSure;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.ll_code)
+    LinearLayout llCode;
+    @Bind(R.id.ll_register)
+    LinearLayout llRegister;
+    @Bind(R.id.tv_register)
+    TextView tvRegister;
+    @Bind(R.id.ll_login)
+    LinearLayout llLogin;
 
     private LoadingDialog mLoadingDialog;
+
+    private boolean isLogin = true;
 
     @Override
     protected int getLayoutId() {
@@ -58,16 +72,43 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     }
 
-    @OnClick({R.id.bt_sure, R.id.img_close,R.id.tv_code})
+    @OnClick({R.id.bt_sure, R.id.img_close, R.id.tv_code,R.id.tv_register})
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.img_close:
-
+                    if(isLogin==false){
+                        //显示登录界面
+                        isLogin=true;
+                        tvTitle.setText("欢迎登录");
+                        btSure.setText("登录");
+                        llCode.setVisibility(View.GONE);
+                        llLogin.setVisibility(View.VISIBLE);
+                        llRegister.setVisibility(View.GONE);
+                    }
+                break;
+            case R.id.tv_register:
+                if(isLogin==false){
+                    //显示登录界面
+                    isLogin=true;
+                    tvTitle.setText("欢迎登录");
+                    btSure.setText("登录");
+                    llCode.setVisibility(View.GONE);
+                    llLogin.setVisibility(View.VISIBLE);
+                    llRegister.setVisibility(View.GONE);
+                }else{
+                    //显示注册界面
+                    isLogin=false;
+                    tvTitle.setText("欢迎注册");
+                    btSure.setText("注册");
+                    llCode.setVisibility(View.VISIBLE);
+                    llLogin.setVisibility(View.GONE);
+                    llRegister.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.tv_code:
-                if(etPhone.getText().toString().trim().equals("")){
+                if (etPhone.getText().toString().trim().equals("")) {
                     ToastUtil.showCenterShortToast("请输入手机号码");
                     return;
                 }
@@ -82,8 +123,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 mPresenter.getRegisterCode(map);
                 break;
             case R.id.bt_sure:
-                String phone=etPhone.getText().toString().trim();
-                if(phone.equals("")){
+                String phone = etPhone.getText().toString().trim();
+                if (phone.equals("")) {
                     ToastUtil.showCenterShortToast("请输入手机号码");
                     return;
                 }
@@ -91,35 +132,66 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                     ToastUtil.showCenterShortToast("请输入正确的手机号码");
                     return;
                 }
-                if(etCode.getText().toString().trim().equals("")){
-                    ToastUtil.showCenterShortToast("请输入验证码");
-                    return;
+                if(isLogin==true){
+                    //登录请求
+                    if (etPassword.getText().toString().trim().length() < 6) {
+                        ToastUtil.showCenterShortToast("密码必须大于6位数");
+                        return;
+                    }
+                    if(etPassword.getText().toString().trim().equals("")){
+                        ToastUtil.showCenterShortToast("请输入密码");
+                        return;
+                    }
+                    if (etPassword.getText().toString().trim().length() < 6) {
+                        ToastUtil.showCenterShortToast("密码必须大于6位数");
+                        return;
+                    }
+                    Map<String, String> map2 = new HashMap<>();
+                    map2.put("phone", phone);
+                    map2.put("password", CheckUtils.md5(etPassword.getText().toString().trim()));
+                    mPresenter.loginByPassword(map2);
+                }else{
+                  //注册请求
+
+                    if (etCode.getText().toString().trim().equals("")) {
+                        ToastUtil.showCenterShortToast("请输入验证码");
+                        return;
+                    }
+                    if(etPassword.getText().toString().trim().equals("")){
+                        ToastUtil.showCenterShortToast("请输入密码");
+                        return;
+                    }
+                    if (etPassword.getText().toString().trim().length() < 6) {
+                        ToastUtil.showCenterShortToast("密码必须大于6位数");
+                        return;
+                    }
+                    Map<String, String> map1 = new HashMap<>();
+                    map1.put("phone", phone);
+                    map1.put("vcode", CheckUtils.md5(etCode.getText().toString().trim()));
+                    map1.put("addtime", System.currentTimeMillis() / 1000 + "");
+                    map1.put("password", CheckUtils.md5(etPassword.getText().toString().trim()));
+                    mPresenter.register(map1);
                 }
-                if(etPassword.getText().toString().trim().length()<6){
-                    ToastUtil.showCenterShortToast("密码必须大于6位数");
-                    return;
-                }
-                Map<String, String> map1 = new HashMap<>();
-                map1.put("phone", phone);
-                map1.put("vcode", CheckUtils.md5(etCode.getText().toString().trim()));
-                map1.put("addtime", System.currentTimeMillis()/1000+"");
-                map1.put("password", CheckUtils.md5(etPassword.getText().toString().trim()));
-                mPresenter.register(map1);
 
                 break;
         }
     }
 
     @Override
-    public void getRegisterCodeSuccess(RegisterInfoBean info) {
+    public void getRegisterCodeSuccess(BaseInfoBean info) {
         CountDownTimerUtil mCountDownTimerUtils = new CountDownTimerUtil(tvCode, 60000, 1000);
         mCountDownTimerUtils.start();
         ToastUtil.showShortToast(info.getMessage());
     }
 
     @Override
-    public void registerSuccess(RegisterInfoBean model) {
+    public void registerSuccess(BaseInfoBean model) {
         ToastUtil.showCenterShortToast(model.getMessage());
+    }
+
+    @Override
+    public void loginByPassword(LoginBean model) {
+        ToastUtil.showShortToast(model.getMessage()+"token:"+model.getToken()+"    user_id:"+model.getUser_id());
     }
 
     @Override

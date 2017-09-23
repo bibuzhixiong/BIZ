@@ -1,6 +1,7 @@
 package com.woosii.biz.api;
 
-import com.woosii.biz.base.bean.json.RegisterInfoBean;
+import com.woosii.biz.base.bean.LoginBean;
+import com.woosii.biz.base.bean.json.BaseInfoBean;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -48,11 +49,15 @@ public class Api {
     }
 
     //注册获取手机验证码
-    public Observable<RegisterInfoBean> getRegisterCode(Map<String, String> map){
+    public Observable<BaseInfoBean> getRegisterCode(Map<String, String> map){
         return service.getRegisterCode(map);
     }
     //手机注册
-    public Observable<RegisterInfoBean> register(Map<String, String> map){
+    public Observable<BaseInfoBean> register(Map<String, String> map){
         return service.register(map);
+    }
+    //密码登录
+    public Observable<LoginBean> loginByPassword(Map<String, String> map){
+        return service.loginByPassword(map);
     }
 }

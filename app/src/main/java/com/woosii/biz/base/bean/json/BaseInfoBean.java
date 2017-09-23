@@ -4,7 +4,7 @@ package com.woosii.biz.base.bean.json;
  * Created by Administrator on 2017/9/22.
  */
 
-public class RegisterInfoBean {
+public class BaseInfoBean {
     private int code;
     private String message;
 
@@ -26,7 +26,7 @@ public class RegisterInfoBean {
 
     @Override
     public String toString() {
-        return "RegisterInfoBean{" +
+        return "BaseInfoBean{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
                 '}';

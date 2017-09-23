@@ -1,6 +1,7 @@
 package com.woosii.biz.api;
 
-import com.woosii.biz.base.bean.json.RegisterInfoBean;
+import com.woosii.biz.base.bean.LoginBean;
+import com.woosii.biz.base.bean.json.BaseInfoBean;
 
 import java.util.Map;
 
@@ -17,10 +18,16 @@ public interface ApiService {
     //注册获取验证码
     @FormUrlEncoded
     @POST("/index.php/Api/User/vcode/")
-    Observable<RegisterInfoBean> getRegisterCode(@FieldMap Map<String, String> map);
+    Observable<BaseInfoBean> getRegisterCode(@FieldMap Map<String, String> map);
 
     //手机注册
     @FormUrlEncoded
     @POST("/index.php/Api/User/register/")
-    Observable<RegisterInfoBean> register(@FieldMap Map<String, String> map);
+    Observable<BaseInfoBean> register(@FieldMap Map<String, String> map);
+
+    //密码登录
+    @FormUrlEncoded
+    @POST("/index.php/Api/User/login/")
+    Observable<LoginBean> loginByPassword(@FieldMap Map<String, String> map);
+
 }
