@@ -31,4 +31,9 @@ public class BaseInfoBean {
                 ", message='" + message + '\'' +
                 '}';
     }
+
+    public BaseInfoBean(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

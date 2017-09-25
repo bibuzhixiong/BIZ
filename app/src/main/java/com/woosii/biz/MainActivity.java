@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.bean.MainTabEntity;
 import com.woosii.biz.ui.course.fragment.CourseFragment;
@@ -53,7 +52,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //初始化frament
+
         //初始化frament
         initFragment(savedInstanceState);
         tabLayout.measure(0,0);

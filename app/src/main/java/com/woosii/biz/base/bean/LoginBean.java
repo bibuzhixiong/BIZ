@@ -10,6 +10,10 @@ public class LoginBean extends BaseInfoBean{
     private String token;
     private String user_id;
 
+    public LoginBean(int code, String message) {
+        super(code, message);
+    }
+
     public String getToken() {
         return token;
     }

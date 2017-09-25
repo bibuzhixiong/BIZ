@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:background="@color/black3">
     <TextView
-        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginLeft="50dp"
+        android:text="课程"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="16dp"
+        android:src="@drawable/kecheng_nav_btn_sousuo"/>
+</LinearLayout>
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/commontablayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="课程" />
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/white"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        tl:tl_indicator_color="@color/blue"
+        tl:tl_textSelectColor="@color/blue"
+        tl:tl_textUnselectColor="@color/black3"
+        tl:tl_underline_color="@color/white"
+        tl:tl_indicator_width="40dp"
+        tl:tl_indicator_height="1dp"
+        tl:tl_underline_height="4dp"/>
+    <FrameLayout
+        android:id="@+id/fl_change"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 </LinearLayout>
