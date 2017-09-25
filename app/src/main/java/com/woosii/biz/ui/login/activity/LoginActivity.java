@@ -116,7 +116,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                     ToastUtil.showCenterShortToast("请输入正确的手机号码");
                     return;
                 }
-                tvCode.setText("获取验证码中");
+//                tvCode.setText("获取验证码中");
 
                 Map<String, String> map = new HashMap<>();
                 map.put("phone", etPhone.getText().toString().trim());

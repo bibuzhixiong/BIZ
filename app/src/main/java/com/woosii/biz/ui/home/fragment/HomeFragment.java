@@ -1,0 +1,101 @@
+package com.woosii.biz.ui.home.fragment;
+
+import android.content.Context;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.bumptech.glide.Glide;
+import com.woosii.biz.R;
+import com.woosii.biz.base.BaseFragment;
+import com.woosii.biz.utils.DensityUtil;
+import com.woosii.biz.utils.ToastUtil;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.loader.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+
+/**
+ * Created by Administrator on 2017/9/23.
+ */
+
+public class HomeFragment extends BaseFragment implements OnBannerListener {
+    @Bind(R.id.banner)
+    Banner banner;
+
+
+    //设置图片资源:url或本地资源
+    List<String> images= new ArrayList<>();
+    List<String> titles= new ArrayList<>();
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    protected void initView() {
+
+        //获取屏幕宽度
+        int ss= DensityUtil.getScreenWidth(getActivity());
+        //动态设置banner的高度
+        RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) banner.getLayoutParams();
+        linearParams.height = ss/2;
+        banner.setLayoutParams(linearParams);
+        //设置内置样式，共有六种可以点入方法内逐一体验使用。
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        images.add("http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg");
+        images.add("http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg");
+        //设置图片集合
+        banner.setImages(images);
+        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
+        banner.setBannerAnimation(Transformer.Accordion);
+        //设置图片网址或地址的集合
+        titles.add("hhh还好");
+        titles.add("上飞机");
+        banner.setBannerTitles(titles);
+        //设置自动轮播，默认为true
+        banner.isAutoPlay(true);
+        //设置轮播间隔时间
+        banner.setDelayTime(3000);
+        //设置是否为自动轮播，默认是“是”。
+        banner.isAutoPlay(true);
+
+        //设置图片加载器
+        banner.setImageLoader(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                Glide.with(context).load((String) path).into(imageView);       //传入路径,因为list为String格式,path为Object格式,所以强制类型转换.
+
+            }
+        });
+
+        //设置指示器位置（当banner模式中有指示器时）
+        //设置指示器的位置，小点点，左中右。
+        banner.setIndicatorGravity(BannerConfig.CENTER)
+                //以上内容都可写成链式布局，这是轮播图的监听。比较重要。方法在下面。
+                .setOnBannerListener(this)
+                //必须最后调用的方法，启动轮播图。
+                .start();
+        //banner设置方法全部调用完毕时最后调用
+
+
+
+
+
+
+
+
+    }
+
+
+    @Override
+    public void OnBannerClick(int position) {
+        ToastUtil.showShortToast("你点击了"+position);
+    }
+}
