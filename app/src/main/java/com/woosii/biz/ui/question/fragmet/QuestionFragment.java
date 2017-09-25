@@ -10,7 +10,7 @@ import com.woosii.biz.base.BaseFragment;
 public class QuestionFragment extends BaseFragment {
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_me;
+        return R.layout.fragment_question;
     }
 
     @Override

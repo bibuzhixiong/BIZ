@@ -22,7 +22,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import common.dialog.LoadingDialog;
+import com.woosii.biz.common.dialog.LoadingDialog;
 
 /**
  * Created by Administrator on 2017/9/22.

@@ -1,4 +1,4 @@
-package common.dialog;
+package com.woosii.biz.common.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

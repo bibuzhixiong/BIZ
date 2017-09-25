@@ -7,7 +7,7 @@ import com.woosii.biz.R;
 import com.woosii.biz.utils.NetWorkUtil;
 import com.woosii.biz.utils.RescourseUtil;
 
-import common.dialog.LoadingDialog;
+import com.woosii.biz.common.dialog.LoadingDialog;
 import rx.Subscriber;
 
 /**

@@ -1,7 +1,15 @@
 package com.woosii.biz.ui.home.fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -9,6 +17,7 @@ import com.woosii.biz.R;
 import com.woosii.biz.base.BaseFragment;
 import com.woosii.biz.utils.DensityUtil;
 import com.woosii.biz.utils.ToastUtil;
+import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -19,19 +28,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Administrator on 2017/9/23.
  */
 
-public class HomeFragment extends BaseFragment implements OnBannerListener {
+public class HomeFragment extends BaseFragment implements OnBannerListener,View.OnClickListener {
     @Bind(R.id.banner)
     Banner banner;
-
+    @Bind(R.id.ll_search)
+    LinearLayout llSearch;
+    @Bind(R.id.img_scan)
+    ImageView imgScan;
 
     //设置图片资源:url或本地资源
-    List<String> images= new ArrayList<>();
-    List<String> titles= new ArrayList<>();
+    List<String> images = new ArrayList<>();
+    List<String> titles = new ArrayList<>();
+
 
     @Override
     protected int getLayoutId() {
@@ -42,10 +58,10 @@ public class HomeFragment extends BaseFragment implements OnBannerListener {
     protected void initView() {
 
         //获取屏幕宽度
-        int ss= DensityUtil.getScreenWidth(getActivity());
+        int ss = DensityUtil.getScreenWidth(getActivity());
         //动态设置banner的高度
-        RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams) banner.getLayoutParams();
-        linearParams.height = ss/2;
+        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) banner.getLayoutParams();
+        linearParams.height = ss / 2;
         banner.setLayoutParams(linearParams);
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
@@ -54,7 +70,7 @@ public class HomeFragment extends BaseFragment implements OnBannerListener {
         //设置图片集合
         banner.setImages(images);
         //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-        banner.setBannerAnimation(Transformer.Accordion);
+        banner.setBannerAnimation(Transformer.Default);
         //设置图片网址或地址的集合
         titles.add("hhh还好");
         titles.add("上飞机");
@@ -85,17 +101,74 @@ public class HomeFragment extends BaseFragment implements OnBannerListener {
         //banner设置方法全部调用完毕时最后调用
 
 
-
-
-
-
-
-
     }
 
 
     @Override
     public void OnBannerClick(int position) {
-        ToastUtil.showShortToast("你点击了"+position);
+        ToastUtil.showShortToast("你点击了" + position);
     }
+    @OnClick({R.id.img_scan,R.id.ll_search})
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.img_scan:
+                scan();
+                break;
+            case R.id.ll_search:
+                break;
+        }
+    }
+
+    //扫描二维码
+    //https://cli.im/text?2dd0d2b267ea882d797f03abf5b97d88二维码生成网站
+    public void scan() {
+        // 扫描功能
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //在activity中申请CAMERA权限
+//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 3);
+            //在fragment申请CAMERA权限
+            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    3);
+        } else {
+
+            Intent intent = new Intent(getActivity(), CaptureActivity.class);
+            startActivityForResult(intent, 0);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                String result = bundle.getString("result");
+//                searchEt.setText(result);
+
+                ToastUtil.showShortToast(result);
+
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (3 == requestCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Intent intent=  new Intent(getActivity(), CaptureActivity.class);
+                startActivityForResult(intent,0);
+            } else {
+                // 未授权
+            }
+        }
+
+    }
+
 }
+
+

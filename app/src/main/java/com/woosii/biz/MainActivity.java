@@ -1,4 +1,4 @@
-package com.woosii.biz.ui.home;
+package com.woosii.biz;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
