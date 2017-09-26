@@ -1,4 +1,4 @@
-package com.woosii.biz;
+package com.woosii.biz.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.bean.MainTabEntity;
 import com.woosii.biz.ui.course.fragment.CourseFragment;

@@ -11,17 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--语音回答-->
         <activity android:name=".ui.AnswerModelActivity">
 
         </activity>
+        <!--登录注册-->
         <activity android:name=".ui.login.activity.LoginActivity">
+
+        </activity>
+        <!--新闻详情-->
+        <activity android:name=".ui.home.activity.NewsDetailActivity">
 
         </activity>
     </application>

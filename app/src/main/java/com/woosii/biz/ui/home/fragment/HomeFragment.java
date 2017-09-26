@@ -20,9 +20,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
 import com.woosii.biz.adapter.NewsAdapter;
 import com.woosii.biz.base.BaseFragment;
-import com.woosii.biz.base.bean.json.BaseInfoBean;
+import com.woosii.biz.base.bean.json.BasePagingBean;
+import com.woosii.biz.base.bean.json.NewsBean;
+import com.woosii.biz.ui.home.activity.NewsDetailActivity;
+import com.woosii.biz.ui.home.contract.HomeContract;
+import com.woosii.biz.ui.home.presenter.HomePresenter;
 import com.woosii.biz.utils.DensityUtil;
 import com.woosii.biz.utils.ToastUtil;
+import com.woosii.biz.widget.CustomLoadMoreView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -31,7 +36,9 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -42,7 +49,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2017/9/23.
  */
 
-public class HomeFragment extends BaseFragment implements OnBannerListener,View.OnClickListener {
+public class HomeFragment extends BaseFragment<HomePresenter> implements OnBannerListener,View.OnClickListener,HomeContract.View,BaseQuickAdapter.RequestLoadMoreListener{
 /*    @Bind(R.id.banner)
     Banner banner;*/
     @Bind(R.id.ll_search)
@@ -59,8 +66,11 @@ public class HomeFragment extends BaseFragment implements OnBannerListener,View.
     //设置图片资源:url或本地资源
     List<String> images = new ArrayList<>();
     List<String> titles = new ArrayList<>();
-    List<BaseInfoBean> list=new ArrayList<>();
+    List<NewsBean> list=new ArrayList<>();
     private NewsAdapter newsAdapter;
+
+    private int page=1;  //页数
+    private int totalPages=1;//总页数
 
 
     @Override
@@ -74,17 +84,39 @@ public class HomeFragment extends BaseFragment implements OnBannerListener,View.
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recycleview.setLayoutManager(linearLayoutManager);
-        BaseInfoBean baseInfoBean=new BaseInfoBean(1,"身份解顺风顺水地方是范德萨发说冷风机");
+/*        BaseInfoBean baseInfoBean=new BaseInfoBean(1,"身份解顺风顺水地方是范德萨发说冷风机");
         for(int i=0;i<50;i++){
             list.add(baseInfoBean);
-        }
+        }*/
 
 
         newsAdapter = new NewsAdapter(list);
         newsAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recycleview.setAdapter(newsAdapter);
 
+        newsAdapter.setOnLoadMoreListener(this, recycleview);
+        newsAdapter.setLoadMoreView(new CustomLoadMoreView());
+
+        newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Bundle bundle=new Bundle();
+                bundle.putString("id",newsAdapter.getData().get(position).getNew_id());
+                startActivity(NewsDetailActivity.class,bundle);
+            }
+        });
         addHeadView();
+
+        loaddata(false);
+
+
+    }
+    //swifload判断是否是下拉加载
+    private void loaddata(boolean isShowLoad){
+        Map<String,String> map=new HashMap<>();
+        map.put("pindex",page+"");
+        map.put("psize","10");
+        mPresenter.getNews(map);
 
 
     }
@@ -211,6 +243,53 @@ public class HomeFragment extends BaseFragment implements OnBannerListener,View.
 
     }
 
+    @Override
+    public void getNewsSuccess(BasePagingBean<NewsBean> model) {
+        totalPages=Integer.parseInt(model.getCount());
+        newsAdapter.addData(model.getChild());
+
+        list=newsAdapter.getData();
+//        dataLists=newsAdapter.getData();
+        newsAdapter.loadMoreComplete();
+
+
+    }
+
+    @Override
+    public void loadFail(String msg) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        if (newsAdapter.getData().size() < 10) {
+            newsAdapter.loadMoreEnd(false);
+            return;
+        }else {
+            int maxpage=1;
+            if(totalPages%10==0){
+                maxpage=totalPages/10-1;
+            }else{
+                maxpage=totalPages/10;
+            }
+            if (page > maxpage) {
+                newsAdapter.loadMoreEnd(false);
+                return;
+            }
+            page++;
+            loaddata( false);
+        }
+    }
 }
 
 

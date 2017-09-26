@@ -2,6 +2,8 @@ package com.woosii.biz.api;
 
 import com.woosii.biz.base.bean.LoginBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
+import com.woosii.biz.base.bean.json.BasePagingBean;
+import com.woosii.biz.base.bean.json.NewsBean;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -59,5 +61,9 @@ public class Api {
     //密码登录
     public Observable<LoginBean> loginByPassword(Map<String, String> map){
         return service.loginByPassword(map);
+    }
+    //新闻列表
+    public Observable<BasePagingBean<NewsBean>> getNews(Map<String,String> map){
+        return service.getNews(map);
     }
 }

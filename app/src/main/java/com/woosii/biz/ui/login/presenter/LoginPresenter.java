@@ -22,7 +22,7 @@ public class LoginPresenter extends LoginContract.Presenter {
                     protected void onSuccess(BaseInfoBean registerInfoBean) {
                         mView.hideLoading();
                         if(registerInfoBean.getCode()==1){
-                                mView.getRegisterCodeSuccess(registerInfoBean);
+                            mView.getRegisterCodeSuccess(registerInfoBean);
                         }else{
                             mView.loadFail(registerInfoBean.getMessage());
 
