@@ -12,6 +12,8 @@
     <color name="black3">#252525</color>
     <color name="black4">#3c3c3c</color>
     <color name="red">#FF0000</color>
+
+
     <color name="red1">#fb0d01</color>
     <color name="red2">#ee5b54</color>
     <color name="orange">#DE6014</color>
@@ -23,7 +25,7 @@
     <color name="yellow4">#FF9900</color>
 
     <color name="gray_color">#b8b8b8</color>
-
+    <color name="gray_bg">#F6F6F6</color>
     <color name="gray">#b8b8b8</color>
     <color name="gray1">#d6d4d4</color>
     <color name="green">#5FB236</color>

@@ -33,13 +33,15 @@ public class NewsAdapter extends BaseQuickAdapter<NewsBean,BaseViewHolder> {
         if(img_path.equals("")){
            helper.getView(R.id.img_news).setVisibility(View.GONE);
         }else{
+            helper.getView(R.id.img_news).setVisibility(View.VISIBLE);
             Glide.with(mContext).load(img_path).into(  (ImageView) helper.getView(R.id.img_news));
         }
 
-        if(item.getNew_state().equals("1")){
-            helper.getView(R.id.ll_news).setVisibility(View.GONE);
-        }else{
+        if(item.getNew_state().equals("0")){
             helper.getView(R.id.ll_news).setVisibility(View.VISIBLE);
+
+        }else{
+            helper.getView(R.id.ll_news).setVisibility(View.GONE);
         }
 
 
