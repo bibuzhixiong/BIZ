@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.woosii.biz.ui.home.activity.NewsDetailActivity;
 import com.woosii.biz.ui.home.contract.HomeContract;
 import com.woosii.biz.ui.home.presenter.HomePresenter;
 import com.woosii.biz.utils.DensityUtil;
+import com.woosii.biz.utils.RescourseUtil;
 import com.woosii.biz.utils.ToastUtil;
 import com.woosii.biz.widget.CustomLoadMoreView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
@@ -49,7 +51,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2017/9/23.
  */
 
-public class HomeFragment extends BaseFragment<HomePresenter> implements OnBannerListener,View.OnClickListener,HomeContract.View,BaseQuickAdapter.RequestLoadMoreListener{
+public class HomeFragment extends BaseFragment<HomePresenter> implements OnBannerListener,View.OnClickListener,HomeContract.View,BaseQuickAdapter.RequestLoadMoreListener,SwipeRefreshLayout.OnRefreshListener{
 /*    @Bind(R.id.banner)
     Banner banner;*/
     @Bind(R.id.ll_search)
@@ -58,7 +60,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     ImageView imgScan;
     @Bind(R.id.recycleview)
     RecyclerView recycleview;
-
+    @Bind(R.id.swiperefreshlayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     //头部布局
     private Banner banner;
@@ -80,6 +83,12 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
     @Override
     protected void initView() {
+
+        mSwipeRefreshLayout.setColorSchemeColors(RescourseUtil.getColor(R.color.red),
+                RescourseUtil.getColor(R.color.red));
+        //设置刷新出现的位置
+        mSwipeRefreshLayout.setProgressViewEndTarget(false, 120);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         //设置布局
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -112,11 +121,19 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
     }
     //swifload判断是否是下拉加载
-    private void loaddata(boolean isShowLoad){
+    private void loaddata(boolean isRefresh){
         Map<String,String> map=new HashMap<>();
-        map.put("pindex",page+"");
         map.put("psize","10");
-        mPresenter.getNews(map);
+        if(isRefresh){
+            map.put("pindex","1");
+            mPresenter.refreshNews(map);
+        }else{
+            map.put("pindex",page+"");
+            mPresenter.getNews(map);
+
+        }
+
+
 
 
     }
@@ -134,7 +151,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             int ss = DensityUtil.getScreenWidth(getActivity());
             //动态设置banner的高度
             RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) banner.getLayoutParams();
-            linearParams.height = ss / 2;
+            linearParams.height = (int)(ss / 2);
             banner.setLayoutParams(linearParams);
             //设置内置样式，共有六种可以点入方法内逐一体验使用。
             banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
@@ -256,8 +273,20 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     }
 
     @Override
-    public void loadFail(String msg) {
+    public void refreshNewsSuccess(BasePagingBean<NewsBean> model) {
 
+        mSwipeRefreshLayout.setRefreshing(false);
+        list.clear();
+        list.addAll(model.getChild());
+        newsAdapter.setNewData(list);
+        page=1;
+//        Log.e("TTT",page+"号");
+//        newsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void loadFail(String msg) {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -287,8 +316,14 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
                 return;
             }
             page++;
+//            Log.e("TTT",page+"好吧");
             loaddata( false);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        loaddata(true);
     }
 }
 

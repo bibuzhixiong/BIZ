@@ -16,6 +16,7 @@ public interface HomeContract {
 
 
         void getNewsSuccess(BasePagingBean<NewsBean> model);
+        void refreshNewsSuccess(BasePagingBean<NewsBean> model);
 
         void loadFail(String msg);
         void showLoading();
@@ -25,6 +26,7 @@ public interface HomeContract {
 
     abstract class Presenter extends BasePresenter<HomeContract.View> {
         public abstract void getNews(Map<String, String> map);
+        public abstract void refreshNews(Map<String, String> map);
 
 
         @Override

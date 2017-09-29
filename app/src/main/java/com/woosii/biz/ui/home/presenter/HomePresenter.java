@@ -15,7 +15,7 @@ import java.util.Map;
 public class HomePresenter extends HomeContract.Presenter {
     @Override
     public void getNews(Map<String,String> map) {
-        mView.showLoading();
+//        mView.showLoading();
         addSubscrebe(Api.getInstance().getNews( map),
                 new RxSubscriber<BasePagingBean<NewsBean>>(mContext,false) {
                     @Override
@@ -23,6 +23,25 @@ public class HomePresenter extends HomeContract.Presenter {
 
                         mView.hideLoading();
                         mView.getNewsSuccess(model);
+                    }
+                    @Override
+                    protected void onFailure(String message) {
+                        mView.hideLoading();
+                        mView.loadFail(message);
+                    }
+                });
+    }
+
+    @Override
+    public void refreshNews(Map<String, String> map) {
+//        mView.showLoading();
+        addSubscrebe(Api.getInstance().getNews( map),
+                new RxSubscriber<BasePagingBean<NewsBean>>(mContext,false) {
+                    @Override
+                    protected void onSuccess(BasePagingBean<NewsBean> model) {
+
+                        mView.hideLoading();
+                        mView.refreshNewsSuccess(model);
                     }
                     @Override
                     protected void onFailure(String message) {

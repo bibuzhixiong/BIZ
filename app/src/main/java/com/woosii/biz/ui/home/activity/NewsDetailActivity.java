@@ -6,6 +6,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.woosii.biz.AppConstant;
@@ -21,12 +22,15 @@ import butterknife.Bind;
  */
 
 public class NewsDetailActivity extends BaseActivity {
-    @Bind(R.id.webview)
+//    @Bind(R.id.webview)
     WebView webView;
     @Bind(R.id.toolbar)
     BaseToolbar toolbar;
     @Bind(R.id.myProgressBar)
     ProgressBar myProgressBar;
+    @Bind(R.id.web_container)
+    FrameLayout web_container;
+
     private LoadingDialog loadingDialog;
     @Override
     protected int getLayoutId() {
@@ -45,6 +49,9 @@ public class NewsDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
+        webView = new WebView(getApplicationContext());
+        web_container.addView(webView);
         WebSettings webSettings = webView.getSettings();
 
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -107,4 +114,29 @@ public class NewsDetailActivity extends BaseActivity {
          loadingDialog=new LoadingDialog(NewsDetailActivity.this,"加载中...",true);
         loadingDialog.show();
     }
-}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//            destroyWebView();
+
+//        web_container.removeView(webView);
+        webView.destroy();
+        webView=null;
+    }
+
+    public void destroyWebView() {
+
+//        web_container.removeAllViews();
+
+        if (webView != null) {
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.loadUrl("about:blank"); // clearView() should be changed to loadUrl("about:blank"), since clearView() is deprecated now
+            webView.freeMemory();
+            webView.pauseTimers();
+            webView = null; // Note that mWebView.destroy() and mWebView = null do the exact same thing
+        }
+
+    }
+    }

@@ -3,8 +3,11 @@ package com.woosii.biz.api;
 import com.woosii.biz.base.bean.LoginBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
+import com.woosii.biz.base.bean.json.CourseListBean;
 import com.woosii.biz.base.bean.json.NewsBean;
+import com.woosii.biz.base.bean.json.WechatBean;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -65,5 +68,15 @@ public class Api {
     //新闻列表
     public Observable<BasePagingBean<NewsBean>> getNews(Map<String,String> map){
         return service.getNews(map);
+    }
+
+    //课程列表
+    public Observable<List<CourseListBean>> getCourses(Map<String,String> map){
+        return service.getCourses(map);
+    }
+
+    //获得微信登录的数据
+    public Observable<WechatBean> getWeChatLoginData(String url){
+        return service.getWeChatLoginData(url);
     }
 }

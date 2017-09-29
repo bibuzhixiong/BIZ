@@ -2,11 +2,99 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/imageView"
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingLeft="14dp"
+      android:paddingRight="14dp"
+      android:paddingTop="16dp"
+      android:paddingBottom="16dp">
+      <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textColor="@color/black3"
+
+
+      android:text="你猜一，我猜二，你猜三，我猜四，你猜五，我猜六，你猜八，我猜久"/>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="right">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_yuyin_linearlayout_yellow_selector"
+              android:textSize="10sp"
+              android:paddingRight="8dp"
+              android:paddingLeft="8dp"
+              android:paddingTop="2dp"
+              android:paddingBottom="2dp"
+
+              android:textColor="@color/black3"
+              android:text="已回答"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical">
+          <ImageView
+              android:layout_width="50dp"
+              android:layout_height="50dp"
+              android:src="@mipmap/ic_launcher"/>
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_weight="1"
+              android:layout_marginLeft="14dp"
+              android:gravity="center_vertical">
+              <LinearLayout
+                  android:id="@+id/ll"
+                  android:layout_width="wrap_content"
+                  android:layout_height="26dp"
+                  android:orientation="horizontal"
+                  android:gravity="center"
+                  android:paddingLeft="6dp"
+                  android:paddingRight="6dp"
+                  android:background="@drawable/shape_yuyin_linearlayout_blue_selector">
+                  <ImageView
+                      android:layout_width="12dp"
+                      android:layout_height="12dp"
+                      android:src="@mipmap/ic_launcher"/>
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="@color/white"
+                      android:textSize="12sp"
+                      android:text="语音播放需要9.9元"/>
+              </LinearLayout>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/black3"
+                  android:layout_marginTop="6dp"
+                  android:textSize="12sp"
+                  android:text="张楠  的回答"/>
+          </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="09-13 提问"/>
+        </LinearLayout>
+      </LinearLayout>
+  </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:layout_height="8dp"
+        android:background="@color/gray_bg"
+        ></LinearLayout>
 </LinearLayout>

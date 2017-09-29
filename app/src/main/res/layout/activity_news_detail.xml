@@ -8,16 +8,18 @@
         style="@style/basetoolbarStyle"
         app:leftButtonIcon="@drawable/icon_white_back"
         app:title="详情"/>
+
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:id="@+id/myProgressBar"
         android:layout_width="match_parent"
         android:layout_height="5px"
         />
-    <WebView
-        android:id="@+id/webview"
+    <FrameLayout
+        android:id="@+id/web_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
 
+    </FrameLayout>
 </LinearLayout>

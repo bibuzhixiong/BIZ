@@ -5,7 +5,7 @@
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:orientation="horizontal"
         android:background="@color/black3">
 
@@ -28,6 +28,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/ll_my_login"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:gravity="center_vertical"
