@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
@@ -21,6 +21,7 @@ import com.woosii.biz.ui.login.contract.LoginContract;
 import com.woosii.biz.ui.login.presenter.LoginPresenter;
 import com.woosii.biz.utils.CheckUtils;
 import com.woosii.biz.utils.CountDownTimerUtil;
+import com.woosii.biz.utils.SharedPreferencesUtil;
 import com.woosii.biz.utils.ToastUtil;
 
 import java.util.HashMap;
@@ -214,7 +215,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
+
     public void loginByPassword(LoginBean model) {
+        SharedPreferencesUtil.putValue(LoginActivity.this,SharedPreferencesUtil.USER_ID,model.getUser_id());
         ToastUtil.showShortToast(model.getMessage() + "token:" + model.getToken() + "    user_id:" + model.getUser_id());
     }
 

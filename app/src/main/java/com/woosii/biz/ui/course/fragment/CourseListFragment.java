@@ -1,13 +1,16 @@
 package com.woosii.biz.ui.course.fragment;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
 import com.woosii.biz.adapter.CourseListAdapter;
 import com.woosii.biz.base.BaseFragment;
 import com.woosii.biz.base.bean.json.CourseListBean;
+import com.woosii.biz.ui.course.activity.CourseDetailActivity;
 import com.woosii.biz.ui.course.contract.CourseContract;
 import com.woosii.biz.ui.course.presenter.CoursePresenter;
 
@@ -49,6 +52,14 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
         courseListAdapter = new CourseListAdapter(list);
         courseListAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         recycleview.setAdapter(courseListAdapter);
+        courseListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Bundle bundle=new Bundle();
+                bundle.putString("class_id",courseListAdapter.getData().get(position).getClass_id());
+                startActivity(CourseDetailActivity.class,bundle);
+            }
+        });
         loadData();
     }
     private void loadData(){
@@ -59,6 +70,7 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
 
     @Override
     public void getCoursesSuccess(List<CourseListBean> model) {
+        list=model;
         courseListAdapter.setNewData(model);
     }
 

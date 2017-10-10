@@ -3,6 +3,7 @@ package com.woosii.biz.api;
 import com.woosii.biz.base.bean.LoginBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
+import com.woosii.biz.base.bean.json.CourseDetailBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.WechatBean;
@@ -68,6 +69,10 @@ public class Api {
     //新闻列表
     public Observable<BasePagingBean<NewsBean>> getNews(Map<String,String> map){
         return service.getNews(map);
+    }
+    //课程详情
+    public Observable<CourseDetailBean> getCourseDetail(Map<String,String> map){
+        return service.getCoursesDetail(map);
     }
 
     //课程列表

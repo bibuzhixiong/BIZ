@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.woosii.biz.base.BaseToolbar
+        android:id="@+id/toolbar"
+        style="@style/basetoolbarStyle"
+        app:leftButtonIcon="@drawable/icon_white_back"
+        app:title="课程详情"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray2"
+        android:layout_above="@+id/ll_bottom"/>
+<LinearLayout
+    android:id="@+id/ll_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
+    <LinearLayout
+        android:id="@+id/ll_ask"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/btn_tiwen"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:text="提问"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_enter_now"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/btn_baoming"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
+            android:text="立即报名"/>
+    </LinearLayout>
+</LinearLayout>
+</RelativeLayout>

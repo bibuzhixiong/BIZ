@@ -3,6 +3,7 @@ package com.woosii.biz.api;
 import com.woosii.biz.base.bean.LoginBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
+import com.woosii.biz.base.bean.json.CourseDetailBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.WechatBean;
@@ -45,6 +46,10 @@ public interface ApiService {
     //课程列表
     @GET("/index.php/Api/User/course/")
     Observable<List<CourseListBean>> getCourses(@QueryMap Map<String,String> map);
+
+    //课程详情
+    @GET("/index.php/Api/User/course_info/")
+    Observable<CourseDetailBean> getCoursesDetail(@QueryMap Map<String,String> map);
 
     //获得微信登录的数据
     @GET()

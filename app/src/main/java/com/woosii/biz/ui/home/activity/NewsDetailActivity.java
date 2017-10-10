@@ -1,5 +1,6 @@
 package com.woosii.biz.ui.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -8,12 +9,18 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
 import com.woosii.biz.common.dialog.LoadingDialog;
+import com.woosii.biz.utils.ToastUtil;
 
 import butterknife.Bind;
 
@@ -32,6 +39,7 @@ public class NewsDetailActivity extends BaseActivity {
     FrameLayout web_container;
 
     private LoadingDialog loadingDialog;
+    private String id="";
     @Override
     protected int getLayoutId() {
         return R.layout.activity_news_detail;
@@ -45,7 +53,33 @@ public class NewsDetailActivity extends BaseActivity {
                 finish_Activity(NewsDetailActivity.this);
             }
         });
+        toolbar.setRightButtonIcon(this.getResources().getDrawable(R.drawable.icon_head_normal));
+        toolbar.setRightButtonOnClickLinster(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ShareAction(NewsDetailActivity.this).withText("hello")
+                        .setDisplayList( SHARE_MEDIA.WEIXIN)
+                        .setCallback(umShareListener).open();
+                ToastUtil.showShortToast("分享个瓜皮"+AppConstant.WEB_URL+id);
+            }
+        });
     }
+    UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            Toast.makeText(NewsDetailActivity.this,"onResult", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Toast.makeText(NewsDetailActivity.this,"onError", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            Toast.makeText(NewsDetailActivity.this,"onCancel", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void initView() {
@@ -109,7 +143,7 @@ public class NewsDetailActivity extends BaseActivity {
         });
 
         Bundle bundle=getIntent().getExtras();
-        String id=bundle.getString("id");
+         id=bundle.getString("id");
         webView.loadUrl(AppConstant.WEB_URL+id);
          loadingDialog=new LoadingDialog(NewsDetailActivity.this,"加载中...",true);
         loadingDialog.show();
@@ -139,4 +173,12 @@ public class NewsDetailActivity extends BaseActivity {
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
     }
+
+}
