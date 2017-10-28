@@ -13,10 +13,16 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!--微信需要权限-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_icon_big"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -35,14 +41,74 @@
         <activity android:name=".ui.login.activity.LoginActivity"
             android:theme="@style/AppThemeType">
         </activity>
+
+        <!--忘记密码-->
+        <activity android:name=".ui.login.activity.ForgetPasswordActivity"
+            android:theme="@style/AppThemeType">
+        </activity>
+
+        <!--绑定手机号-->
+        <activity android:name=".ui.login.activity.BindingPhoneActivity"
+            android:theme="@style/AppThemeType">
+        </activity>
         <!--新闻详情-->
         <activity android:name=".ui.home.activity.NewsDetailActivity">   </activity>
         <!--课程详情-->
         <activity android:name=".ui.course.activity.CourseDetailActivity">
             </activity>
+        <!--预习题-->
+        <activity android:name=".ui.course.activity.PreviewQuestionsActivity">
+        </activity>
+
+        <!--提问-->
+        <activity android:name=".ui.course.activity.AskActivity"></activity>
+        <!--开通会员-->
+        <activity android:name=".ui.course.activity.OpenMembershipActivity"></activity>
+        <!--选择学院-->
+        <activity android:name=".ui.course.activity.SelectCollegeActivity"></activity>
         <!--课程二维码-->
         <activity android:name=".ui.me.activity.CourseCodeActivity">
         </activity>
+        <!--编辑资料-->
+        <activity android:name=".ui.me.activity.EditProfileActivity">
+        </activity>
+        <!--设置-->
+        <activity android:name=".ui.me.activity.SettingActivity">
+        </activity>
+        <!--我的问答-->
+        <activity android:name=".ui.me.activity.MyQuestionAnswerActivity">
+        </activity>
+
+        <!--关于我们-->
+        <activity android:name=".ui.me.activity.AboutUsActivity">
+        </activity>
+
+        <!--修改密码-->
+        <activity android:name=".ui.me.activity.UpdatePasswordActivity">
+        </activity>
+        <!--签到成功-->
+        <activity android:name=".ui.home.activity.SignSuccessActivity">
+        </activity>
+        <!--图片剪辑-->
+        <activity
+            android:name=".ui.ClipHeaderActivity"
+            android:screenOrientation="portrait" />
+        <!--支付宝支付-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+
         <!-- 微信登录 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -50,6 +116,15 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
+
+        <!-- 微信支付 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTransparentTheme"
+         />
+        <!--    android:theme="@android:style/Theme.Translucent"-->
 
         <!--QQ完整版-->
         <activity
@@ -82,6 +157,23 @@
             android:name="UMENG_APPKEY"
             android:value="59c31b91f5ade442b0000032" >
         </meta-data>
+
+
+        <!-- 适配7.0调用系统控件 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.woosii.takephoto.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
+        <meta-data
+            android:name="com.woosii.biz.utils.GlideConfiguration"
+            android:value="GlideModule" />
     </application>
 
 </manifest>

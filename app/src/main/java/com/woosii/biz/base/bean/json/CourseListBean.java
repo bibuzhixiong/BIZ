@@ -10,6 +10,7 @@ public class CourseListBean {
     private String thumb;
     private String time;
     private String type;
+    private String teacher_id;
 
     public String getClass_id() {
         return class_id;
@@ -51,6 +52,14 @@ public class CourseListBean {
         this.type = type;
     }
 
+    public String getTeacher_id() {
+        return teacher_id;
+    }
+
+    public void setTeacher_id(String teacher_id) {
+        this.teacher_id = teacher_id;
+    }
+
     @Override
     public String toString() {
         return "CourseListBean{" +
@@ -59,6 +68,7 @@ public class CourseListBean {
                 ", thumb='" + thumb + '\'' +
                 ", time='" + time + '\'' +
                 ", type='" + type + '\'' +
+                ", teacher_id='" + teacher_id + '\'' +
                 '}';
     }
 }

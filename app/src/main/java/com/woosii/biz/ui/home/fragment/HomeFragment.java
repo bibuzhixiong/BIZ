@@ -21,13 +21,20 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
 import com.woosii.biz.adapter.NewsAdapter;
 import com.woosii.biz.base.BaseFragment;
+import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
+import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.common.dialog.DialogInterface;
+import com.woosii.biz.common.dialog.NormalAlertDialog;
 import com.woosii.biz.ui.home.activity.NewsDetailActivity;
+import com.woosii.biz.ui.home.activity.SignSuccessActivity;
 import com.woosii.biz.ui.home.contract.HomeContract;
 import com.woosii.biz.ui.home.presenter.HomePresenter;
+import com.woosii.biz.utils.AESCrypt;
 import com.woosii.biz.utils.DensityUtil;
 import com.woosii.biz.utils.RescourseUtil;
+import com.woosii.biz.utils.SharedPreferencesUtil;
 import com.woosii.biz.utils.ToastUtil;
 import com.woosii.biz.widget.CustomLoadMoreView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
@@ -69,6 +76,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     //设置图片资源:url或本地资源
     List<String> images = new ArrayList<>();
     List<String> titles = new ArrayList<>();
+    List<NewsBean> listBanner=new ArrayList<>();
+
     List<NewsBean> list=new ArrayList<>();
     private NewsAdapter newsAdapter;
 
@@ -84,8 +93,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     @Override
     protected void initView() {
 
-        mSwipeRefreshLayout.setColorSchemeColors(RescourseUtil.getColor(R.color.red),
-                RescourseUtil.getColor(R.color.red));
+
+
+        mSwipeRefreshLayout.setColorSchemeColors(RescourseUtil.getColor(R.color.blue),
+                RescourseUtil.getColor(R.color.blue1));
         //设置刷新出现的位置
         mSwipeRefreshLayout.setProgressViewEndTarget(false, 120);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -111,12 +122,17 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle=new Bundle();
                 bundle.putString("id",newsAdapter.getData().get(position).getNew_id());
+                bundle.putString("title",newsAdapter.getData().get(position).getNew_theme());
+                bundle.putString("imgurl",newsAdapter.getData().get(position).getNew_img());
                 startActivity(NewsDetailActivity.class,bundle);
             }
         });
         addHeadView();
 
         loaddata(false);
+        //获取轮播
+        Map<String,String> map=new HashMap<>();
+        mPresenter.getNewsBanner(map);
 
 
     }
@@ -132,8 +148,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             mPresenter.getNews(map);
 
         }
-
-
 
 
     }
@@ -153,48 +167,17 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) banner.getLayoutParams();
             linearParams.height = (int)(ss / 2);
             banner.setLayoutParams(linearParams);
-            //设置内置样式，共有六种可以点入方法内逐一体验使用。
-            banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-            images.add("http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg");
-            images.add("http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg");
-            //设置图片集合
-            banner.setImages(images);
-            //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-            banner.setBannerAnimation(Transformer.Default);
-            //设置图片网址或地址的集合
-            titles.add("时间了还好");
-            titles.add("上飞机");
-            banner.setBannerTitles(titles);
-            //设置自动轮播，默认为true
-            banner.isAutoPlay(true);
-            //设置轮播间隔时间
-            banner.setDelayTime(3000);
-            //设置是否为自动轮播，默认是“是”。
-            banner.isAutoPlay(true);
 
-            //设置图片加载器
-            banner.setImageLoader(new ImageLoader() {
-                @Override
-                public void displayImage(Context context, Object path, ImageView imageView) {
-                    Glide.with(context).load((String) path).into(imageView);       //传入路径,因为list为String格式,path为Object格式,所以强制类型转换.
-
-                }
-            });
-
-            //设置指示器位置（当banner模式中有指示器时）
-            //设置指示器的位置，小点点，左中右。
-            banner.setIndicatorGravity(BannerConfig.CENTER)
-                    //以上内容都可写成链式布局，这是轮播图的监听。比较重要。方法在下面。
-                    .setOnBannerListener(this)
-                    //必须最后调用的方法，启动轮播图。
-                    .start();
-            //banner设置方法全部调用完毕时最后调用
         }
 
     //轮播点击
     @Override
     public void OnBannerClick(int position) {
-        ToastUtil.showShortToast("你点击了" + position);
+        Bundle bundle=new Bundle();
+        bundle.putString("id",listBanner.get(position).getNew_id());
+        bundle.putString("title",listBanner.get(position).getNew_theme());
+        bundle.putString("imgurl",listBanner.get(position).getNew_img());
+        startActivity(NewsDetailActivity.class,bundle);
     }
     @OnClick({R.id.ll_search,R.id.img_scan})
     @Override
@@ -237,7 +220,30 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
                 String result = bundle.getString("result");
 //                searchEt.setText(result);
 
-                ToastUtil.showShortToast(result);
+                try {
+                    AESCrypt aesCrypt=new AESCrypt();
+                    String s= aesCrypt.decrypt(result);
+                   if(s!=null&&!s.equals("")){
+                       if(s.length()>4){
+                           if(s.substring(0,5).equals("u_id=")){
+                               String value=s+"&user_id"+ SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"");
+                               Map<String,String> map=new HashMap<>();
+                               map.put("temp",aesCrypt.encrypt(value));
+                               mPresenter.scan(map);
+
+                           }else{
+                               ToastUtil.showShortToast("该扫码只适用于沃噻签到");
+                           }
+                       }
+                   }else{
+                       ToastUtil.showShortToast("该扫码只适用于沃噻签到");
+                   }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtil.showShortToast("该扫码只适用于沃噻签到");
+                }
+//                ToastUtil.showShortToast(result);
 
             }
         }
@@ -273,8 +279,50 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     }
 
     @Override
-    public void refreshNewsSuccess(BasePagingBean<NewsBean> model) {
+    public void getNewsBannerSuccess(List<NewsBean> model) {
+        listBanner=model;
+        //设置内置样式，共有六种可以点入方法内逐一体验使用。
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        for(int i=0;i<model.size();i++){
+            images.add(model.get(i).getNew_img());
+            titles.add(model.get(i).getNew_theme());
+        }
 
+        //设置图片集合
+        banner.setImages(images);
+        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
+        banner.setBannerAnimation(Transformer.Default);
+        //设置图片网址或地址的集合
+        banner.setBannerTitles(titles);
+        //设置自动轮播，默认为true
+        banner.isAutoPlay(true);
+        //设置轮播间隔时间
+        banner.setDelayTime(5000);
+        //设置是否为自动轮播，默认是“是”。
+        banner.isAutoPlay(true);
+
+        //设置图片加载器
+        banner.setImageLoader(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                Glide.with(context).load((String) path).into(imageView);       //传入路径,因为list为String格式,path为Object格式,所以强制类型转换.
+
+            }
+        });
+
+        //设置指示器位置（当banner模式中有指示器时）
+        //设置指示器的位置，小点点，左中右。
+        banner.setIndicatorGravity(BannerConfig.CENTER)
+                //以上内容都可写成链式布局，这是轮播图的监听。比较重要。方法在下面。
+                .setOnBannerListener(this)
+                //必须最后调用的方法，启动轮播图。
+                .start();
+        //banner设置方法全部调用完毕时最后调用
+    }
+
+    @Override
+    public void refreshNewsSuccess(BasePagingBean<NewsBean> model) {
+        totalPages=Integer.parseInt(model.getCount());
         mSwipeRefreshLayout.setRefreshing(false);
         list.clear();
         list.addAll(model.getChild());
@@ -282,6 +330,67 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
         page=1;
 //        Log.e("TTT",page+"号");
 //        newsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void scanSuccess(BaseInfoBean model) {
+        if(model.getCode()==1){
+            Map<String ,String> map=new HashMap<>();
+            map.put("user_id",SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"")+"");
+            mPresenter.getPoint(map);
+        }else{
+            //要删掉，这是测试
+            Map<String ,String> map=new HashMap<>();
+            map.put("user_id",SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"")+"");
+            mPresenter.getPoint(map);
+//            ToastUtil.showShortToast("失败");
+            NormalAlertDialog dialog = new NormalAlertDialog.Builder(getActivity())
+                    .setBoolTitle(false)
+                    .setContentText("您还没预约课程")
+                    .setSingleModel(true)
+                    .setSingleText("确认")
+                    .setHeight(0.23f)
+                    .setWidth(0.65f)
+                    .setSingleListener(new DialogInterface.OnSingleClickListener<NormalAlertDialog>() {
+                        @Override
+                        public void clickSingleButton(NormalAlertDialog dialog, View view) {
+                            dialog.dismiss();
+                        }
+                    }).setTouchOutside(false)
+                    .build();
+            dialog.show();
+        }
+
+
+
+    }
+
+    @Override
+    public void getPointSuccess(PointBean model) {
+        if(model.getCode()==1){
+            Bundle bundle=new Bundle();
+            bundle.putString("NUM",model.getCount());
+            startActivity(SignSuccessActivity.class,bundle);
+
+        }else if(model.getCode()==2||model.getCode()==3){
+            NormalAlertDialog dialog = new NormalAlertDialog.Builder(getActivity())
+                    .setBoolTitle(false)
+                    .setContentText(model.getMessage())
+                    .setSingleModel(true)
+                    .setSingleText("确认")
+                    .setHeight(0.23f)
+                    .setWidth(0.65f)
+                    .setSingleListener(new DialogInterface.OnSingleClickListener<NormalAlertDialog>() {
+                        @Override
+                        public void clickSingleButton(NormalAlertDialog dialog, View view) {
+                            dialog.dismiss();
+                        }
+                    }).setTouchOutside(false)
+                    .build();
+            dialog.show();
+        }else{
+            ToastUtil.showShortToast(model.getMessage());
+        }
     }
 
     @Override

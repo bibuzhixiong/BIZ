@@ -5,11 +5,15 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
+import com.woosii.biz.utils.AESCrypt;
 import com.woosii.biz.utils.DensityUtil;
+import com.woosii.biz.utils.GlideUtil;
+import com.woosii.biz.utils.SharedPreferencesUtil;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 
 import butterknife.Bind;
@@ -25,6 +29,12 @@ public class CourseCodeActivity extends BaseActivity {
     ImageView imgCode;
     @Bind(R.id.cardview)
     CardView cardview;
+    @Bind(R.id.tv_name)
+    TextView tvName;
+    @Bind(R.id.tv_class_name)
+    TextView tvClassName;
+    @Bind(R.id.img_head)
+    ImageView imgHead;
 
     @Override
     protected int getLayoutId() {
@@ -47,12 +57,23 @@ public class CourseCodeActivity extends BaseActivity {
         int ss = DensityUtil.getScreenWidth(CourseCodeActivity.this);
         //动态设置banner的高度
         LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) cardview.getLayoutParams();
-        linearParams.height = (int)(ss );
+        linearParams.height = (int) (ss);
         cardview.setLayoutParams(linearParams);
-        String input = "你好，你是谁，我是你";
-        Bitmap bitmap = EncodingUtils.createQRCode(input, ss -DensityUtil.dip2px(60), ss -DensityUtil.dip2px(60), null);
-        imgCode.setImageBitmap(bitmap);
+        try {
+            AESCrypt aesCrypt = new AESCrypt();
+
+            String input = aesCrypt.encrypt("u_id=" + SharedPreferencesUtil.getValue(CourseCodeActivity.this, SharedPreferencesUtil.USER_ID, ""));
+            Bitmap bitmap = EncodingUtils.createQRCode(input, ss - DensityUtil.dip2px(60), ss - DensityUtil.dip2px(60), null);
+            imgCode.setImageBitmap(bitmap);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tvClassName.setText(SharedPreferencesUtil.getValue(CourseCodeActivity.this, SharedPreferencesUtil.CLASS_NAME, "")+"");
+        tvName.setText(SharedPreferencesUtil.getValue(CourseCodeActivity.this, SharedPreferencesUtil.NICK_NAME, "") + "");
+        GlideUtil.getInstance().LoadContextCircleBitmap(CourseCodeActivity.this,SharedPreferencesUtil.getValue(CourseCodeActivity.this,SharedPreferencesUtil.HEAD_PATH,"")+"",imgHead,R.drawable.icon_head_normal,R.drawable.icon_head_normal);
     }
+
 
 
 }

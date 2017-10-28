@@ -12,8 +12,9 @@
             app:indicator_drawable_unselected="@drawable/selected_radius_default"
             app:indicator_height="5dp"
             app:indicator_margin="4dp"
+            app:title_height="@dimen/dp_40"
             app:indicator_width="5dp"
-            app:title_textsize="18sp"
+            app:title_textsize="16sp"
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="180dp" />

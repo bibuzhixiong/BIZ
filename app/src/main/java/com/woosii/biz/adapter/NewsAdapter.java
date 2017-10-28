@@ -20,7 +20,6 @@ public class NewsAdapter extends BaseQuickAdapter<NewsBean,BaseViewHolder> {
     public NewsAdapter(@Nullable List<NewsBean> data) {
         super(R.layout.item_news,data);
 
-
     }
     @Override
     protected void convert(BaseViewHolder helper, NewsBean item) {

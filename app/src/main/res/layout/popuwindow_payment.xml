@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#804a4947"
+
+    >
+    <!--android:alpha="0.5"-->
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/vip_bghei"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="80dp"
+    android:id="@+id/imageView4" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:text="有效期为2017.05.05-2018.05.05" />
+
+    <TextView
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tv_time"
+        android:layout_marginTop="50dp"
+        android:text="立即体验"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_bluebtn_selector2"
+        android:layout_alignRight="@+id/imageView4"
+        android:layout_alignEnd="@+id/imageView4"
+        android:layout_alignLeft="@+id/imageView4"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_alignStart="@+id/imageView4" />
+
+</RelativeLayout>

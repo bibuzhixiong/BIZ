@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.woosii.biz.base.BaseToolbar
+        android:id="@+id/toolbar"
+        style="@style/basetoolbarStyle"
+        app:leftButtonIcon="@drawable/icon_white_back"
+        app:title="开通会员"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@drawable/vip_icon_bg">
+
+        <ImageView
+            android:id="@+id/img_head"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            app:srcCompat="@drawable/def_touxiang" />
+
+        <TextView
+            android:id="@+id/tv_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/img_head"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/img_head"
+            android:layout_toRightOf="@+id/img_head"
+            android:text="昵称"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_head"
+            android:layout_alignLeft="@+id/tv_nick_name"
+            android:layout_alignStart="@+id/tv_nick_name"
+            android:text="您当前已经开通VIP会员"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/common_h3" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_select_college"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:background="@drawable/touch_bg"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/tv_college"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:textColor="@color/common_h"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="选择商学院分院"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="（开通会员需选择所在分院）"
+            android:textColor="@color/common_h3"
+            android:layout_marginRight="10dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_tiaozhuanhei"
+            android:layout_marginRight="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_narrow">
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/vip_icon_zuanshi"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:text="开通会员仅需支付99元"/>
+
+    </LinearLayout>
+</LinearLayout>
+    <Button
+        android:id="@+id/bt_kaitong"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_bluebtn_selector1"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="立即开通"/>
+</LinearLayout>

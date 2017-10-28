@@ -13,6 +13,24 @@ import java.lang.reflect.Method;
 public class SharedPreferencesUtil {
     //用户ID
     public static final String USER_ID="USERID_ID";
+    //用户token
+    public static final String TOKEN="TOKEN";
+    //用户昵称
+    public static final String NICK_NAME="NICK_NAME";
+    //用户头像
+    public static final String HEAD_PATH="HEAD_PATH";
+    //是否vip
+    public static final String VIP="VIP";
+    //是否vip
+    public static final String GENDER="GENDER";
+
+    //是否vip
+    public static final String USER_TYPE="USER_TYPE";
+
+    //学院名字
+    public static final String CLASS_NAME="CLASS_NAME";
+
+
 
 
     private static final String FILE_NAME="shared_data";

@@ -7,6 +7,8 @@ package com.woosii.biz.base.bean.json;
 public class WechatBean {
     private  String openid;
     private String access_token;
+    private String unionid;
+
 
     public String getOpenid() {
         return openid;
@@ -22,5 +24,13 @@ public class WechatBean {
 
     public void setAccess_token(String access_token) {
         this.access_token = access_token;
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
     }
 }

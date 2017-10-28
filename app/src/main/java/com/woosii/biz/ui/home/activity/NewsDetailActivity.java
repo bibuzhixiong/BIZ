@@ -15,12 +15,12 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
 import com.woosii.biz.common.dialog.LoadingDialog;
-import com.woosii.biz.utils.ToastUtil;
 
 import butterknife.Bind;
 
@@ -40,6 +40,9 @@ public class NewsDetailActivity extends BaseActivity {
 
     private LoadingDialog loadingDialog;
     private String id="";
+    private String title="";
+    private String imgurl="";
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_news_detail;
@@ -53,14 +56,30 @@ public class NewsDetailActivity extends BaseActivity {
                 finish_Activity(NewsDetailActivity.this);
             }
         });
-        toolbar.setRightButtonIcon(this.getResources().getDrawable(R.drawable.icon_head_normal));
+        toolbar.setRightButtonIcon(this.getResources().getDrawable(R.drawable.btn_fenxiang));
         toolbar.setRightButtonOnClickLinster(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ShareAction(NewsDetailActivity.this).withText("hello")
-                        .setDisplayList( SHARE_MEDIA.WEIXIN)
-                        .setCallback(umShareListener).open();
-                ToastUtil.showShortToast("分享个瓜皮"+AppConstant.WEB_URL+id);
+                new ShareAction(NewsDetailActivity.this).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE)
+                        .withTitle(title)
+                        .withText("——来自沃噻APP")
+                        .withMedia(imgurl.equals("")?new UMImage(NewsDetailActivity.this,R.drawable.ic_back):new UMImage(NewsDetailActivity.this,imgurl))
+                        .withTargetUrl(AppConstant.WEB_URL+id)
+                        .setCallback(umShareListener)
+                        .open();
+
+              /*
+                UMWebPage web = new UMWebPage(AppConstant.WEB_URL+id);
+                web.setTitle(title);//标题
+//                web.setThumb(thumb);  //缩略图
+//                web.setDescription("my description");//描述
+                new ShareAction(NewsDetailActivity.this).withTitle(title)
+//                        .withText(Defaultcontent.text+"——来自友盟分享面板")
+//                        .withMedia(new UMImage(ShareMenuActivity.this, Defaultcontent.imageurl))
+                        .withTargetUrl(AppConstant.WEB_URL+id)
+                        .setDisplayList( SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(umShareListener).open();*/
+//                ToastUtil.showShortToast("分享个瓜皮"+AppConstant.WEB_URL+id);
             }
         });
     }
@@ -144,6 +163,8 @@ public class NewsDetailActivity extends BaseActivity {
 
         Bundle bundle=getIntent().getExtras();
          id=bundle.getString("id");
+        title=bundle.getString("title");
+        imgurl=bundle.getString("imgurl");
         webView.loadUrl(AppConstant.WEB_URL+id);
          loadingDialog=new LoadingDialog(NewsDetailActivity.this,"加载中...",true);
         loadingDialog.show();

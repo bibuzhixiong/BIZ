@@ -3,6 +3,7 @@ package com.woosii.biz.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -12,6 +13,8 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
+import com.woosii.biz.base.rx.RxBus;
+import com.woosii.biz.event.WeChatEvent;
 import com.woosii.biz.utils.ToastUtil;
 
 
@@ -59,7 +62,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     case RETURN_MSG_TYPE_LOGIN:
                         //拿到了微信返回的code,立马再去请求access_token
                         String code = ((SendAuth.Resp) baseResp).code;
-//                        RxBus.$().postEvent(new WeChatEvent(code));
+                        Log.e("TTT",((SendAuth.Resp) baseResp).code+"--"+((SendAuth.Resp) baseResp).url);
+                        RxBus.$().postEvent(new WeChatEvent(code));
 
                         break;
                     default:

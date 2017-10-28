@@ -37,4 +37,12 @@ public class LoginBean extends BaseInfoBean{
                 ", user_id='" + user_id + '\'' +
                 '}';
     }
+
+    public LoginBean(int code, String message, String token, String user_id) {
+        super(code, message);
+        this.token = token;
+        this.user_id = user_id;
+    }
+
+
 }

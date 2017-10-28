@@ -3,6 +3,7 @@ package com.woosii.biz.ui.login.presenter;
 import com.woosii.biz.api.Api;
 import com.woosii.biz.base.bean.LoginBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
+import com.woosii.biz.base.bean.json.WechatBean;
 import com.woosii.biz.base.rx.RxSubscriber;
 import com.woosii.biz.ui.login.contract.LoginContract;
 
@@ -75,6 +76,46 @@ public class LoginPresenter extends LoginContract.Presenter {
                             mView.loadFail(registerInfoBean.getMessage());
 
 
+                        }
+                    }
+                    @Override
+                    protected void onFailure(String message) {
+                        mView.hideLoading();
+                        mView.loadFail(message);
+                    }
+                });
+    }
+
+    @Override
+    public void loginByWX(Map<String, String> map) {
+        mView.showLoading();
+        addSubscrebe(Api.getInstance().loginByWX(map),
+                new RxSubscriber<LoginBean>(mContext, false) {
+                    @Override
+                    protected void onSuccess(LoginBean loginBean) {
+                        mView.hideLoading();
+
+                            mView.loginByWeChat(loginBean);
+
+                    }
+                    @Override
+                    protected void onFailure(String message) {
+                        mView.hideLoading();
+                        mView.loadFail(message);
+                    }
+                });
+    }
+
+    @Override
+    public void loadWeChatData(String url) {
+        mView.showLoading();
+        addSubscrebe(Api.getInstance().getWeChatLoginData(url),
+                new RxSubscriber<WechatBean>(mContext, false) {
+                    @Override
+                    protected void onSuccess(WechatBean wechatBean) {
+                        mView.hideLoading();
+                        if(wechatBean!=null){
+                            mView.loadWeChatData(wechatBean);
                         }
                     }
                     @Override

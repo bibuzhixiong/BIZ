@@ -15,6 +15,11 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
     </style>
+
+    <style name="AppTransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
     <!-- 使用style方式定义activity切换动画 -->
     <style name="activityAnim">
         <item name="android:activityOpenEnterAnimation">@anim/my_push_up_in</item>
@@ -60,6 +65,33 @@
         <item name="@android:windowEnterAnimation">@anim/normal_dialog_enter
         </item>
         <item name="@android:windowExitAnimation">@anim/normal_dialog_exit
+        </item>
+    </style>
+
+    <!-- ActionSheet底部Dialog的样式 ，有模糊效果 -->
+    <style name="DialogStyle" parent="@android:style/Theme.Dialog">
+
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- Dialog进入及退出动画 -->
+        <item name="android:windowAnimationStyle">@style/bottomDialogAnim</item>
+    </style>
+    <!--从底部进入的动画-->
+    <style name="bottomDialogAnim" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/bottom_dialog_enter
+        </item>
+        <item name="@android:windowExitAnimation">@anim/bottom_dialog_exit
         </item>
     </style>
 </resources>

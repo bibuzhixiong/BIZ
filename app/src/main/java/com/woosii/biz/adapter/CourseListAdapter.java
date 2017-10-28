@@ -29,6 +29,15 @@ public class CourseListAdapter extends BaseQuickAdapter<CourseListBean,BaseViewH
         helper.setText(R.id.tv_content,item.getClass_name());
         helper.setText(R.id.tv_time,item.getTime());
         ImageView imageView=helper.getView(R.id.img_course);
+        ImageView imgMsg=helper.getView(R.id.img_msg);
+        if(item.getType().equals("0")){
+//            imgMsg.setImageResource();
+            imgMsg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.msg_yuyue_default));
+        }else  if(item.getType().equals("2")){
+            imgMsg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.msg_yuyue_selected));
+        }else  if(item.getType().equals("1")){
+            imgMsg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.msg_yuyue_disabled));
+        }
 
         ss= DensityUtil.getScreenWidth(mContext);
         if(ss!=0){

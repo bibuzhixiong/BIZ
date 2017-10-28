@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="2dp"
     android:paddingTop="2dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
+
     <RelativeLayout
         android:id="@+id/rl_course"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-<ImageView
-    android:id="@+id/img_course"
-    android:layout_width="match_parent"
-    android:layout_height="140dp"
-    android:scaleType="fitXY"
-    android:background="@color/gray"
-    />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_course"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@color/gray"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_content"
@@ -29,9 +30,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
+            android:text="内容"
             android:textColor="@color/white"
-            android:textSize="@dimen/dp_22"
-            android:text="内容" />
+            android:textSize="@dimen/dp_22" />
 
         <TextView
             android:id="@+id/tv_time"
@@ -41,8 +42,18 @@
             android:layout_alignStart="@+id/tv_content"
             android:layout_below="@+id/tv_content"
             android:layout_marginTop="20dp"
+            android:text="2016"
             android:textColor="@color/white"
-            android:textSize="@dimen/dp_16"
-            android:text="2016" />
+            android:textSize="@dimen/dp_16" />
+
+        <ImageView
+            android:id="@+id/img_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/msg_yuyue_default"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp" />
     </RelativeLayout>
 </LinearLayout>

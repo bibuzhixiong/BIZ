@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- 连框颜色值 -->
+    <item android:state_pressed="false">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/common_h3" />
+                    <corners android:topLeftRadius="8dp"
+                        android:topRightRadius="8dp"
+                        ></corners>
+                </shape>
+            </item>
+            <!-- 主体背景颜色值 -->
+            <item android:bottom="1dp"> <!--设置只有底部有边框-->
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/white" />
+                    <corners android:topLeftRadius="8dp"
+                        android:topRightRadius="8dp"
+                        ></corners>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <!-- 连框颜色值 -->
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/common_h2" />
+                    <corners android:topLeftRadius="8dp"
+                        android:topRightRadius="8dp"
+                        ></corners>
+                </shape>
+            </item>
+            <!-- 主体背景颜色值 -->
+            <item android:bottom="1dp"> <!--设置只有底部有边框-->
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/common_h3" />
+                    <corners android:topLeftRadius="8dp"
+                        android:topRightRadius="8dp"
+                        ></corners>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

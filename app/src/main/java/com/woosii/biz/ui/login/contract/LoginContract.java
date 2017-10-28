@@ -4,6 +4,7 @@ import com.woosii.biz.base.BasePresenter;
 import com.woosii.biz.base.BaseView;
 import com.woosii.biz.base.bean.LoginBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
+import com.woosii.biz.base.bean.json.WechatBean;
 
 import java.util.Map;
 
@@ -20,6 +21,10 @@ public interface LoginContract   {
 
         void loginByPassword(LoginBean model);
 
+        void loadWeChatData(WechatBean wechatBean);
+
+        void loginByWeChat(LoginBean wechatBean);
+
         void loadFail(String msg);
         void showLoading();
         void hideLoading();
@@ -30,7 +35,8 @@ public interface LoginContract   {
         public abstract void getRegisterCode(Map<String, String> map);
         public abstract void register(Map<String, String> map);
         public abstract void loginByPassword(Map<String, String> map);
-
+        public abstract void loginByWX(Map<String, String> map);
+        public abstract void loadWeChatData(String url);
 
         @Override
         public void onStart() {
