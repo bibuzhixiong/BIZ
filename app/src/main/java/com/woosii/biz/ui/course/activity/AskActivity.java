@@ -167,7 +167,7 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
             @Override
             public void afterTextChanged(Editable s) {
                 int a=etAsk.getText().toString().length();
-                tvNum.setText(50-a+"");
+                tvNum.setText(120-a+"");
 
             }
         });

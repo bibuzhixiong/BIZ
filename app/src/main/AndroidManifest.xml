@@ -78,9 +78,20 @@
         <!--我的问答-->
         <activity android:name=".ui.me.activity.MyQuestionAnswerActivity">
         </activity>
-
+        <!--问答详情-->
+        <activity android:name=".ui.me.activity.QuestionAnswerDetailActivity">
+        </activity>
+        <!--意见反馈-->
+        <activity android:name=".ui.me.activity.SuggestionFeedbackActivity">
+        </activity>
+        <!--我的消息-->
+        <activity android:name=".ui.me.activity.MyMessageActivity">
+        </activity>
         <!--关于我们-->
         <activity android:name=".ui.me.activity.AboutUsActivity">
+        </activity>
+        <!--我的预约-->
+        <activity android:name=".ui.me.activity.MyAppointmentActivity">
         </activity>
 
         <!--修改密码-->

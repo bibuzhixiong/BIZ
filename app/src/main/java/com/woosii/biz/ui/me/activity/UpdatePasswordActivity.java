@@ -57,6 +57,7 @@ public class UpdatePasswordActivity extends BaseActivity<ForgetPasswordPresenter
     TextView tvRePassword;
     private LoadingDialog mLoadingDialog;
 
+
     private boolean isFinish = false;
 
     @Override

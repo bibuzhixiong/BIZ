@@ -7,12 +7,14 @@ import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.CollegeBean;
 import com.woosii.biz.base.bean.json.CourseDetailBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
+import com.woosii.biz.base.bean.json.MyMessageBean;
 import com.woosii.biz.base.bean.json.MyQuestionAnswerBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PayInfoBean;
 import com.woosii.biz.base.bean.json.PayReqBean;
 import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.PreViewQuestonsListBean;
+import com.woosii.biz.base.bean.json.QuestionListBean;
 import com.woosii.biz.base.bean.json.ThumbHeadBean;
 import com.woosii.biz.base.bean.json.UserInfoBean;
 import com.woosii.biz.base.bean.json.WechatBean;
@@ -185,6 +187,18 @@ public class Api {
     public Observable<BasePagingBean<MyQuestionAnswerBean>> getMyQuestionAnswerByTeacher(Map<String,String> map){
         return service.getMyQuestionAnswerByTeacher(map);
     }
+    //我的问答（老师）
+    public Observable<BasePagingBean<QuestionListBean>> getQuestionList(Map<String,String> map){
+        return service.getQuestionList(map);
+    }
 
+    //意见反馈
+    public Observable<BaseInfoBean> suggestionFeedback(Map<String,String> map){
+        return service.suggestionFeedback(map);
+    }
 
+    //我的消息
+    public Observable<List<MyMessageBean>> getMyMessage(Map<String,String> map){
+        return service.getMyMessage(map);
+    }
 }

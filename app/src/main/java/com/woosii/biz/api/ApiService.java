@@ -7,12 +7,14 @@ import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.CollegeBean;
 import com.woosii.biz.base.bean.json.CourseDetailBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
+import com.woosii.biz.base.bean.json.MyMessageBean;
 import com.woosii.biz.base.bean.json.MyQuestionAnswerBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PayInfoBean;
 import com.woosii.biz.base.bean.json.PayReqBean;
 import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.PreViewQuestonsListBean;
+import com.woosii.biz.base.bean.json.QuestionListBean;
 import com.woosii.biz.base.bean.json.ThumbHeadBean;
 import com.woosii.biz.base.bean.json.UserInfoBean;
 import com.woosii.biz.base.bean.json.WechatBean;
@@ -156,6 +158,19 @@ public interface ApiService {
     Observable<BasePagingBean<MyQuestionAnswerBean>> getMyQuestionAnswerByTeacher(@QueryMap Map<String,String> map);
 
 
+
+    //问题列表
+    @GET("index.php/Api/User/problem_list/")
+    Observable<BasePagingBean<QuestionListBean>> getQuestionList(@QueryMap Map<String,String> map);
+
+
+    //意见反馈
+    @GET("index.php/Api/User/idea/")
+    Observable<BaseInfoBean> suggestionFeedback(@QueryMap Map<String,String> map);
+
+    //我的消息
+    @GET(" index.php/Api/User/message/")
+    Observable<List<MyMessageBean>> getMyMessage(@QueryMap Map<String,String> map);
 
 }
 

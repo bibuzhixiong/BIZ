@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@drawable/touch_bg">
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -14,11 +14,12 @@
       android:paddingTop="16dp"
       android:paddingBottom="16dp">
       <TextView
+          android:id="@+id/tv_title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textColor="@color/black3"
+      android:textColor="@color/black1"
 
-
+        android:textSize="16sp"
       android:text="你猜一，我猜二，你猜三，我猜四，你猜五，我猜六，你猜八，我猜久"/>
       <LinearLayout
           android:layout_width="match_parent"
@@ -42,6 +43,7 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical">
           <ImageView
+              android:id="@+id/img_head"
               android:layout_width="50dp"
               android:layout_height="50dp"
               android:src="@drawable/icon_head_normal"/>
@@ -62,6 +64,7 @@
                   android:paddingRight="6dp"
                   android:background="@drawable/shape_yuyin_linearlayout_blue_selector">
                   <ImageView
+
                       android:layout_width="14dp"
                       android:layout_height="14dp"
                       android:layout_marginRight="4dp"
@@ -74,6 +77,7 @@
                       android:text="语音播放需要9.9元"/>
               </LinearLayout>
               <TextView
+                  android:id="@+id/tv_name"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:textColor="@color/black3"
@@ -86,6 +90,7 @@
             android:layout_height="match_parent"
             android:gravity="bottom">
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"

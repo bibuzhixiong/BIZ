@@ -1,10 +1,12 @@
 package com.woosii.biz.base.bean.json;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/9/29.
  */
 
-public class QuestionListBean {
+public class QuestionListBean implements Serializable {
     private int free;
     private int buy;
     private int a_id;
@@ -90,5 +92,16 @@ public class QuestionListBean {
                 ", thumb='" + thumb + '\'' +
                 ", add_time='" + add_time + '\'' +
                 '}';
+    }
+
+    public QuestionListBean(int free, int buy, int a_id, String problem, String audio, String nick_name, String thumb, String add_time) {
+        this.free = free;
+        this.buy = buy;
+        this.a_id = a_id;
+        this.problem = problem;
+        this.audio = audio;
+        this.nick_name = nick_name;
+        this.thumb = thumb;
+        this.add_time = add_time;
     }
 }

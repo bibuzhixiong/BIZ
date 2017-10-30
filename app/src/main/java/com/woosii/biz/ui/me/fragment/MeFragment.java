@@ -20,8 +20,11 @@ import com.woosii.biz.ui.course.activity.OpenMembershipActivity;
 import com.woosii.biz.ui.login.activity.LoginActivity;
 import com.woosii.biz.ui.me.activity.CourseCodeActivity;
 import com.woosii.biz.ui.me.activity.EditProfileActivity;
+import com.woosii.biz.ui.me.activity.MyAppointmentActivity;
+import com.woosii.biz.ui.me.activity.MyMessageActivity;
 import com.woosii.biz.ui.me.activity.MyQuestionAnswerActivity;
 import com.woosii.biz.ui.me.activity.SettingActivity;
+import com.woosii.biz.ui.me.activity.SuggestionFeedbackActivity;
 import com.woosii.biz.ui.me.contract.MeContract;
 import com.woosii.biz.ui.me.presenter.MePresenter;
 import com.woosii.biz.utils.GlideUtil;
@@ -61,6 +64,12 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
     LinearLayout llOpenMenber;
     @Bind(R.id.ll_my_question_answer)
     LinearLayout llMyQuestionAnswer;
+    @Bind(R.id.ll_seggestion_feedback)
+    LinearLayout llSeggestionFeedback;
+    @Bind(R.id.ll_my_appointment)
+    LinearLayout llMyAppointment;
+    @Bind(R.id.ll_my_message)
+    LinearLayout llMyMessage;
     private Subscription subscription;
 
     @Override
@@ -135,7 +144,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                 });
     }
 
-    @OnClick({R.id.ll_code, R.id.ll_setting, R.id.ll_open_menber,R.id.ll_my_question_answer})
+    @OnClick({R.id.ll_code, R.id.ll_setting, R.id.ll_open_menber, R.id.ll_my_question_answer, R.id.ll_seggestion_feedback,R.id.ll_my_message,R.id.ll_my_appointment})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -159,6 +168,15 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                 break;
             case R.id.ll_my_question_answer:
                 startActivity(MyQuestionAnswerActivity.class);
+                break;
+            case R.id.ll_seggestion_feedback:
+                startActivity(SuggestionFeedbackActivity.class);
+                break;
+            case R.id.ll_my_message:
+                startActivity(MyMessageActivity.class);
+                break;
+            case R.id.ll_my_appointment:
+                startActivity(MyAppointmentActivity.class);
                 break;
         }
     }
