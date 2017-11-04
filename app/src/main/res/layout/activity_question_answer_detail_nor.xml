@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.woosii.biz.base.BaseToolbar
+        android:id="@+id/toolbar"
+        style="@style/basetoolbarStyle"
+        app:leftButtonIcon="@drawable/icon_white_back"
+        app:title="问答详情"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:id="@+id/ll_problem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp"
+        android:textSize="18sp"
+        android:textColor="@color/black1"
+        android:text=""/>
+    <TextView
+        android:id="@+id/tv_name_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingBottom="14dp"
+        android:text=" 提问"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_narrow"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/ll_problem"
+        android:background="@color/common_divider_narrow"></LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_huida_null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="14dp"
+        android:layout_below="@+id/ll_narrow"
+        android:paddingTop="14dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/wdxq_icon_huida"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/wdxq_bg_changtiao"
+            android:text="老师回答"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/ll_huida_null"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/wdxq_icon_zanwunr"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无回答及评论"/>
+        <Button
+            android:id="@+id/bt_lijihuida"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="40dp"
+            android:text="立即回答"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_search_tv_selector4"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_yuyin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#804a4947"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/toolbar"
+        android:visibility="gone"
+        android:layout_alignEnd="@+id/toolbar">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_audio_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:background="@color/white"
+            android:paddingTop="30dp"
+            android:textSize="16sp"
+            android:text="00:00"
+          />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="140dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_gravity="center">
+
+            <com.woosii.biz.widget.CustomProgress
+
+                android:id="@+id/custom_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bigCircleColor="@color/gray1"
+                app:circleColor="@color/white"
+                app:radius="50dp"
+                app:ringColor="@color/blue"
+                app:strokeWidth="2dp"
+                app:textColor="#fff" />
+            <ImageView
+                android:id="@+id/img_dian"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/aio_record_play_nor"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+        <View
+            android:id="@+id/ll_send_narrow"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/common_divider_narrow"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+        <LinearLayout
+            android:id="@+id/ll_send_or_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_cancle_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="@drawable/touch_bg"
+                android:textColor="@color/blue"
+                android:text="取消"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/common_divider_narrow"/>
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/touch_bg"
+                android:textColor="@color/blue"
+                android:padding="10dp"
+                android:text="发送"/>
+
+        </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -6,6 +6,7 @@ import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.base.bean.json.VersionBean;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public interface HomeContract {
         void refreshNewsSuccess(BasePagingBean<NewsBean> model);
         void scanSuccess(BaseInfoBean model);
 
+        void getVersionSuccess(VersionBean model);
+
         void getPointSuccess(PointBean model);
 
 //        void scanFail(String mag);
@@ -39,6 +42,7 @@ public interface HomeContract {
 
         public abstract void scan(Map<String, String> map);
         public abstract void getPoint(Map<String, String> map);
+        public abstract void getVersion();
 
 
         @Override

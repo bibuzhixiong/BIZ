@@ -9,6 +9,7 @@ import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
 import com.woosii.biz.base.rx.RxBus;
 import com.woosii.biz.event.ExitAccountEvent;
+import com.woosii.biz.ui.login.activity.LoginActivity;
 import com.woosii.biz.utils.GlideCatchUtil;
 import com.woosii.biz.utils.SharedPreferencesUtil;
 import com.woosii.biz.utils.ToastUtil;
@@ -59,6 +60,9 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initView() {
         tvClear.setText(GlideCatchUtil.getInstance().getCacheSize());
+        if((SharedPreferencesUtil.getValue(SettingActivity.this,SharedPreferencesUtil.USER_ID,"")+"").equals("")){
+            llExit.setVisibility(View.GONE);
+        }
 
     }
     @OnClick({R.id.ll_update_password,R.id.ll_about_us,R.id.ll_clear,R.id.ll_section,R.id.ll_exit})
@@ -66,6 +70,10 @@ public class SettingActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_update_password:
+                if((SharedPreferencesUtil.getValue(SettingActivity.this,SharedPreferencesUtil.USER_ID,"")+"").equals("")){
+                    startActivity(LoginActivity.class);
+                    return;
+                }
                 startActivity(UpdatePasswordActivity.class);
                 break;
             case R.id.ll_about_us:
@@ -84,6 +92,10 @@ public class SettingActivity extends BaseActivity {
 
                 break;
             case R.id.ll_exit:
+                if((SharedPreferencesUtil.getValue(SettingActivity.this,SharedPreferencesUtil.USER_ID,"")+"").equals("")){
+                    startActivity(LoginActivity.class);
+                    return;
+                }
                 SharedPreferencesUtil.removeAll(SettingActivity.this);
                 RxBus.$().postEvent(new ExitAccountEvent());
                 finish_Activity(SettingActivity.this);

@@ -48,6 +48,7 @@
                     android:id="@+id/rb_a"
                     android:text="A："
                     android:paddingTop="14dp"
+                    android:button="@drawable/radiobutton"
                     android:paddingBottom="14dp"
                     ></RadioButton>
 
@@ -56,18 +57,28 @@
                     android:id="@+id/rb_b"
                     android:text="B："
                     android:paddingTop="14dp"
+                    android:button="@drawable/radiobutton"
                     android:paddingBottom="14dp"></RadioButton>
                 <RadioButton android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/rb_c"
                     android:text="C："
                     android:paddingTop="14dp"
+                    android:button="@drawable/radiobutton"
                     android:paddingBottom="14dp"></RadioButton>
                 <RadioButton android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/rb_d"
                     android:text="D："
                     android:paddingTop="14dp"
+                    android:button="@drawable/radiobutton"
+                    android:paddingBottom="14dp"></RadioButton>
+                <RadioButton android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rb_e"
+                    android:text="E："
+                    android:paddingTop="14dp"
+                    android:button="@drawable/radiobutton"
                     android:paddingBottom="14dp"></RadioButton>
             </RadioGroup>
             </LinearLayout>

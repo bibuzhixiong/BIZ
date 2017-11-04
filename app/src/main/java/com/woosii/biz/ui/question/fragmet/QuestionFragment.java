@@ -13,6 +13,9 @@ import com.woosii.biz.adapter.AnswerBranchAdapter;
 import com.woosii.biz.base.BaseFragment;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.QuestionListBean;
+import com.woosii.biz.base.rx.RxBus;
+import com.woosii.biz.event.ExitAccountEvent;
+import com.woosii.biz.event.UserInfoEvent;
 import com.woosii.biz.ui.me.activity.QuestionAnswerDetailActivity;
 import com.woosii.biz.ui.question.contract.QuestionContract;
 import com.woosii.biz.ui.question.presenter.QuestionPresenter;
@@ -26,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2017/9/25.
@@ -48,7 +54,7 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
         sf.mType = type;
         return sf;
     }
-
+    private Subscription subscription;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_question;
@@ -79,16 +85,38 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
             public void onItemClick(BaseQuickAdapter adapter1, View view, int position) {
 
                 QuestionListBean questionListBean=adapter.getData().get(position);
-                Log.e("TTT","这是1："+questionListBean.toString());
+//                Log.e("TTT","这是1："+questionListBean.toString());
                 Bundle bundle=new Bundle();
-                bundle.putSerializable("question", questionListBean);
+                bundle.putString("p_id",questionListBean.getP_id());
+//                bundle.putSerializable("question", questionListBean);
+                bundle.putString("goods_code",questionListBean.getGoods_code());
                 startActivity(QuestionAnswerDetailActivity.class,bundle);
 
             }
         });
 
         loadData(true);
+        event();
+    }
 
+    private void event() {
+        subscription = RxBus.$().toObservable(Object.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event instanceof UserInfoEvent) {
+                            list.clear();
+                            adapter.notifyDataSetChanged();
+                            loadData(true);
+                        } else if (event instanceof ExitAccountEvent) {
+                            list.clear();
+                            adapter.notifyDataSetChanged();
+                            loadData(true);
+                        }
+
+                    }
+                });
     }
     //swifload判断是否是下拉加载
     private void loadData(boolean isRefresh) {
@@ -169,6 +197,15 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
             page++;
 //            Log.e("TTT",page+"好吧");
             loadData( false);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        super.onDestroy();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
         }
     }
 }

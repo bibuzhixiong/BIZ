@@ -5,6 +5,7 @@ package com.woosii.biz.base.bean.json;
  */
 
 public class UserInfoBean extends BaseInfoBean{
+
     private String user_id;
     private String nick_name;
     private int gender;
@@ -13,6 +14,7 @@ public class UserInfoBean extends BaseInfoBean{
     private String user_type;
     private String vip;
     private String c_name;
+    private String integral;
 
 
     public UserInfoBean(int code, String message) {
@@ -83,6 +85,14 @@ public class UserInfoBean extends BaseInfoBean{
         this.c_name = c_name;
     }
 
+    public String getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(String integral) {
+        this.integral = integral;
+    }
+
     @Override
     public String toString() {
         return "UserInfoBean{" +
@@ -94,6 +104,7 @@ public class UserInfoBean extends BaseInfoBean{
                 ", user_type='" + user_type + '\'' +
                 ", vip='" + vip + '\'' +
                 ", c_name='" + c_name + '\'' +
+                ", integral='" + integral + '\'' +
                 '}';
     }
 }

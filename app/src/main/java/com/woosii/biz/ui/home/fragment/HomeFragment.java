@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,8 +26,10 @@ import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.common.dialog.DialogInterface;
 import com.woosii.biz.common.dialog.NormalAlertDialog;
+import com.woosii.biz.manager.UpdateManager;
 import com.woosii.biz.ui.home.activity.NewsDetailActivity;
 import com.woosii.biz.ui.home.activity.SignSuccessActivity;
 import com.woosii.biz.ui.home.contract.HomeContract;
@@ -135,6 +138,16 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
         mPresenter.getNewsBanner(map);
 
 
+
+      /*  //申请权限
+        if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+           requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+        }else{
+            new UpdateManager(getActivity()).checkUpdate(false);
+        }
+
+        mPresenter.getVersion();*/
     }
     //swifload判断是否是下拉加载
     private void loaddata(boolean isRefresh){
@@ -143,6 +156,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
         if(isRefresh){
             map.put("pindex","1");
             mPresenter.refreshNews(map);
+
+            //获取轮播
+            Map<String,String> map1=new HashMap<>();
+            mPresenter.getNewsBanner(map1);
         }else{
             map.put("pindex",page+"");
             mPresenter.getNews(map);
@@ -155,9 +172,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     private void addHeadView() {
         View headView = getActivity().getLayoutInflater().inflate(R.layout.header_home, (ViewGroup) recycleview.getParent(), false);
         banner =(Banner)headView.findViewById(R.id.banner);
-
         initBanner();
-
         newsAdapter.addHeaderView(headView);
     }
         private void initBanner(){
@@ -264,6 +279,14 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             }
         }
 
+        if(requestCode==1){
+            if(permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new UpdateManager(getActivity()).checkUpdate(false);
+                }
+            }
+        }
+
     }
 
     @Override
@@ -280,6 +303,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
     @Override
     public void getNewsBannerSuccess(List<NewsBean> model) {
+        images.clear();
+        titles.clear();
         listBanner=model;
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
@@ -363,6 +388,11 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
 
 
+    }
+
+    @Override
+    public void getVersionSuccess(VersionBean model) {
+        Log.e("TTT",model.toString());
     }
 
     @Override

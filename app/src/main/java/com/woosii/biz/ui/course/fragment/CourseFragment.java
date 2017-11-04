@@ -31,6 +31,8 @@ public class CourseFragment  extends BaseFragment{
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private FragmentPagerAdapter mAdapter;
     private int[] mType = {0, 1, 2};
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_course;
@@ -106,4 +108,7 @@ public class CourseFragment  extends BaseFragment{
             }
         });
     }
+
+
+
 }

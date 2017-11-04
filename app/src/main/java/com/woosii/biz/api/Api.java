@@ -5,8 +5,10 @@ import com.woosii.biz.base.bean.json.AskBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.CollegeBean;
+import com.woosii.biz.base.bean.json.CommentsBean;
 import com.woosii.biz.base.bean.json.CourseDetailBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
+import com.woosii.biz.base.bean.json.MoneyListBean;
 import com.woosii.biz.base.bean.json.MyMessageBean;
 import com.woosii.biz.base.bean.json.MyQuestionAnswerBean;
 import com.woosii.biz.base.bean.json.NewsBean;
@@ -14,9 +16,11 @@ import com.woosii.biz.base.bean.json.PayInfoBean;
 import com.woosii.biz.base.bean.json.PayReqBean;
 import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.PreViewQuestonsListBean;
+import com.woosii.biz.base.bean.json.QuestionAnswerDetailBean;
 import com.woosii.biz.base.bean.json.QuestionListBean;
 import com.woosii.biz.base.bean.json.ThumbHeadBean;
 import com.woosii.biz.base.bean.json.UserInfoBean;
+import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.base.bean.json.WechatBean;
 import com.woosii.biz.base.bean.json.WechatInfoBean;
 
@@ -43,7 +47,6 @@ public class Api {
     private ApiService service;
 
     public Api() {
-
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//请求数据打印
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -201,4 +204,34 @@ public class Api {
     public Observable<List<MyMessageBean>> getMyMessage(Map<String,String> map){
         return service.getMyMessage(map);
     }
+    //我的消息
+    public Observable<MoneyListBean> getWalletRecord(Map<String,String> map){
+        return service.getWalletRecord(map);
+    }
+    //评论语音
+    public Observable<BaseInfoBean> comment(Map<String,String> map){
+        return service.comment(map);
+    }
+    //获取评论
+    public Observable<BasePagingBean<CommentsBean>> getComments(Map<String,String> map){
+        return service.getComments(map);
+    }
+    //问答详情
+    public Observable<QuestionAnswerDetailBean> getQuestionAnswerDetial(Map<String,String> map){
+        return service.getQuestionAnswerDetial(map);
+    }
+    //购买问答
+    public Observable<BaseInfoBean> buyQuestion(Map<String,String> map){
+        return service.buyQuestion(map);
+    }
+    //老师提现
+    public Observable<BaseInfoBean> withDraw(Map<String,String> map){
+        return service.withDraw(map);
+    }
+
+    //检查版本
+    public Observable<VersionBean> getVersion(){
+        return service.getVersion();
+    }
+
 }

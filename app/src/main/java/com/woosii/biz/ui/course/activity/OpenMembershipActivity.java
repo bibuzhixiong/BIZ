@@ -73,11 +73,12 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
     @Bind(R.id.bt_kaitong)
     Button btKaitong;
     private LoadingDialog mLoadingDialog;
-    private static final int SDK_PAY_FLAG = 1;
-    private static final int SDK_AUTH_FLAG = 2;
+
     private String class_id="";
     private int pay_type=1;//1是微信，2是支付宝
     private PopupWindow mPopupWindow;
+    private static final int SDK_PAY_FLAG = 1;
+    private static final int SDK_AUTH_FLAG = 2;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -237,6 +238,7 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                                             map.put("user_id", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
                                             map.put("subject", "沃噻开通会员");
                                             map.put("c_id",class_id);
+                                            map.put("goods_type", "1");
                                             map.put("goods_code", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
                                             mPresenter.getWeChatOrderInfo(map);
 
@@ -249,6 +251,7 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                                         map1.put("user_id", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
                                         map1.put("subject", "沃噻开通会员");
                                         map1.put("c_id",class_id);
+                                        map1.put("goods_type", "1");
                                         map1.put("goods_code", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
                                         mPresenter.getPayOrderInfo(map1);
                                         dialog.dismiss();

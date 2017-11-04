@@ -70,6 +70,7 @@
                       android:layout_marginRight="4dp"
                       android:src="@drawable/wenda_icon_laba"/>
                   <TextView
+                      android:id="@+id/tv_free_or_no"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textColor="@color/white"

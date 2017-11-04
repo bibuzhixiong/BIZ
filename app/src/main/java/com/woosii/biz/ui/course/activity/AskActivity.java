@@ -2,7 +2,6 @@ package com.woosii.biz.ui.course.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -37,7 +36,6 @@ import com.woosii.biz.utils.ToastUtil;
 import com.woosii.biz.utils.payutil.AuthResult;
 import com.woosii.biz.utils.payutil.PayResult;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +43,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -67,6 +62,7 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
     EditText etAsk;
     @Bind(R.id.tv_num)
     TextView tvNum;
+
 
     private LoadingDialog mLoadingDialog;
     private int pay_type=1;//1是微信，2是支付宝
@@ -138,7 +134,7 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
 
     @Override
     protected void initView() {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/record/20171017170607.mp3");
+      /*  File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/record/20171017170607.mp3");
 
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -149,7 +145,7 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
         RequestBody pidBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf("73"));
 //            RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 //            map.put("Filedata", fileBody);
-        mPresenter.changeHeadSuccess(uidBody,pidBody, body);
+        mPresenter.changeHeadSuccess(uidBody,pidBody, body);*/
         Bundle bundle = getIntent().getExtras();
 
         teacher_id= bundle.getString("teacher_id");
@@ -168,7 +164,6 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
             public void afterTextChanged(Editable s) {
                 int a=etAsk.getText().toString().length();
                 tvNum.setText(120-a+"");
-
             }
         });
         event();
@@ -341,6 +336,7 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
                 map1.put("money_order", "0.01");
                 map1.put("subject", "沃噻提问支付");
                 map1.put("goods_code", model.getGoods_code());
+                map1.put("goods_type", "2");
                 mPresenter.getWeChatOrderInfo(map1);
             }else{
 
@@ -349,6 +345,7 @@ public class AskActivity extends BaseActivity<AskPresenter> implements AskContra
                     map1.put("money_order", "0.01");
                     map1.put("subject", "沃噻提问支付");
                     map1.put("goods_code", model.getGoods_code());
+                    map1.put("goods_type", "2");
                     mPresenter.getPayOrderInfo(map1);
             }
 

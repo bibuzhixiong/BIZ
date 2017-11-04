@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
@@ -12,6 +13,9 @@ import com.woosii.biz.adapter.CourseListAdapter;
 import com.woosii.biz.base.BaseFragment;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
+import com.woosii.biz.base.rx.RxBus;
+import com.woosii.biz.event.ExitAccountEvent;
+import com.woosii.biz.event.UserInfoEvent;
 import com.woosii.biz.ui.course.activity.CourseDetailActivity;
 import com.woosii.biz.ui.course.contract.CourseContract;
 import com.woosii.biz.ui.course.presenter.CoursePresenter;
@@ -25,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2017/9/26.
@@ -47,6 +54,9 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
         sf.mType = type;
         return sf;
     }
+    private Subscription subscription;
+
+    private View notDataView;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_course_list;
@@ -71,17 +81,50 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
         courseListAdapter.setOnLoadMoreListener(this, recycleview);
         courseListAdapter.setLoadMoreView(new CustomLoadMoreView());
 
+
+        notDataView = getActivity().getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) recycleview.getParent(), false);
+        notDataView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                courseListAdapter.setEmptyView(R.layout.loading_view, (ViewGroup) recycleview.getParent());
+                onRefresh();
+            }
+        });
+
         courseListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle=new Bundle();
                 bundle.putString("class_id",courseListAdapter.getData().get(position).getClass_id());
+                bundle.putString("title",courseListAdapter.getData().get(position).getClass_name());
                 bundle.putString("type",courseListAdapter.getData().get(position).getType());
+                bundle.putString("imgurl",courseListAdapter.getData().get(position).getThumb());
                 bundle.putString("teacher_id",courseListAdapter.getData().get(position).getTeacher_id());
                 startActivity(CourseDetailActivity.class,bundle);
             }
         });
         loadData(false);
+        event();
+    }
+
+    private void event() {
+        subscription = RxBus.$().toObservable(Object.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event instanceof UserInfoEvent) {
+                            list.clear();
+                            courseListAdapter.notifyDataSetChanged();
+                            loadData(true);
+                        } else if (event instanceof ExitAccountEvent) {
+                            list.clear();
+                            courseListAdapter.notifyDataSetChanged();
+                            loadData(true);
+                        }
+
+                    }
+                });
     }
     //swifload判断是否是下拉加载
     private void loadData(boolean isRefresh){
@@ -104,7 +147,9 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
 
     @Override
     public void getCoursesSuccess(BasePagingBean<CourseListBean> model) {
-
+        if(model.getChild()==null){
+            courseListAdapter.setEmptyView(notDataView);
+        }
         totalPages=Integer.parseInt(model.getCount());
         courseListAdapter.addData(model.getChild());
 
@@ -115,6 +160,9 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
 
     @Override
     public void getRefreshCoursesSuccess(BasePagingBean<CourseListBean> model) {
+        if(model.getChild()==null){
+            courseListAdapter.setEmptyView(notDataView);
+        }
         totalPages=Integer.parseInt(model.getCount());
         mSwipeRefreshLayout.setRefreshing(false);
         list.clear();
@@ -162,6 +210,14 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
             page++;
 //            Log.e("TTT",page+"好吧");
             loadData( false);
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        super.onDestroy();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
         }
     }
 }

@@ -20,11 +20,9 @@ public class MePresenter extends MeContract.Presenter{
                     @Override
                     protected void onSuccess(UserInfoBean model) {
                         mView.hideLoading();
-                        if(model.getCode()==1){
+
                             mView.getUserInfoSuccess(model);
-                        }else{
-                            mView.loadFail(model.getMessage());
-                        }
+
 
 
                     }

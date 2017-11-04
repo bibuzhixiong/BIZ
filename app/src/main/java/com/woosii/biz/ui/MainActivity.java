@@ -1,13 +1,11 @@
 package com.woosii.biz.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.umeng.socialize.UMShareAPI;
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.bean.MainTabEntity;
@@ -159,5 +157,8 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

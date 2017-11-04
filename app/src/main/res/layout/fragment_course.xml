@@ -16,12 +16,13 @@
         android:textSize="18sp"
         android:textColor="@color/white"
         android:gravity="center"
-        android:layout_marginLeft="50dp"
+
         android:text="课程"/>
     <ImageView
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:padding="14dp"
+        android:visibility="gone"
         android:src="@drawable/kecheng_nav_btn_sousuo"/>
 </LinearLayout>
 

@@ -5,6 +5,7 @@ import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.base.rx.RxSubscriber;
 import com.woosii.biz.ui.home.contract.HomeContract;
 
@@ -104,6 +105,21 @@ public class HomePresenter extends HomeContract.Presenter {
                     protected void onFailure(String message) {
                         mView.hideLoading();
                         mView.loadFail(message);
+                    }
+                });
+    }
+
+    @Override
+    public void getVersion() {
+        addSubscrebe(Api.getInstance().getVersion(),
+                new RxSubscriber<VersionBean>(mContext,false) {
+                    @Override
+                    protected void onSuccess(VersionBean model) {
+                        mView.getVersionSuccess(model);
+                    }
+                    @Override
+                    protected void onFailure(String message) {
+
                     }
                 });
     }

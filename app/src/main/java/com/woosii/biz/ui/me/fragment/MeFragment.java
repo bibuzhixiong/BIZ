@@ -2,6 +2,7 @@ package com.woosii.biz.ui.me.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.woosii.biz.R;
 import com.woosii.biz.base.BaseFragment;
 import com.woosii.biz.base.bean.json.UserInfoBean;
 import com.woosii.biz.base.rx.RxBus;
+import com.woosii.biz.common.dialog.DialogInterface;
+import com.woosii.biz.common.dialog.NormalAlertDialog;
 import com.woosii.biz.event.ExitAccountEvent;
 import com.woosii.biz.event.UserInfoEvent;
 import com.woosii.biz.ui.course.activity.OpenMembershipActivity;
@@ -23,6 +26,7 @@ import com.woosii.biz.ui.me.activity.EditProfileActivity;
 import com.woosii.biz.ui.me.activity.MyAppointmentActivity;
 import com.woosii.biz.ui.me.activity.MyMessageActivity;
 import com.woosii.biz.ui.me.activity.MyQuestionAnswerActivity;
+import com.woosii.biz.ui.me.activity.MyWalletActivity;
 import com.woosii.biz.ui.me.activity.SettingActivity;
 import com.woosii.biz.ui.me.activity.SuggestionFeedbackActivity;
 import com.woosii.biz.ui.me.contract.MeContract;
@@ -70,7 +74,17 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
     LinearLayout llMyAppointment;
     @Bind(R.id.ll_my_message)
     LinearLayout llMyMessage;
+    @Bind(R.id.ll_my_wallat)
+    LinearLayout llMyWallat;
+    @Bind(R.id.ll_narrow_wallat)
+    LinearLayout llNarrowWallat;
+    @Bind(R.id.tv_integration)
+    TextView tvIntegration;
+    @Bind(R.id.img_location)
+    ImageView imgLocation;
+
     private Subscription subscription;
+
 
     @Override
     protected int getLayoutId() {
@@ -137,14 +151,20 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                             imgHead.setImageResource(R.drawable.def_touxiang);
                             tvName.setText("点击登录");
                             tvClassName.setText("登录后可以获得更多功能，更佳体验");
+                            tvIntegration.setText("0积分");
                             imgMenber.setVisibility(View.GONE);
+                            llNarrowWallat.setVisibility(View.GONE);
+                            llMyWallat.setVisibility(View.GONE);
+                            llCode.setVisibility(View.GONE);
+                            imgLocation.setVisibility(View.GONE);
+                            tvIntegration.setVisibility(View.GONE);
                         }
 
                     }
                 });
     }
 
-    @OnClick({R.id.ll_code, R.id.ll_setting, R.id.ll_open_menber, R.id.ll_my_question_answer, R.id.ll_seggestion_feedback,R.id.ll_my_message,R.id.ll_my_appointment})
+    @OnClick({R.id.ll_code, R.id.ll_setting, R.id.ll_open_menber, R.id.ll_my_question_answer, R.id.ll_seggestion_feedback, R.id.ll_my_message, R.id.ll_my_appointment, R.id.ll_my_wallat})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -156,7 +176,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                 startActivity(SettingActivity.class);
                 break;
             case R.id.ll_open_menber:
-                if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.VIP, "") + "").equals("")) {
+                if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.USER_ID, "") + "").equals("")) {
                     startActivity(LoginActivity.class);
                     return;
                 }
@@ -167,16 +187,31 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                 startActivity(OpenMembershipActivity.class);
                 break;
             case R.id.ll_my_question_answer:
+                if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.USER_ID, "") + "").equals("")) {
+                    startActivity(LoginActivity.class);
+                    return;
+                }
                 startActivity(MyQuestionAnswerActivity.class);
                 break;
             case R.id.ll_seggestion_feedback:
                 startActivity(SuggestionFeedbackActivity.class);
                 break;
             case R.id.ll_my_message:
+                if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.USER_ID, "") + "").equals("")) {
+                    startActivity(LoginActivity.class);
+                    return;
+                }
                 startActivity(MyMessageActivity.class);
                 break;
             case R.id.ll_my_appointment:
+                if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.USER_ID, "") + "").equals("")) {
+                    startActivity(LoginActivity.class);
+                    return;
+                }
                 startActivity(MyAppointmentActivity.class);
+                break;
+            case R.id.ll_my_wallat:
+                startActivity(MyWalletActivity.class);
                 break;
         }
     }
@@ -197,6 +232,38 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
 
     @Override
     public void getUserInfoSuccess(UserInfoBean model) {
+        if(model.getCode()==0){
+            ToastUtil.showShortToast(model.getMessage());
+            return;
+        }else if(model.getCode()==2){
+            Log.e("TTT",model.getCode()+"");
+            SharedPreferencesUtil.removeAll(getActivity());
+            NormalAlertDialog dialog = new NormalAlertDialog.Builder(getActivity())
+                    .setBoolTitle(false)
+                    .setContentText("您的账号已过期，请重新登录")
+//                            .setSingleModel(false)
+                    .setRightText("登录")
+                    .setLeftText("取消")
+//                            .setRightTextColor(CourseDetailActivity.this.getResources().getColor(R.color.blue))
+                    .setHeight(0.23f)
+                    .setWidth(0.65f)
+                    .setOnclickListener(new DialogInterface.OnLeftAndRightClickListener<NormalAlertDialog>(){
+                        @Override
+                        public void clickLeftButton(NormalAlertDialog dialog, View view) {
+                            dialog.dismiss();
+                        }
+                        @Override
+                        public void clickRightButton(NormalAlertDialog dialog, View view) {
+                         startActivity(LoginActivity.class);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setTouchOutside(false)
+                    .build();
+            dialog.show();
+
+            return;
+        }
         String imgpath = model.getThumb();
         if (!imgpath.equals("")) {
             if (!imgpath.contains("http")) {
@@ -213,7 +280,16 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.CLASS_NAME, model.getC_name() + "");
         if (model.getVip().equals("1")) {
             imgMenber.setVisibility(View.VISIBLE);
+            imgLocation.setVisibility(View.VISIBLE);
         }
+        if (model.getUser_type().equals("1")) {
+            llNarrowWallat.setVisibility(View.VISIBLE);
+            llMyWallat.setVisibility(View.VISIBLE);
+        } else if (model.getUser_type().equals("2")) {
+            llCode.setVisibility(View.VISIBLE);
+        }
+        tvIntegration.setVisibility(View.VISIBLE);
+        tvIntegration.setText(model.getIntegral()+"积分");
         tvClassName.setText(model.getC_name());
         tvName.setText(model.getNick_name());
     }

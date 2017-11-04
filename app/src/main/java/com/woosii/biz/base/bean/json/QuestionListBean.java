@@ -9,12 +9,13 @@ import java.io.Serializable;
 public class QuestionListBean implements Serializable {
     private int free;
     private int buy;
-    private int a_id;
+    private String p_id;
     private String problem;
     private String audio;
     private String nick_name;
     private String thumb;
     private String add_time;
+    private String goods_code;
 
     public int getFree() {
         return free;
@@ -32,12 +33,12 @@ public class QuestionListBean implements Serializable {
         this.buy = buy;
     }
 
-    public int getA_id() {
-        return a_id;
+    public String getP_id() {
+        return p_id;
     }
 
-    public void setA_id(int a_id) {
-        this.a_id = a_id;
+    public void setP_id(String p_id) {
+        this.p_id = p_id;
     }
 
     public String getProblem() {
@@ -80,28 +81,49 @@ public class QuestionListBean implements Serializable {
         this.add_time = add_time;
     }
 
+    public String getGoods_code() {
+        return goods_code;
+    }
+
+    public void setGoods_code(String goods_code) {
+        this.goods_code = goods_code;
+    }
+
     @Override
     public String toString() {
         return "QuestionListBean{" +
                 "free=" + free +
                 ", buy=" + buy +
-                ", a_id=" + a_id +
+                ", p_id='" + p_id + '\'' +
                 ", problem='" + problem + '\'' +
                 ", audio='" + audio + '\'' +
                 ", nick_name='" + nick_name + '\'' +
                 ", thumb='" + thumb + '\'' +
                 ", add_time='" + add_time + '\'' +
+                ", goods_code='" + goods_code + '\'' +
                 '}';
     }
 
-    public QuestionListBean(int free, int buy, int a_id, String problem, String audio, String nick_name, String thumb, String add_time) {
+    public QuestionListBean(int free, int buy, String p_id, String problem, String audio, String nick_name, String thumb, String add_time) {
         this.free = free;
         this.buy = buy;
-        this.a_id = a_id;
+        this.p_id = p_id;
         this.problem = problem;
         this.audio = audio;
         this.nick_name = nick_name;
         this.thumb = thumb;
         this.add_time = add_time;
+    }
+
+    public QuestionListBean(int free, int buy, String p_id, String problem, String audio, String nick_name, String thumb, String add_time, String goods_code) {
+        this.free = free;
+        this.buy = buy;
+        this.p_id = p_id;
+        this.problem = problem;
+        this.audio = audio;
+        this.nick_name = nick_name;
+        this.thumb = thumb;
+        this.add_time = add_time;
+        this.goods_code = goods_code;
     }
 }

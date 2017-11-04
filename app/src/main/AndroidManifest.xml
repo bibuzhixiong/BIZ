@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.woosii.biz">
+    package="com.woosii.biz"
+    android:versionCode="1"
+    android:versionName="1.0">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
@@ -19,12 +21,17 @@
     <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
     <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
 
+
+
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@drawable/app_icon_big"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.MainActivity">
@@ -59,6 +66,10 @@
         <!--预习题-->
         <activity android:name=".ui.course.activity.PreviewQuestionsActivity">
         </activity>
+        <!--预习题答对-->
+        <activity android:name=".ui.course.activity.PreviewQuestionsCompleteActivity">
+        </activity>
+
 
         <!--提问-->
         <activity android:name=".ui.course.activity.AskActivity"></activity>
@@ -79,8 +90,23 @@
         <activity android:name=".ui.me.activity.MyQuestionAnswerActivity">
         </activity>
         <!--问答详情-->
-        <activity android:name=".ui.me.activity.QuestionAnswerDetailActivity">
+        <activity android:name=".ui.me.activity.QuestionAnswerDetailActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
         </activity>
+        <!--问答详情没有回答-->
+        <activity android:name=".ui.me.activity.QuestionAnswerDetailNorActivity">
+        </activity>
+        <!--我的钱包-->
+        <activity android:name=".ui.me.activity.MyWalletActivity">
+        </activity>
+        <!--协议-->
+        <activity android:name=".ui.login.activity.ProtocolActivity">
+        </activity>
+
+        <!--提现-->
+        <activity android:name=".ui.me.activity.WithDrawActivity">
+        </activity>
+
         <!--意见反馈-->
         <activity android:name=".ui.me.activity.SuggestionFeedbackActivity">
         </activity>
@@ -180,7 +206,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
+        <!--更新-->
+        <service android:name="com.woosii.biz.manager.DownLoadService"/>
 
         <meta-data
             android:name="com.woosii.biz.utils.GlideConfiguration"

@@ -23,6 +23,7 @@ public class MyQuestionAnswerAdapter extends BaseQuickAdapter<MyQuestionAnswerBe
         this.isanswer=isanswer;
 
 
+
     }
     @Override
     protected void convert(BaseViewHolder helper, MyQuestionAnswerBean item) {

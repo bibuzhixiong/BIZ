@@ -8,7 +8,12 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
@@ -47,6 +52,9 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
     private LoadingDialog loadingDialog;
     private String id;
     private String teacher_id;
+    private    String type;
+    private String title;
+    private String imgurl;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_course_deatil;
@@ -60,8 +68,49 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
                 finish_Activity(CourseDetailActivity.this);
             }
         });
-    }
+        toolbar.setRightButtonIcon(this.getResources().getDrawable(R.drawable.btn_fenxiang));
+        toolbar.setRightButtonOnClickLinster(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ShareAction(CourseDetailActivity.this).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE)
+                        .withTitle(title)
+                        .withText("——来自沃噻APP")
+                        .withMedia(imgurl.equals("")?new UMImage(CourseDetailActivity.this,R.drawable.ic_back):new UMImage(CourseDetailActivity.this,R.mipmap.ic_launcher))//new UMImage(CourseDetailActivity.this, AppConstant.BASE_URL+imgurl)
+                        .withTargetUrl("http://biz.woosii.com/index.php/Home/Course/index?id=" + id)
+                        .setCallback(umShareListener)
+                        .open();
 
+              /*
+                UMWebPage web = new UMWebPage(AppConstant.WEB_URL+id);
+                web.setTitle(title);//标题
+//                web.setThumb(thumb);  //缩略图
+//                web.setDescription("my description");//描述
+                new ShareAction(NewsDetailActivity.this).withTitle(title)
+//                        .withText(Defaultcontent.text+"——来自友盟分享面板")
+//                        .withMedia(new UMImage(ShareMenuActivity.this, Defaultcontent.imageurl))
+                        .withTargetUrl(AppConstant.WEB_URL+id)
+                        .setDisplayList( SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(umShareListener).open();*/
+//                ToastUtil.showShortToast("分享个瓜皮"+AppConstant.WEB_URL+id);
+            }
+        });
+    }
+    UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            Toast.makeText(CourseDetailActivity.this,"onResult", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Toast.makeText(CourseDetailActivity.this,"onError", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            Toast.makeText(CourseDetailActivity.this,"onCancel", Toast.LENGTH_SHORT).show();
+        }
+    };
     @Override
     protected void initView() {
         webView = new WebView(getApplicationContext());
@@ -97,8 +146,10 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
         });
         Bundle bundle = getIntent().getExtras();
          id = bundle.getString("class_id");
+        title=bundle.getString("title");
         teacher_id= bundle.getString("teacher_id");
-        String type=bundle.getString("type");
+        imgurl=bundle.getString("imgurl");
+         type=bundle.getString("type");
         if(type.equals("0")){
             imgPreviewQuestions.setVisibility(View.GONE);
         }else if(type.equals("1")){
@@ -117,6 +168,10 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
         super.onClick(v);
         switch (v.getId()) {
             case R.id.ll_ask:
+                if((SharedPreferencesUtil.getValue(CourseDetailActivity.this,SharedPreferencesUtil.USER_ID,"")+"").equals("")){
+                    startActivity(LoginActivity.class);
+                    return;
+                }
                 Bundle bundle=new Bundle();
                 bundle.putString("teacher_id",teacher_id);
                 startActivity(AskActivity.class,bundle);
@@ -161,8 +216,10 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
                 startActivity(OpenMembershipActivity.class);
                 break;
             case R.id.img_preview_questions:
-
-                startActivity(PreviewQuestionsActivity.class);
+                Bundle bundle1=new Bundle();
+                bundle1.putString("class_id",id);
+                bundle1.putString("type",type);
+                startActivity(PreviewQuestionsActivity.class,bundle1);
                 break;
         }
     }

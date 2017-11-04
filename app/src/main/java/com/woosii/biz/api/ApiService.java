@@ -5,8 +5,10 @@ import com.woosii.biz.base.bean.json.AskBean;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.CollegeBean;
+import com.woosii.biz.base.bean.json.CommentsBean;
 import com.woosii.biz.base.bean.json.CourseDetailBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
+import com.woosii.biz.base.bean.json.MoneyListBean;
 import com.woosii.biz.base.bean.json.MyMessageBean;
 import com.woosii.biz.base.bean.json.MyQuestionAnswerBean;
 import com.woosii.biz.base.bean.json.NewsBean;
@@ -14,9 +16,11 @@ import com.woosii.biz.base.bean.json.PayInfoBean;
 import com.woosii.biz.base.bean.json.PayReqBean;
 import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.PreViewQuestonsListBean;
+import com.woosii.biz.base.bean.json.QuestionAnswerDetailBean;
 import com.woosii.biz.base.bean.json.QuestionListBean;
 import com.woosii.biz.base.bean.json.ThumbHeadBean;
 import com.woosii.biz.base.bean.json.UserInfoBean;
+import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.base.bean.json.WechatBean;
 import com.woosii.biz.base.bean.json.WechatInfoBean;
 
@@ -169,8 +173,39 @@ public interface ApiService {
     Observable<BaseInfoBean> suggestionFeedback(@QueryMap Map<String,String> map);
 
     //我的消息
-    @GET(" index.php/Api/User/message/")
+    @GET("index.php/Api/User/message/")
     Observable<List<MyMessageBean>> getMyMessage(@QueryMap Map<String,String> map);
+
+    //我的钱包
+    @GET("index.php/Api/Wallet/iwallet/")
+    Observable<MoneyListBean> getWalletRecord(@QueryMap Map<String,String> map);
+
+    //评论语音
+    @GET("index.php/Api/User/problem_com/")
+    Observable<BaseInfoBean> comment(@QueryMap Map<String,String> map);
+
+    //获取评论
+    @GET("index.php/Api/User/r_problem_com/")
+    Observable<BasePagingBean<CommentsBean>> getComments(@QueryMap Map<String,String> map);
+
+
+    //问题详情
+    @GET("index.php/Api/User/problem_info/")
+    Observable<QuestionAnswerDetailBean> getQuestionAnswerDetial(@QueryMap Map<String,String> map);
+
+    //购买问答
+    @GET("index.php/Api/User/answer_buy/")
+    Observable<BaseInfoBean> buyQuestion(@QueryMap Map<String,String> map);
+
+    //老师提现
+    @FormUrlEncoded
+    @POST("index.php/Api/Wxpay/wx_withdrawals/")
+    Observable<BaseInfoBean> withDraw(@FieldMap Map<String,String> map);
+
+    //检查版本
+    @GET("index.php/Api/Update/android/")
+    Observable<VersionBean> getVersion();
+
 
 }
 

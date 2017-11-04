@@ -78,6 +78,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     TextView tvRegister;
     @Bind(R.id.ll_login)
     LinearLayout llLogin;
+    @Bind(R.id.tv_protocol)
+    TextView tv_protocol;
 
 
     private LoadingDialog mLoadingDialog;
@@ -113,7 +115,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         event();
     }
 
-    @OnClick({R.id.bt_sure, R.id.img_close, R.id.tv_code, R.id.tv_register, R.id.img_weixin,R.id.tv_forget_password})
+    @OnClick({R.id.bt_sure, R.id.img_close, R.id.tv_code, R.id.tv_register, R.id.img_weixin,R.id.tv_forget_password,R.id.tv_protocol})
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -229,6 +231,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 break;
             case R.id.tv_forget_password:
                 startActivity(ForgetPasswordActivity.class);
+                break;
+            case R.id.tv_protocol:
+                startActivity(ProtocolActivity.class);
                 break;
         }
     }
