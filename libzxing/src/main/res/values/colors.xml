@@ -3,7 +3,8 @@
     <color name="white">#ffffffff</color>
     <color name="maincolor">#fb0d01</color>
     <color name="maincolor1">#ee5b54</color>
-
+    <color name="black5">#252525</color>
     <drawable name="color_mainclolr">#fb0d01</drawable>
     <drawable name="color_white">#ffffff</drawable>
+
 </resources>

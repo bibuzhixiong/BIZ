@@ -31,12 +31,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 
 import com.google.zxing.Result;
 import com.xys.libzxing.R;
@@ -108,7 +105,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      */
     public void setStatusBarColor(boolean on) {
         if (on) {
-            StatusBarUtil.setColor(this, getResources().getColor(R.color.maincolor), 0);
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.black5), 0);
         }
     }
     @Override
