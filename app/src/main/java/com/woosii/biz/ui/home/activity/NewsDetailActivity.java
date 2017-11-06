@@ -1,6 +1,7 @@
 package com.woosii.biz.ui.home.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -116,6 +117,12 @@ public class NewsDetailActivity extends BaseActivity {
         webSettings.setBuiltInZoomControls(false); // 设置显示缩放按钮
         webSettings.setSupportZoom(false); // 支持缩放
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        // android 5.0以上默认不支持Mixed Content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(
+                    WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

@@ -1,13 +1,11 @@
 package com.woosii.biz.adapter;
 
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.woosii.biz.R;
 import com.woosii.biz.base.bean.json.MyMessageBean;
-import com.woosii.biz.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +31,7 @@ this.sdf=   new SimpleDateFormat("yyyy-MM-dd");
         String d = sdf.format(new Date(Long.valueOf(item.getAdd_time()+"000")));
 
         helper.setText(R.id.tv_time,  d);
-        ImageView imageView = helper.getView(R.id.img_head);
-        GlideUtil.getInstance().LoadContextCircleBitmap(mContext, item.getThumb(), imageView, R.drawable.icon_head_normal, R.drawable.icon_head_normal);
+//        ImageView imageView = helper.getView(R.id.img_head);
+//        GlideUtil.getInstance().LoadContextCircleBitmap(mContext, item.getThumb(), imageView, R.drawable.icon_head_normal, R.drawable.icon_head_normal);
     }
 }

@@ -2,11 +2,13 @@ package com.woosii.biz.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woosii.biz.R;
+import com.woosii.biz.base.ActivityManager;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.bean.MainTabEntity;
 import com.woosii.biz.ui.course.fragment.CourseFragment;
@@ -160,5 +162,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * 双击返回键退出应用
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                ActivityManager.getActivityMar().exitApp(MainActivity.this);
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

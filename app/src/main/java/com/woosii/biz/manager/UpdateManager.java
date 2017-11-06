@@ -1,11 +1,10 @@
 package com.woosii.biz.manager;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.view.View;
+
+import com.woosii.biz.common.dialog.NormalAlertDialog;
 
 
 /**
@@ -47,8 +46,33 @@ public class UpdateManager {
      * @param version_info
      */
     private void showNoticeDialog(String version_info) {
+        NormalAlertDialog dialog = new NormalAlertDialog.Builder(mContext)
+                .setBoolTitle(false)
+                .setContentText("有新的版本更新")
+//                            .setSingleModel(false)
+                .setRightText("立即更新")
+                .setLeftText("取消")
+//                            .setRightTextColor(CourseDetailActivity.this.getResources().getColor(R.color.blue))
+                .setHeight(0.23f)
+                .setWidth(0.65f)
+                .setOnclickListener(new com.woosii.biz.common.dialog.DialogInterface.OnLeftAndRightClickListener<NormalAlertDialog>(){
+                    @Override
+                    public void clickLeftButton(NormalAlertDialog dialog, View view) {
+                        dialog.dismiss();
+                    }
+                    @Override
+                    public void clickRightButton(NormalAlertDialog dialog, View view) {
+
+                        mContext.startService(new Intent(mContext, DownLoadService.class));
+                        dialog.dismiss();
+                    }
+                })
+                .setTouchOutside(false)
+                .build();
+              dialog.show();
+
         // 构造对话框
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+     /*   AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("更新提示");
         builder.setMessage(version_info);
         // 更新
@@ -68,6 +92,6 @@ public class UpdateManager {
             }
         });
         Dialog noticeDialog = builder.create();
-        noticeDialog.show();
+        noticeDialog.show();*/
     }
 }

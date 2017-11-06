@@ -3,6 +3,7 @@ package com.woosii.biz.ui.me.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
@@ -34,6 +35,8 @@ public class MyMessageActivity extends BaseActivity<MyMessagePresenter> implemen
 
     private MyMessageAdapter adapter;
     private List<MyMessageBean> list=new ArrayList<>();
+
+    private View notDataView;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_my_message;
@@ -62,15 +65,29 @@ public class MyMessageActivity extends BaseActivity<MyMessagePresenter> implemen
         recycleview.setAdapter(adapter);
 //        adapter.setOnLoadMoreListener(this, recycleview);
         adapter.setLoadMoreView(new CustomLoadMoreView());
+
         Map<String,String> map=new HashMap<>();
         map.put("user_id", SharedPreferencesUtil.getValue(MyMessageActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
         mPresenter.getMyMessage(map);
-
+        notDataView = MyMessageActivity.this.getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) recycleview.getParent(), false);
+        notDataView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.setEmptyView(R.layout.loading_view, (ViewGroup) recycleview.getParent());
+                Map<String,String> map=new HashMap<>();
+                map.put("user_id", SharedPreferencesUtil.getValue(MyMessageActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
+                mPresenter.getMyMessage(map);
+            }
+        });
 
     }
 
     @Override
     public void getMyMessageSuccess(List<MyMessageBean> model) {
+        if(model.size()==0){
+            adapter.setEmptyView(notDataView);
+        }
+
         adapter.addData(model);
     }
 

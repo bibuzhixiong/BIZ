@@ -22,6 +22,8 @@ public class MoneyAdapter extends BaseQuickAdapter<MoneyItemBean,BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder helper, MoneyItemBean item) {
+
+        helper.setText(R.id.tv_name, item.getText());
         helper.setText(R.id.tv_time, item.getTime());
         helper.setText(R.id.tv_money, item.getPay_money());
 

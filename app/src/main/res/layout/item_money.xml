@@ -18,8 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="连续、迷茫  向你转账"
-                android:textSize="18sp"
-                android:visibility="gone"
+                android:textSize="16sp"
+
                 android:textColor="@color/black1"/>
             <TextView
                 android:id="@+id/tv_time"

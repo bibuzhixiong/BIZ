@@ -3,6 +3,8 @@ package com.woosii.biz.ui.me.fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
@@ -37,7 +39,7 @@ public class MoneyFragment extends BaseFragment<MoneyPresenter> implements Money
     MoneyAdapter adapter;
     List<MoneyItemBean> list=new ArrayList<>();
 
-
+    private View notDataView;
     private   int mType=0;
     public static MoneyFragment getInstance(int type) {
         MoneyFragment sf = new MoneyFragment();
@@ -72,12 +74,28 @@ public class MoneyFragment extends BaseFragment<MoneyPresenter> implements Money
         map.put("user_id", SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"")+"");
         map.put("type",mType+"");
         mPresenter.getMoneyRecord(map);
+
+
+        notDataView = getActivity().getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) recycleview.getParent(), false);
+        notDataView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.setEmptyView(R.layout.loading_view, (ViewGroup) recycleview.getParent());
+                onRefresh();
+            }
+        });
     }
 
     @Override
     public void getMoneyRecordSuccess(MoneyListBean model) {
+
         if(model.getMoney()!=null){
             RxBus.$().postEvent(new BalanceEvent(model.getMoney()));
+        }
+        if(model.getChild()==null){
+            adapter.setEmptyView(notDataView);
+        }else if(model.getChild().size()==0){
+            adapter.setEmptyView(notDataView);
         }
         mSwipeRefreshLayout.setRefreshing(false);
         if(model.getChild()!=null){
@@ -111,4 +129,5 @@ public class MoneyFragment extends BaseFragment<MoneyPresenter> implements Money
         map.put("type",mType+"");
         mPresenter.getMoneyRecord(map);
     }
+
 }

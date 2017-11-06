@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
 import com.woosii.biz.adapter.NewsAdapter;
 import com.woosii.biz.base.BaseFragment;
@@ -29,6 +30,7 @@ import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.common.dialog.DialogInterface;
 import com.woosii.biz.common.dialog.NormalAlertDialog;
+import com.woosii.biz.manager.DeviceUtils;
 import com.woosii.biz.manager.UpdateManager;
 import com.woosii.biz.ui.home.activity.NewsDetailActivity;
 import com.woosii.biz.ui.home.activity.SignSuccessActivity;
@@ -139,15 +141,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
 
 
-      /*  //申请权限
-        if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-           requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
-        }else{
-            new UpdateManager(getActivity()).checkUpdate(false);
-        }
-
-        mPresenter.getVersion();*/
+        mPresenter.getVersion();
     }
     //swifload判断是否是下拉加载
     private void loaddata(boolean isRefresh){
@@ -281,7 +276,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
         if(requestCode==1){
             if(permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//&&grantResults[1] == PackageManager.PERMISSION_GRANTED
                     new UpdateManager(getActivity()).checkUpdate(false);
                 }
             }
@@ -392,7 +388,20 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
     @Override
     public void getVersionSuccess(VersionBean model) {
-        Log.e("TTT",model.toString());
+        if(!(DeviceUtils.getVersionCode(getActivity())+"").equals(model.getVersioncode())){
+            AppConstant.UPDATE_URL=model.getUrl();
+            //申请权限
+            if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                   ){
+                // ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS) != PackageManager.PERMISSION_GRANTED
+                requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+            }else{
+                new UpdateManager(getActivity()).checkUpdate(false);
+            }
+        }
+
+        Log.e("TTT",model.toString()+"_--"+DeviceUtils.getVersionCode(getActivity())+(DeviceUtils.getVersionCode(getActivity())+"").equals(model.getVersioncode()));
     }
 
     @Override

@@ -13,4 +13,6 @@ public class AppConstant {
 
     public static final String WEIXIN_APP_ID="wx319000e379121eed";
     public static final String  APP_SECRET="435fc1a0aa9f851fb1a83ea673a4b7b4";
+
+    public static  String UPDATE_URL="";
 }

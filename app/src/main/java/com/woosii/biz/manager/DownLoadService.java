@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
 import com.woosii.biz.manager.fileload.FileCallback;
 import com.woosii.biz.manager.fileload.FileResponseBody;
@@ -39,7 +40,7 @@ public class DownLoadService extends Service {
      * 目标文件存储的文件夹路径
      */
     private String  destFileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File
-            .separator + "amApk";
+            .separator + "woosii";
 
     /**
      * 目标文件存储的文件名
@@ -77,15 +78,16 @@ public class DownLoadService extends Service {
                 .client(initOkHttpClient())
                 .build()
                 .create(IFileLoad.class)
-                .loadFile("http://oxw7jdhmp.bkt.clouddn.com/app-release.apk")//"http://123.57.221.150/guquanguanjia_v1.2.apk"
+                .loadFile(AppConstant.UPDATE_URL)//"http://123.57.221.150/guquanguanjia_v1.2.apk""http://oxw7jdhmp.bkt.clouddn.com/app-release.apk"
+
                 .enqueue(new FileCallback(destFileDir, destFileName) {
 
                     @Override
                     public void onSuccess(File file) {
                         Log.e("zs", "请求成功");
-                        // 安装软件
-                        cancelNotification();
 
+                        cancelNotification();
+                        // 安装软件
                         installApk(file);
                     }
 
@@ -122,7 +124,7 @@ public class DownLoadService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             Uri contentUri = FileProvider.getUriForFile(getApplicationContext(),
-                    "com.woosii.takephoto"+ ".provider", file);
+                    "com.woosii.takephoto"+ ".fileprovider", file);
             install.setDataAndType(contentUri, "application/vnd.android.package-archive");
         }else{
             install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

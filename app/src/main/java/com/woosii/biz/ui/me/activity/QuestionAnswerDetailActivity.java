@@ -208,11 +208,11 @@ public class QuestionAnswerDetailActivity extends BaseActivity<QuestionAnswerDet
         adapter.setOnLoadMoreListener(this, recycleview);
         adapter.setLoadMoreView(new CustomLoadMoreView());
 
-        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) recycleview.getParent(), false);
+        notDataView = getLayoutInflater().inflate(R.layout.empty_comment, (ViewGroup) recycleview.getParent(), false);
         notDataView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.setEmptyView(R.layout.loading_view, (ViewGroup) recycleview.getParent());
+                adapter.setEmptyView(R.layout.loading_comment, (ViewGroup) recycleview.getParent());
                 onRefresh();
             }
         });

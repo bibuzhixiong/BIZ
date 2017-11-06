@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.socialize.ShareAction;
@@ -49,6 +50,8 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
     WebView webView;
     @Bind(R.id.img_preview_questions)
     ImageView imgPreviewQuestions;
+    @Bind(R.id.tv_enter_no)
+    TextView tv_enter_no;
     private LoadingDialog loadingDialog;
     private String id;
     private String teacher_id;
@@ -130,7 +133,7 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress > 80) {
+                if (newProgress > 20) {
                     if (loadingDialog != null)
                         loadingDialog.cancelDialog();
 //                    myProgressBar.setVisibility(View.GONE);
@@ -153,9 +156,17 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
         if(type.equals("0")){
             imgPreviewQuestions.setVisibility(View.GONE);
         }else if(type.equals("1")){
+            tv_enter_no.setText("报名结束");
+            llEnterNow.setBackgroundResource(R.color.gray);
+            llEnterNow.setEnabled(false);
+            imgPreviewQuestions.setVisibility(View.VISIBLE);
             imgPreviewQuestions.setImageResource(R.drawable.btn_keqianfuxi);
         }else if(type.equals("2")){
+            tv_enter_no.setText("已经报名");
+            llEnterNow.setBackgroundResource(R.color.gray);
+            llEnterNow.setEnabled(false);
             imgPreviewQuestions.setVisibility(View.VISIBLE);
+
         }
         webView.loadUrl("http://biz.woosii.com/index.php/Home/Course/index?id=" + id);
         loadingDialog = new LoadingDialog(CourseDetailActivity.this, "加载中...", true);
@@ -213,7 +224,31 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
                     dialog.show();
                     return;
                 }
-                startActivity(OpenMembershipActivity.class);
+
+                NormalAlertDialog dialog = new NormalAlertDialog.Builder(this)
+                        .setBoolTitle(false)
+                        .setContentText("报名需开通VIP会员，是否开通")
+//                            .setSingleModel(false)
+                        .setRightText("前往")
+                        .setLeftText("取消")
+//                            .setRightTextColor(CourseDetailActivity.this.getResources().getColor(R.color.blue))
+                        .setHeight(0.23f)
+                        .setWidth(0.65f)
+                        .setOnclickListener(new DialogInterface.OnLeftAndRightClickListener<NormalAlertDialog>(){
+                            @Override
+                            public void clickLeftButton(NormalAlertDialog dialog, View view) {
+                                dialog.dismiss();
+                            }
+                            @Override
+                            public void clickRightButton(NormalAlertDialog dialog, View view) {
+                                startActivity(OpenMembershipActivity.class);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setTouchOutside(false)
+                        .build();
+                dialog.show();
+
                 break;
             case R.id.img_preview_questions:
                 Bundle bundle1=new Bundle();
