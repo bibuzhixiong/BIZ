@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.woosii.biz.AppConstant;
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseFragment;
@@ -31,7 +32,7 @@ import com.woosii.biz.ui.me.activity.SettingActivity;
 import com.woosii.biz.ui.me.activity.SuggestionFeedbackActivity;
 import com.woosii.biz.ui.me.contract.MeContract;
 import com.woosii.biz.ui.me.presenter.MePresenter;
-import com.woosii.biz.utils.GlideUtil;
+import com.woosii.biz.utils.GlideCircleTransform;
 import com.woosii.biz.utils.SharedPreferencesUtil;
 import com.woosii.biz.utils.ToastUtil;
 
@@ -270,8 +271,13 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                 imgpath = AppConstant.BASE_URL + model.getThumb();
             }
         }
-
-        GlideUtil.getInstance().LoadContextCircleBitmap(getActivity(), imgpath, imgHead, R.drawable.def_touxiang, R.drawable.def_touxiang);
+        Glide.with(getActivity())
+                .load(imgpath)
+                .placeholder(R.drawable.def_touxiang)
+                .error(R.drawable.def_touxiang)
+                .transform(new GlideCircleTransform(getActivity()))
+                .into(imgHead);
+//        GlideUtil.getInstance().LoadContextCircleBitmap(getActivity(), imgpath, imgHead, R.drawable.def_touxiang, R.drawable.def_touxiang);
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.NICK_NAME, model.getNick_name());
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.HEAD_PATH, model.getThumb());
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.VIP, model.getVip());

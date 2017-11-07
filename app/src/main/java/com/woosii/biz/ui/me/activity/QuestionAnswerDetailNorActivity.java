@@ -175,7 +175,7 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
                 llSendOrCancle.setVisibility(View.VISIBLE);
                 llSendNarrow.setBackgroundResource(R.color.common_divider_narrow);
                 path = filePath;
-                Toast.makeText(QuestionAnswerDetailNorActivity.this, "录音保存在：" + filePath, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(QuestionAnswerDetailNorActivity.this, "录音保存在：" + filePath, Toast.LENGTH_SHORT).show();
 //                tvAudioTime.setText(TimeUtils.long2String(0));
             }
         });
@@ -195,6 +195,7 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
                 llSendOrCancle.setVisibility(View.INVISIBLE);
                 llSendNarrow.setBackgroundResource(R.color.white);
                 isAudio = 0;
+                tvAudioTime.setText("00:00");
                 requestPermissions();
 
                 break;
