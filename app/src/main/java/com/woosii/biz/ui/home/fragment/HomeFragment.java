@@ -197,11 +197,21 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             case R.id.ll_search:
                 break;
             case R.id.img_scan:
+           /*     popuwindow=new NormalSelectPaymentDialog(getActivity(),"88.00");
+                popuwindow.setOnContinueClickListener(new NormalSelectPaymentDialog.OnContinueClickListener() {
+                    @Override
+                    public void onContinueClickListener() {
+                        ToastUtil.showShortToast("你妹");
+
+                    }
+                });
+                popuwindow.showAtLocation(imgScan, Gravity.BOTTOM, 0, 0);*/
                 scan();
                 break;
         }
 
     }
+//    private NormalSelectPaymentDialog popuwindow;
 
     //扫描二维码
     //https://cli.im/text?2dd0d2b267ea882d797f03abf5b97d88二维码生成网站
@@ -388,6 +398,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
     @Override
     public void getVersionSuccess(VersionBean model) {
+
+//        NormalSelectPaymentDialog normalSelectPaymentDialog=new NormalSelectPaymentDialog(getActivity());
         if(!(DeviceUtils.getVersionCode(getActivity())+"").equals(model.getVersioncode())){
             AppConstant.UPDATE_URL=model.getUrl();
             //申请权限

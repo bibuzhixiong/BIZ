@@ -75,6 +75,8 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
     LinearLayout llSendOrCancle;
     @Bind(R.id.ll_send_narrow)
     View llSendNarrow;
+    @Bind(R.id.img_star)
+    ImageView img_star;
 
     private AudioRecoderUtils mAudioRecoderUtils;
 
@@ -194,8 +196,10 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
             case R.id.bt_lijihuida:
                 llSendOrCancle.setVisibility(View.INVISIBLE);
                 llSendNarrow.setBackgroundResource(R.color.white);
-                isAudio = 0;
-                tvAudioTime.setText("00:00");
+                isAudio = -1;
+                tvAudioTime.setText("点击录音");
+                img_star.setVisibility(View.VISIBLE);
+
                 requestPermissions();
 
                 break;
@@ -266,8 +270,15 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
 
     private void StartListener() {
         llYuyin.setVisibility(View.VISIBLE);
+        if(isAudio==-1){
+
+            isAudio = 0;
+            return;
+        }
         if (isAudio == 0) {
             isAudio = 1;
+            tvAudioTime.setText("00:00");
+            img_star.setVisibility(View.GONE);
             mAudioRecoderUtils.startRecord();
             imgDian.setImageResource(R.drawable.aio_record_stop_nor);
             return;
@@ -313,7 +324,6 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
                         mediaPlayer.start();
                         progress = mediaPlayer.getDuration() / 100;
                         Log.e("WWW", mediaPlayer.getDuration() + "--");
-
                         customProgress.setmTotalProgress(progress);
                         new Thread(new Runnable() {
                             @Override

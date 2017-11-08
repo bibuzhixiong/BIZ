@@ -1,58 +1,117 @@
 package com.woosii.biz.common.dialog;
 
-import android.app.Dialog;
-import android.view.Gravity;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.woosii.biz.R;
-import com.woosii.biz.utils.DensityUtil;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/11/7.
  */
 
-public class NormalSelectPaymentDialog {
-    private Dialog mDialog;
-    private View dialogView;
-    private TextView title;
-    private Button bt_sure;
-    private LinearLayout linearLayout;
-    private NormalSelectionDialog.Builder mBuilder;
-    private List<String> datas;
-    private int clickPosition;//最后一次选择的位置
+public class NormalSelectPaymentDialog extends PopupWindow{
+    private View mContentView;
+    private Activity mActivity;
 
-    public NormalSelectPaymentDialog(NormalSelectionDialog.Builder builder) {
-        this.mBuilder=builder;
 
-        mDialog=new Dialog(mBuilder.getContext(), R.style.DialogStyle);
-        dialogView= View.inflate(builder.getContext(), R.layout.dialog_select_payment,null);
-        mDialog.setContentView(dialogView);
+    private LinearLayout ll_weixin,ll_alipay;
+    private TextView tv_money;
 
-        Window window=mDialog.getWindow();
-        WindowManager.LayoutParams lp=window.getAttributes();
-        lp.width = (int) (DensityUtil.getScreenWidth(builder.getContext()) *
-                builder.getItemWidth());
-        lp.height=WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.gravity= Gravity.BOTTOM;
-        window.setAttributes(lp);
+    private NormalSelectPaymentDialog.OnContinueClickListener onContinueClickListener;
+    private NormalSelectPaymentDialog.OnBackIndexClickListener onBackIndexClickListerner;
+    public NormalSelectPaymentDialog(Activity activity,String content){
+        mActivity=activity;
 
-//        title= (TextView) dialogView.findViewById(R.id.action_dialog_title);
-//        linearLayout = (LinearLayout) dialogView.findViewById(R.id.action_dialog_linearlayout);
-        bt_sure = (Button) dialogView.findViewById(R.id.bt_sure);
-        bt_sure.setText(mBuilder.getCancleButtonText());
-        bt_sure.setOnClickListener(new View.OnClickListener() {
+        this.ll_weixin = ll_weixin;
+        this.ll_alipay=ll_alipay;
+        setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        mContentView = LayoutInflater.from(activity).inflate(R.layout.dialog_select_payment, null);
+        setContentView(mContentView);
+        setFocusable(true);
+
+        setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
+        setOutsideTouchable(false);
+        setTouchable(true);
+        ll_weixin= (LinearLayout) mContentView.findViewById(R.id.ll_weixin);
+        ll_alipay= (LinearLayout) mContentView.findViewById(R.id.ll_alipay);
+        tv_money=(TextView) mContentView.findViewById(R.id.tv_money);
+        tv_money.setText("￥"+content);
+        setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
+            public void onDismiss() {
+                lighton();
             }
         });
-        mDialog.setCanceledOnTouchOutside(mBuilder.isTouchOutside());
+
+        ll_alipay.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(onContinueClickListener!=null){
+                    onContinueClickListener.onContinueClickListener();
+                    dismiss();
+                }else{
+                    dismiss();
+                }
+
+
+            }
+        });
+
+      /*  mIvClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });*/
     }
+
+    private void lighton() {
+        WindowManager.LayoutParams lp = mActivity.getWindow().getAttributes();
+        lp.alpha = 1.0f;
+        mActivity.getWindow().setAttributes(lp);
+    }
+
+    private void lightoff() {
+        WindowManager.LayoutParams lp = mActivity.getWindow().getAttributes();
+        lp.alpha = 0.3f;
+        mActivity.getWindow().setAttributes(lp);
+    }
+    @Override
+    public void showAsDropDown(View anchor, int xoff, int yoff) {
+        lightoff();
+        super.showAsDropDown(anchor, xoff, yoff);
+    }
+
+    @Override
+    public void showAtLocation(View parent, int gravity, int x, int y) {
+        lightoff();
+        super.showAtLocation(parent, gravity, x, y);
+    }
+
+    public interface OnContinueClickListener{
+        public void onContinueClickListener();
+    }
+
+    public void setOnContinueClickListener(NormalSelectPaymentDialog.OnContinueClickListener onContinueClickListener) {
+        this.onContinueClickListener = onContinueClickListener;
+    }
+
+    public interface  OnBackIndexClickListener{
+        public void onBackIndexClickListener();
+    }
+    public void setOnBackIndexClickListener(NormalSelectPaymentDialog.OnBackIndexClickListener onBackIndexClickListener) {
+        this.onBackIndexClickListerner = onBackIndexClickListener;
+    }
+
 }

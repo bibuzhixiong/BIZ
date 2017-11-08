@@ -2,7 +2,6 @@ package com.woosii.biz.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -10,6 +9,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woosii.biz.R;
 import com.woosii.biz.base.ActivityManager;
+import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.bean.MainTabEntity;
 import com.woosii.biz.ui.course.fragment.CourseFragment;
 import com.woosii.biz.ui.home.fragment.HomeFragment;
@@ -24,7 +24,7 @@ import butterknife.Bind;
  * Created by Administrator on 2017/9/23.
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @Bind(R.id.tab_layout)
     CommonTabLayout tabLayout;
 
@@ -43,19 +43,30 @@ public class MainActivity extends AppCompatActivity {
     private MeFragment meFragment;
 
     private int currentPosition;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
+    @Override
+    protected void initToolBar() {
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
         //初始化frament
         initFragment(savedInstanceState);
         tabLayout.measure(0,0);
-        initTab();
 //        Log.e("TTT",System.currentTimeMillis()+"--几位");
     }
 
+    @Override
+    protected void initView() {
+        initTab();
 
+    }
 
     /**
      * 初始化tab
