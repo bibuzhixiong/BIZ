@@ -91,7 +91,7 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
                 onRefresh();
             }
         });
-
+//
         courseListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
