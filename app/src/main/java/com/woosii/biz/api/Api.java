@@ -18,6 +18,7 @@ import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.PreViewQuestonsListBean;
 import com.woosii.biz.base.bean.json.QuestionAnswerDetailBean;
 import com.woosii.biz.base.bean.json.QuestionListBean;
+import com.woosii.biz.base.bean.json.SlideBean;
 import com.woosii.biz.base.bean.json.ThumbHeadBean;
 import com.woosii.biz.base.bean.json.UserInfoBean;
 import com.woosii.biz.base.bean.json.VersionBean;
@@ -42,6 +43,7 @@ import rx.Observable;
  */
 
 public class Api {
+
     public final static String API_BASE_URL="http://biz.woosii.com/";
     public static Api instance;
     private ApiService service;
@@ -110,7 +112,7 @@ public class Api {
         return service.getNews(map);
     }
     //新闻轮播
-    public Observable<List<NewsBean>> getNewsBanner(Map<String,String> map){
+    public Observable<List<SlideBean>> getNewsBanner(Map<String,String> map){
         return service.getNewsBanner(map);
     }
     //课程详情

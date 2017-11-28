@@ -61,7 +61,6 @@ public class CourseCodeActivity extends BaseActivity {
         cardview.setLayoutParams(linearParams);
         try {
             AESCrypt aesCrypt = new AESCrypt();
-
             String input = aesCrypt.encrypt("u_id=" + SharedPreferencesUtil.getValue(CourseCodeActivity.this, SharedPreferencesUtil.USER_ID, ""));
             Bitmap bitmap = EncodingUtils.createQRCode(input, ss - DensityUtil.dip2px(60), ss - DensityUtil.dip2px(60), null);
             imgCode.setImageBitmap(bitmap);

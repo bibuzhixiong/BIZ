@@ -6,6 +6,7 @@ import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.base.bean.json.SlideBean;
 import com.woosii.biz.base.bean.json.VersionBean;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface HomeContract {
 
 
         void getNewsSuccess(BasePagingBean<NewsBean> model);
-        void getNewsBannerSuccess(List<NewsBean> model);
+        void getNewsBannerSuccess(List<SlideBean> model);
         void refreshNewsSuccess(BasePagingBean<NewsBean> model);
         void scanSuccess(BaseInfoBean model);
 

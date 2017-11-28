@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.woosii.biz.R;
@@ -55,6 +56,7 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
         return sf;
     }
     private Subscription subscription;
+    private View notDataView;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_question;
@@ -78,6 +80,15 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
         recycleview.setAdapter(adapter);
         adapter.setOnLoadMoreListener(this, recycleview);
         adapter.setLoadMoreView(new CustomLoadMoreView());
+
+        notDataView = getActivity().getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) recycleview.getParent(), false);
+        notDataView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.setEmptyView(R.layout.loading_view, (ViewGroup) recycleview.getParent());
+                onRefresh();
+            }
+        });
 
 
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -137,7 +148,9 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
 
     @Override
     public void getQuestionListSuccess(BasePagingBean<QuestionListBean> model) {
-
+        if(model.getChild()==null){
+            adapter.setEmptyView(notDataView);
+        }
         totalPages=Integer.parseInt(model.getCount());
         adapter.addData(model.getChild());
 
@@ -149,6 +162,9 @@ public class QuestionFragment extends BaseFragment<QuestionPresenter> implements
 
     @Override
     public void getfreshQuestionListSuccess(BasePagingBean<QuestionListBean> model) {
+        if(model.getChild()==null){
+            adapter.setEmptyView(notDataView);
+        }
         totalPages=Integer.parseInt(model.getCount());
         mSwipeRefreshLayout.setRefreshing(false);
         list.clear();

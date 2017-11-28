@@ -19,6 +19,7 @@ import com.woosii.biz.base.rx.RxBus;
 import com.woosii.biz.common.dialog.DialogInterface;
 import com.woosii.biz.common.dialog.NormalAlertDialog;
 import com.woosii.biz.event.ExitAccountEvent;
+import com.woosii.biz.event.UpdateJPushEvent;
 import com.woosii.biz.event.UserInfoEvent;
 import com.woosii.biz.ui.course.activity.OpenMembershipActivity;
 import com.woosii.biz.ui.login.activity.LoginActivity;
@@ -83,6 +84,8 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
     TextView tvIntegration;
     @Bind(R.id.img_location)
     ImageView imgLocation;
+    @Bind(R.id.tv_vip)
+    TextView tvVip;
 
     private Subscription subscription;
 
@@ -148,6 +151,9 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                             map.put("user_id", userInfoEvent.getUserInfoBean().getUser_id());
                             map.put("token", userInfoEvent.getUserInfoBean().getToken());
                             mPresenter.getUserInfo(map);
+
+                            //极光推送设置
+                            RxBus.$().postEvent(new UpdateJPushEvent());
                         } else if (event instanceof ExitAccountEvent) {
                             imgHead.setImageResource(R.drawable.def_touxiang);
                             tvName.setText("点击登录");
@@ -159,6 +165,9 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                             llCode.setVisibility(View.GONE);
                             imgLocation.setVisibility(View.GONE);
                             tvIntegration.setVisibility(View.GONE);
+                            tvVip.setText("开通会员");
+                            //极光推送设置
+                            RxBus.$().postEvent(new UpdateJPushEvent());
                         }
 
                     }
@@ -181,10 +190,10 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
                     startActivity(LoginActivity.class);
                     return;
                 }
-                if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.VIP, "") + "").equals("1")) {
+               /* if ((SharedPreferencesUtil.getValue(getActivity(), SharedPreferencesUtil.VIP, "") + "").equals("1")) {
                     ToastUtil.showShortToast("您已经是VIP会员");
                     return;
-                }
+                }*/
                 startActivity(OpenMembershipActivity.class);
                 break;
             case R.id.ll_my_question_answer:
@@ -233,11 +242,11 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
 
     @Override
     public void getUserInfoSuccess(UserInfoBean model) {
-        if(model.getCode()==0){
+        if (model.getCode() == 0) {
             ToastUtil.showShortToast(model.getMessage());
             return;
-        }else if(model.getCode()==2){
-            Log.e("TTT",model.getCode()+"");
+        } else if (model.getCode() == 2) {
+            Log.e("TTT", model.getCode() + "");
             SharedPreferencesUtil.removeAll(getActivity());
             NormalAlertDialog dialog = new NormalAlertDialog.Builder(getActivity())
                     .setBoolTitle(false)
@@ -248,14 +257,15 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
 //                            .setRightTextColor(CourseDetailActivity.this.getResources().getColor(R.color.blue))
                     .setHeight(0.23f)
                     .setWidth(0.65f)
-                    .setOnclickListener(new DialogInterface.OnLeftAndRightClickListener<NormalAlertDialog>(){
+                    .setOnclickListener(new DialogInterface.OnLeftAndRightClickListener<NormalAlertDialog>() {
                         @Override
                         public void clickLeftButton(NormalAlertDialog dialog, View view) {
                             dialog.dismiss();
                         }
+
                         @Override
                         public void clickRightButton(NormalAlertDialog dialog, View view) {
-                         startActivity(LoginActivity.class);
+                            startActivity(LoginActivity.class);
                             dialog.dismiss();
                         }
                     })
@@ -284,9 +294,11 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.USER_TYPE, model.getUser_type());
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.GENDER, model.getGender() + "");
         SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.CLASS_NAME, model.getC_name() + "");
+        SharedPreferencesUtil.putValue(getActivity(), SharedPreferencesUtil.VIP_TIME, model.getVip_time() + "");
         if (model.getVip().equals("1")) {
             imgMenber.setVisibility(View.VISIBLE);
             imgLocation.setVisibility(View.VISIBLE);
+            tvVip.setText("已开通会员");
         }
         if (model.getUser_type().equals("1")) {
             llNarrowWallat.setVisibility(View.VISIBLE);
@@ -295,7 +307,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
             llCode.setVisibility(View.VISIBLE);
         }
         tvIntegration.setVisibility(View.VISIBLE);
-        tvIntegration.setText(model.getIntegral()+"积分");
+        tvIntegration.setText(model.getIntegral() + "积分");
         tvClassName.setText(model.getC_name());
         tvName.setText(model.getNick_name());
     }
@@ -317,7 +329,6 @@ public class MeFragment extends BaseFragment<MePresenter> implements View.OnClic
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         super.onDestroy();
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();

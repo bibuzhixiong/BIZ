@@ -27,6 +27,7 @@ import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.base.bean.json.SlideBean;
 import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.common.dialog.DialogInterface;
 import com.woosii.biz.common.dialog.NormalAlertDialog;
@@ -81,7 +82,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     //设置图片资源:url或本地资源
     List<String> images = new ArrayList<>();
     List<String> titles = new ArrayList<>();
-    List<NewsBean> listBanner=new ArrayList<>();
+    List<SlideBean> listBanner=new ArrayList<>();
 
     List<NewsBean> list=new ArrayList<>();
     private NewsAdapter newsAdapter;
@@ -147,7 +148,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     //swifload判断是否是下拉加载
     private void loaddata(boolean isRefresh){
         Map<String,String> map=new HashMap<>();
-        map.put("psize","10");
+        map.put("psize","15");
         if(isRefresh){
             map.put("pindex","1");
             mPresenter.refreshNews(map);
@@ -183,10 +184,13 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     //轮播点击
     @Override
     public void OnBannerClick(int position) {
+        if (listBanner.get(position).getUrl().equals("")){
+            return;
+        }
         Bundle bundle=new Bundle();
-        bundle.putString("id",listBanner.get(position).getNew_id());
-        bundle.putString("title",listBanner.get(position).getNew_theme());
-        bundle.putString("imgurl",listBanner.get(position).getNew_img());
+        bundle.putString("id",listBanner.get(position).getUrl());
+        bundle.putString("title",listBanner.get(position).getTitle());
+        bundle.putString("imgurl",AppConstant.BASE_URL+listBanner.get(position).getImg());
         startActivity(NewsDetailActivity.class,bundle);
     }
     @OnClick({R.id.ll_search,R.id.img_scan})
@@ -239,19 +243,20 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             if (bundle != null) {
                 String result = bundle.getString("result");
 //                searchEt.setText(result);
-
                 try {
+
                     AESCrypt aesCrypt=new AESCrypt();
                     String s= aesCrypt.decrypt(result);
                    if(s!=null&&!s.equals("")){
                        if(s.length()>4){
                            if(s.substring(0,5).equals("u_id=")){
-                               String value=s+"&user_id"+ SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"");
+                               String value=s+"&user_id="+ SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"");
                                Map<String,String> map=new HashMap<>();
                                map.put("temp",aesCrypt.encrypt(value));
                                mPresenter.scan(map);
 
                            }else{
+                               Log.e("UUU","5:"+s);
                                ToastUtil.showShortToast("该扫码只适用于沃噻签到");
                            }
                        }
@@ -308,15 +313,18 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
     }
 
     @Override
-    public void getNewsBannerSuccess(List<NewsBean> model) {
+    public void getNewsBannerSuccess(List<SlideBean> model) {
+        if(model==null){
+            return;
+        }
         images.clear();
         titles.clear();
         listBanner=model;
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         for(int i=0;i<model.size();i++){
-            images.add(model.get(i).getNew_img());
-            titles.add(model.get(i).getNew_theme());
+            images.add(AppConstant.BASE_URL+model.get(i).getImg());
+            titles.add(model.get(i).getTitle());
         }
 
         //设置图片集合
@@ -371,9 +379,9 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
             mPresenter.getPoint(map);
         }else{
             //要删掉，这是测试
-            Map<String ,String> map=new HashMap<>();
+          /*  Map<String ,String> map=new HashMap<>();
             map.put("user_id",SharedPreferencesUtil.getValue(getActivity(),SharedPreferencesUtil.USER_ID,"")+"");
-            mPresenter.getPoint(map);
+            mPresenter.getPoint(map);*/
 //            ToastUtil.showShortToast("失败");
             NormalAlertDialog dialog = new NormalAlertDialog.Builder(getActivity())
                     .setBoolTitle(false)
@@ -461,15 +469,15 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnBanne
 
     @Override
     public void onLoadMoreRequested() {
-        if (newsAdapter.getData().size() < 10) {
+        if (newsAdapter.getData().size() < 15) {
             newsAdapter.loadMoreEnd(false);
             return;
         }else {
             int maxpage=1;
-            if(totalPages%10==0){
-                maxpage=totalPages/10-1;
+            if(totalPages%15==0){
+                maxpage=totalPages/15-1;
             }else{
-                maxpage=totalPages/10;
+                maxpage=totalPages/15;
             }
             if (page > maxpage) {
                 newsAdapter.loadMoreEnd(false);

@@ -18,6 +18,7 @@ import com.woosii.biz.base.bean.json.PointBean;
 import com.woosii.biz.base.bean.json.PreViewQuestonsListBean;
 import com.woosii.biz.base.bean.json.QuestionAnswerDetailBean;
 import com.woosii.biz.base.bean.json.QuestionListBean;
+import com.woosii.biz.base.bean.json.SlideBean;
 import com.woosii.biz.base.bean.json.ThumbHeadBean;
 import com.woosii.biz.base.bean.json.UserInfoBean;
 import com.woosii.biz.base.bean.json.VersionBean;
@@ -48,15 +49,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("index.php/Api/User/vcode/")
     Observable<BaseInfoBean> getRegisterCode(@FieldMap Map<String, String> map);
+
     //绑定手机号或其他验证码
     @FormUrlEncoded
     @POST("index.php/Api/User/wxphone_code/")
     Observable<BaseInfoBean> getCode(@FieldMap Map<String, String> map);
+
     //手机注册
     @FormUrlEncoded
     @POST("index.php/Api/User/register/")
     Observable<BaseInfoBean> register(@FieldMap Map<String, String> map);
-
 
     //微信绑定
     @FormUrlEncoded
@@ -71,7 +73,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("index.php/Api/User/modify_password/")
     Observable<LoginBean> forgetPassword(@FieldMap Map<String, String> map);
-
 
     //微信登录
     @FormUrlEncoded
@@ -88,8 +89,8 @@ public interface ApiService {
     @GET("index.php/Api/News/news_list/")
     Observable<BasePagingBean<NewsBean>> getNews(@QueryMap Map<String,String> map);
     //新闻轮播
-    @GET("index.php/Api/News/news_photo/")
-    Observable<List<NewsBean>> getNewsBanner(@QueryMap Map<String,String> map);
+    @GET("index.php/Api/News/ad/")
+    Observable<List<SlideBean>> getNewsBanner(@QueryMap Map<String,String> map);
     //课程列表
     @GET("index.php/Api/User/course/")
     Observable<BasePagingBean<CourseListBean>> getCourses(@QueryMap Map<String,String> map);
@@ -129,8 +130,9 @@ public interface ApiService {
     Observable<List<CollegeBean>> getCollege();
 
     //签到
-    @GET("index.php/Api/User/sign_code/")
-    Observable<BaseInfoBean> scan(@QueryMap Map<String,String> map);
+    @FormUrlEncoded
+    @POST("index.php/Api/User/sign_code/")
+    Observable<BaseInfoBean> scan(@FieldMap Map<String,String> map);
 
 
     //签到获得积分
@@ -161,8 +163,6 @@ public interface ApiService {
     @GET("index.php/Api/User/problem_teacher/")
     Observable<BasePagingBean<MyQuestionAnswerBean>> getMyQuestionAnswerByTeacher(@QueryMap Map<String,String> map);
 
-
-
     //问题列表
     @GET("index.php/Api/User/problem_list/")
     Observable<BasePagingBean<QuestionListBean>> getQuestionList(@QueryMap Map<String,String> map);
@@ -187,7 +187,6 @@ public interface ApiService {
     //获取评论
     @GET("index.php/Api/User/r_problem_com/")
     Observable<BasePagingBean<CommentsBean>> getComments(@QueryMap Map<String,String> map);
-
 
     //问题详情
     @GET("index.php/Api/User/problem_info/")

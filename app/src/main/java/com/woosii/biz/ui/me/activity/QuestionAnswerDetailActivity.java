@@ -99,7 +99,7 @@ public class QuestionAnswerDetailActivity extends BaseActivity<QuestionAnswerDet
 
     private long alltime;
     //private   QuestionListBean questionListBean=new QuestionListBean(0,0,"","","","","","");
-    private QuestionAnswerDetailBean questionAnswerDetailBean = new QuestionAnswerDetailBean(0, 0, "", "", "", "", "", "");
+    private QuestionAnswerDetailBean questionAnswerDetailBean = new QuestionAnswerDetailBean(0, 0, "", "", "", "", "", "",0,0.0f);
 
     private String p_id;
     private String goods_code;
@@ -498,9 +498,12 @@ public class QuestionAnswerDetailActivity extends BaseActivity<QuestionAnswerDet
     @Override
     public void getQuestionAnswerDetialtSuccess(QuestionAnswerDetailBean model) {
         questionAnswerDetailBean = model;
-        if (questionAnswerDetailBean.getBuy() == 1 || questionAnswerDetailBean.getFree() == 1) {
+
+        if (questionAnswerDetailBean.getBuy() == 1 || questionAnswerDetailBean.getFree() == 1||questionAnswerDetailBean.getFree_type()==0) {
             seekBar.setVisibility(View.VISIBLE);
             tvMoney.setVisibility(View.GONE);
+        }else{
+            tvMoney.setText("语音播放需要"+questionAnswerDetailBean.getMoney()+"元");
         }
 //        questionListBean = (QuestionListBean) getIntent().getSerializableExtra("question");
 //        Log.e("TTT","这是："+(QuestionListBean) getIntent().getSerializableExtra("question"));

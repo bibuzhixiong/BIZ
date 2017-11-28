@@ -5,6 +5,7 @@ import com.woosii.biz.base.bean.json.BaseInfoBean;
 import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.NewsBean;
 import com.woosii.biz.base.bean.json.PointBean;
+import com.woosii.biz.base.bean.json.SlideBean;
 import com.woosii.biz.base.bean.json.VersionBean;
 import com.woosii.biz.base.rx.RxSubscriber;
 import com.woosii.biz.ui.home.contract.HomeContract;
@@ -39,9 +40,9 @@ public class HomePresenter extends HomeContract.Presenter {
     @Override
     public void getNewsBanner(Map<String, String> map) {
         addSubscrebe(Api.getInstance().getNewsBanner( map),
-                new RxSubscriber<List<NewsBean>>(mContext,false) {
+                new RxSubscriber<List<SlideBean>>(mContext,false) {
                     @Override
-                    protected void onSuccess(List<NewsBean> model) {
+                    protected void onSuccess(List<SlideBean> model) {
 
                         mView.hideLoading();
                         mView.getNewsBannerSuccess(model);

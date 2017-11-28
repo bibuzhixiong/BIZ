@@ -30,6 +30,8 @@ public class SharedPreferencesUtil {
     //学院名字
     public static final String CLASS_NAME="CLASS_NAME";
 
+    public static final String VIP_TIME="VIP_TIME";
+
 
 
 

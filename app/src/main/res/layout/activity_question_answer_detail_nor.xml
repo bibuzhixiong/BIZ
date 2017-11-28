@@ -132,7 +132,7 @@
                 android:id="@+id/custom_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:bigCircleColor="@color/gray1"
+                app:bigCircleColor="@color/gray2"
                 app:circleColor="@color/white"
                 app:radius="50dp"
                 app:ringColor="@color/blue"

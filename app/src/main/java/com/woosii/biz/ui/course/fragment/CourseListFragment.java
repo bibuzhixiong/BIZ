@@ -15,6 +15,7 @@ import com.woosii.biz.base.bean.json.BasePagingBean;
 import com.woosii.biz.base.bean.json.CourseListBean;
 import com.woosii.biz.base.rx.RxBus;
 import com.woosii.biz.event.ExitAccountEvent;
+import com.woosii.biz.event.UpdateCourseListEvent;
 import com.woosii.biz.event.UserInfoEvent;
 import com.woosii.biz.ui.course.activity.CourseDetailActivity;
 import com.woosii.biz.ui.course.contract.CourseContract;
@@ -100,6 +101,8 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
                 bundle.putString("type",courseListAdapter.getData().get(position).getType());
                 bundle.putString("imgurl",courseListAdapter.getData().get(position).getThumb());
                 bundle.putString("teacher_id",courseListAdapter.getData().get(position).getTeacher_id());
+                bundle.putInt("list_position",position);
+
                 startActivity(CourseDetailActivity.class,bundle);
             }
         });
@@ -121,6 +124,12 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
                             list.clear();
                             courseListAdapter.notifyDataSetChanged();
                             loadData(true);
+                        }else if(event instanceof UpdateCourseListEvent){
+                            if(mType==0||mType==2){
+                                list.clear();
+                                courseListAdapter.notifyDataSetChanged();
+                                loadData(true);
+                            }
                         }
 
                     }
@@ -149,6 +158,7 @@ public class CourseListFragment extends BaseFragment<CoursePresenter> implements
     public void getCoursesSuccess(BasePagingBean<CourseListBean> model) {
         if(model.getChild()==null){
             courseListAdapter.setEmptyView(notDataView);
+
         }
         totalPages=Integer.parseInt(model.getCount());
         courseListAdapter.addData(model.getChild());

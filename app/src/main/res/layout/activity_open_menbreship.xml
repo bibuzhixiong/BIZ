@@ -15,11 +15,15 @@
     android:layout_weight="1"
     android:orientation="vertical">
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:background="@drawable/vip_icon_bg">
+        android:layout_height="wrap_content"
+        android:background="@drawable/vip_icon_bg"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="86dp"
+            android:layout_height="130dp"
+            >
 
         <ImageView
             android:id="@+id/img_head"
@@ -32,31 +36,52 @@
             android:layout_marginStart="20dp"
             app:srcCompat="@drawable/def_touxiang" />
 
-        <TextView
-            android:id="@+id/tv_nick_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/img_head"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/img_head"
-            android:layout_toRightOf="@+id/img_head"
-            android:text="昵称"
-            android:textColor="@color/white"
-            android:layout_marginTop="8dp"
-            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tv_vip"
+
+        <ImageView
+            android:id="@+id/img_menber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/img_head"
-            android:layout_alignLeft="@+id/tv_nick_name"
-            android:layout_alignStart="@+id/tv_nick_name"
-            android:text="您当前已经开通VIP会员"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/common_h3" />
-    </RelativeLayout>
+            android:src="@drawable/icon_menber"
+            android:layout_alignTop="@+id/img_head"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/img_head"
+                android:layout_marginLeft="10dp"
+
+                android:layout_toEndOf="@+id/img_head"
+                android:layout_toRightOf="@+id/img_head"
+                android:text="昵称"
+                android:textColor="@color/white"
+
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_vip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/img_head"
+                android:layout_alignLeft="@+id/tv_nick_name"
+                android:layout_alignStart="@+id/tv_nick_name"
+                android:text="您当前已经开通VIP会员"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/common_h3" />
+        </LinearLayout>
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/ll_select_college"
@@ -86,6 +111,7 @@
             android:layout_marginRight="10dp"
             />
         <ImageView
+            android:id="@+id/img_tiao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/btn_tiaozhuanhei"

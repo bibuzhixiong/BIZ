@@ -214,6 +214,7 @@
                     android:layout_height="20dp"
                     android:src="@drawable/me_btn_huiyuan"/>
                 <TextView
+                    android:id="@+id/tv_vip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black3"

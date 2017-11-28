@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -61,11 +63,22 @@ public class NewsDetailActivity extends BaseActivity {
         toolbar.setRightButtonOnClickLinster(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String url="";
+                Log.e("TTT",url+"---");
+                if(id.contains("www")||id.contains("com")||id.contains(".")){
+                    url=id;
+                    if(!id.contains("http")){
+                        url="http://"+url;
+                    }
+
+                }else{
+                    url=AppConstant.WEB_URL+id;
+                }
                 new ShareAction(NewsDetailActivity.this).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE)
                         .withTitle(title)
-                        .withText("——来自沃噻APP")
+                        .withText(title)
                         .withMedia(imgurl.equals("")?new UMImage(NewsDetailActivity.this,R.drawable.ic_back):new UMImage(NewsDetailActivity.this,imgurl))
-                        .withTargetUrl(AppConstant.WEB_URL+id)
+                        .withTargetUrl(url)
                         .setCallback(umShareListener)
                         .open();
 
@@ -84,22 +97,22 @@ public class NewsDetailActivity extends BaseActivity {
             }
         });
     }
+
     UMShareListener umShareListener = new UMShareListener() {
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             Toast.makeText(NewsDetailActivity.this,"onResult", Toast.LENGTH_SHORT).show();
         }
-
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
             Toast.makeText(NewsDetailActivity.this,"onError", Toast.LENGTH_SHORT).show();
         }
-
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
             Toast.makeText(NewsDetailActivity.this,"onCancel", Toast.LENGTH_SHORT).show();
         }
     };
+
 
     @Override
     protected void initView() {
@@ -135,7 +148,7 @@ public class NewsDetailActivity extends BaseActivity {
 //        DisplayMetrics metrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(metrics);
 //        webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
-       /* int mDensity = metrics.densityDpi;
+        /* int mDensity = metrics.densityDpi;
         if (mDensity == 240) {
             webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
         } else if (mDensity == 160) {
@@ -149,7 +162,30 @@ public class NewsDetailActivity extends BaseActivity {
         } else {
             webSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
         }
-*/
+        */
+
+
+        //为了防止和过滤掉一些其他的网页地址我们可以重写shouldOverrideUrlLoading
+                //来覆盖掉之前的url加载路径
+                 webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                          view.loadUrl(url);
+                         return  true;
+                         }
+           @Override
+             public void onPageFinished(WebView view, String url) {
+                             super.onPageFinished(view, url);
+                         }
+
+                 /** 你可以在出话之前加载一些资源*/
+            @Override
+             public void onLoadResource(WebView view, String url) {
+
+                  }
+        });
+
+
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -172,7 +208,13 @@ public class NewsDetailActivity extends BaseActivity {
          id=bundle.getString("id");
         title=bundle.getString("title");
         imgurl=bundle.getString("imgurl");
-        webView.loadUrl(AppConstant.WEB_URL+id);
+        if(id.contains("http")||id.contains("www")||id.contains("com")){
+            webView.loadUrl(id);
+        }else{
+            webView.loadUrl(AppConstant.WEB_URL+id);
+        }
+
+
          loadingDialog=new LoadingDialog(NewsDetailActivity.this,"加载中...",true);
         loadingDialog.show();
     }

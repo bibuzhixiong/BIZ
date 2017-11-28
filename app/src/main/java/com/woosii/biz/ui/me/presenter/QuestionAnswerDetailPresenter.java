@@ -73,7 +73,7 @@ public class QuestionAnswerDetailPresenter extends QuestionAnswerDetailContract.
 
     @Override
     public void getQuestionAnswerDetial(Map<String, String> map) {
-
+        mView.showLoading();
         addSubscrebe(Api.getInstance().getQuestionAnswerDetial(map), new RxSubscriber<QuestionAnswerDetailBean>(mContext, false){
             @Override
             protected void onSuccess(QuestionAnswerDetailBean model) {

@@ -29,11 +29,11 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:background="@drawable/shape_yuyin_linearlayout_yellow_selector"
-              android:textSize="10sp"
+              android:textSize="12sp"
               android:paddingRight="8dp"
               android:paddingLeft="8dp"
-              android:paddingTop="2dp"
-              android:paddingBottom="2dp"
+              android:paddingTop="3dp"
+              android:paddingBottom="3dp"
 
               android:textColor="@color/black3"
               android:text="已回答"/>

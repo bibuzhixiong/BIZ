@@ -1,7 +1,9 @@
 package com.woosii.biz.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -11,14 +13,25 @@ import com.woosii.biz.R;
 import com.woosii.biz.base.ActivityManager;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.bean.MainTabEntity;
+import com.woosii.biz.base.rx.RxBus;
+import com.woosii.biz.event.UpdateJPushEvent;
+import com.woosii.biz.jpush.ExampleUtil;
 import com.woosii.biz.ui.course.fragment.CourseFragment;
 import com.woosii.biz.ui.home.fragment.HomeFragment;
 import com.woosii.biz.ui.me.fragment.MeFragment;
 import com.woosii.biz.ui.question.fragmet.QuestionFragment;
+import com.woosii.biz.utils.SharedPreferencesUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.Bind;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2017/9/23.
@@ -43,6 +56,7 @@ public class MainActivity extends BaseActivity {
     private MeFragment meFragment;
 
     private int currentPosition;
+    private Subscription subscription;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -65,9 +79,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         initTab();
+        //设置极光推送的别名
 
+        mHandler.sendMessage(mHandler.obtainMessage(1001, SharedPreferencesUtil.getValue(MainActivity.this,SharedPreferencesUtil.USER_ID,"")+""));
+        event();
     }
 
+    private void event() {
+        subscription = RxBus.$().toObservable(Object.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event instanceof UpdateJPushEvent) {
+                            mHandler.sendMessage(mHandler.obtainMessage(1001, SharedPreferencesUtil.getValue(MainActivity.this,SharedPreferencesUtil.USER_ID,"")+""));
+                        }
+
+                    }
+                });
+    }
     /**
      * 初始化tab
      */
@@ -158,6 +188,59 @@ public class MainActivity extends BaseActivity {
                 break;
         }
     }
+    //JPush设置别名
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1001:
+                    Set<String> s=new HashSet<>();
+
+                    String user_id= SharedPreferencesUtil.getValue(MainActivity.this,SharedPreferencesUtil.USER_ID,"")+"";
+
+                    if(user_id.equals("")){
+                        JPushInterface.setAliasAndTags(getApplicationContext(), "", s, mAliasCallback);
+                    }else{
+                        s.add(user_id);
+                        JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, s, mAliasCallback);
+                    }
+
+                    break;
+            }
+        }
+    };
+    //JPush设置别名
+    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
+
+        @Override
+        public void gotResult(int code, String alias, Set<String> tags) {
+            String logs;
+            switch (code) {
+                case 0:
+                    logs = "Set tag and alias success";
+                    Log.e("Jpush",logs);
+                    break;
+
+                case 6002:
+                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
+                    Log.e("Jpush",logs);
+                    //失败的话，隔60秒再设置别名
+                    if (ExampleUtil.isConnected(getApplicationContext())) {
+                        mHandler.sendMessageDelayed(mHandler.obtainMessage(1001, alias), 1000 * 60);
+                    } else {
+                        Log.e("Jpush",logs);
+                    }
+                    break;
+
+                default:
+                    logs = "Failed with errorCode = " + code;
+//                    Log.e("Jpush",logs);
+            }
+
+        }
+
+    };
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -176,5 +259,13 @@ public class MainActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.woosii.biz.common.dialog.NormalAlertDialog;
+import com.woosii.biz.utils.ToastUtil;
 
 
 /**
@@ -64,6 +65,7 @@ public class UpdateManager {
                     public void clickRightButton(NormalAlertDialog dialog, View view) {
 
                         mContext.startService(new Intent(mContext, DownLoadService.class));
+                        ToastUtil.showShortToast("在通知栏为您显示更新进度");
                         dialog.dismiss();
                     }
                 })

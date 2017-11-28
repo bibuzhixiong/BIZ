@@ -19,9 +19,11 @@ import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
 import com.woosii.biz.base.bean.json.BaseInfoBean;
+import com.woosii.biz.base.rx.RxBus;
 import com.woosii.biz.common.dialog.DialogInterface;
 import com.woosii.biz.common.dialog.LoadingDialog;
 import com.woosii.biz.common.dialog.NormalAlertDialog;
+import com.woosii.biz.event.UpdateCourseListEvent;
 import com.woosii.biz.ui.course.contract.CourseDetailContract;
 import com.woosii.biz.ui.course.presenter.CourseDetailPresenter;
 import com.woosii.biz.ui.login.activity.LoginActivity;
@@ -58,6 +60,10 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
     private    String type;
     private String title;
     private String imgurl;
+
+
+    //刷新的位置
+    private int list_position;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_course_deatil;
@@ -152,6 +158,7 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
         title=bundle.getString("title");
         teacher_id= bundle.getString("teacher_id");
         imgurl=bundle.getString("imgurl");
+        list_position=bundle.getInt("list_position");
          type=bundle.getString("type");
         if(type.equals("0")){
             imgPreviewQuestions.setVisibility(View.GONE);
@@ -251,9 +258,15 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
 
                 break;
             case R.id.img_preview_questions:
+                String aa="0";
+                if(type.equals("0")||type.equals("2")){
+
+                }else{
+                    aa="1";
+                }
                 Bundle bundle1=new Bundle();
                 bundle1.putString("class_id",id);
-                bundle1.putString("type",type);
+                bundle1.putString("type",aa);
                 startActivity(PreviewQuestionsActivity.class,bundle1);
                 break;
         }
@@ -270,11 +283,23 @@ public class CourseDetailActivity extends BaseActivity<CourseDetailPresenter> im
         webView = null;
     }
 
-
-
-
     @Override
     public void signUpSuccess(BaseInfoBean model) {
+        if(model.getCode()==1){
+            //更新课程列表
+            RxBus.$().postEvent(new UpdateCourseListEvent(list_position));
+            tv_enter_no.setText("已经报名");
+            llEnterNow.setBackgroundResource(R.color.gray);
+            llEnterNow.setEnabled(false);
+            imgPreviewQuestions.setVisibility(View.VISIBLE);
+        }else if(model.getCode()==2){
+            tv_enter_no.setText("已经报名");
+            llEnterNow.setBackgroundResource(R.color.gray);
+            llEnterNow.setEnabled(false);
+            imgPreviewQuestions.setVisibility(View.VISIBLE);
+
+        }
+
         ToastUtil.showShortToast(model.getMessage());
     }
 

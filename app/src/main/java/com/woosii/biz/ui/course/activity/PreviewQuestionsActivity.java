@@ -69,6 +69,8 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
     ImageView imgPasringV;
     @Bind(R.id.ll_parsing)
     LinearLayout llParsing;
+    @Bind(R.id.ll_next_or_last)
+    LinearLayout llNextOrLast;
     private LoadingDialog mLoadingDialog;
     private List<PreViewQuestionsItemBean> list = new ArrayList<>();
     private int sumSelection = 0;
@@ -93,20 +95,29 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
 
     @Override
     protected void initView() {
-        Bundle bundle=getIntent().getExtras();
-        String class_id=bundle.getString("class_id");
-        type=bundle.getString("type");
+        Bundle bundle = getIntent().getExtras();
+        String class_id = bundle.getString("class_id");
+        type = bundle.getString("type");
         Map<String, String> map = new HashMap<>();
-        map.put("class_id",class_id);
-        map.put("type",type);
+        map.put("class_id", class_id);
+        map.put("type", type);
         mPresenter.getPreviewQuestions(map);
 
     }
 
     @Override
     public void getPreviewQuestions(PreViewQuestonsListBean model) {
+        if (model == null) {
+            ToastUtil.showShortToast("暂无题目");
+            return;
+        }
+        llNextOrLast.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.VISIBLE);
         list = model.getArray();
         sumSelection = list.size();
+        if (sumSelection == 1) {
+            tvNext.setText("完成");
+        }
         for (int i = 0; i < sumSelection; i++) {
             listInt.add(0);
         }
@@ -114,19 +125,19 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
 
     }
 
-    private void setParsing(){
+    private void setParsing() {
         //隐藏解析
         llParsing.setVisibility(View.GONE);
 
         PreViewQuestionsItemBean preViewQuestionsItemBean1 = list.get(current);
         PreViewQuestionsSelectionBean selection1 = preViewQuestionsItemBean1.getQuestionoptions();
-        int temp=current+1;
-        SpannableString spannableString = new SpannableString("(单选题)" +temp+"/"+sumSelection+"."+ preViewQuestionsItemBean1.getQuestion());
-        spannableString.setSpan(new ForegroundColorSpan(PreviewQuestionsActivity.this.getResources().getColor(R.color.blue)), 0,5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        int temp = current + 1;
+        SpannableString spannableString = new SpannableString("(单选题)" + temp + "/" + sumSelection + "." + preViewQuestionsItemBean1.getQuestion());
+        spannableString.setSpan(new ForegroundColorSpan(PreviewQuestionsActivity.this.getResources().getColor(R.color.blue)), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvQuestion.setText(spannableString);
 //        tvQuestion.setText("(单选题)" +current+1+"."+ preViewQuestionsItemBean1.getQuestion());
         tvParsing.setText(preViewQuestionsItemBean1.getParsing());
-        tvCorrectAnswer.setText("正确答案："+preViewQuestionsItemBean1.getAnswer());
+        tvCorrectAnswer.setText("正确答案：" + preViewQuestionsItemBean1.getAnswer());
         setCheck();
         rbA.setText("A:" + selection1.getA());
         rbB.setText("B:" + selection1.getB());
@@ -137,10 +148,10 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
             if (selection1.getD() != null) {
                 rbD.setVisibility(View.VISIBLE);
                 rbD.setText("D:" + selection1.getD());
-                if(selection1.getE() != null){
+                if (selection1.getE() != null) {
                     rbE.setVisibility(View.VISIBLE);
                     rbE.setText("D:" + selection1.getD());
-                }else{
+                } else {
                     rbE.setVisibility(View.GONE);
                 }
             } else {
@@ -164,16 +175,15 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
             rbC.setChecked(true);
         } else if (listInt.get(current) == 4) {
             rbD.setChecked(true);
-        }else if (listInt.get(current) == 5) {
+        } else if (listInt.get(current) == 5) {
             rbE.setChecked(true);
-        }
-        else if (listInt.get(current) == 0) {
+        } else if (listInt.get(current) == 0) {
             radioGroup.clearCheck();
 
         }
     }
 
-    @OnClick({R.id.tv_last, R.id.tv_next, R.id.rb_a, R.id.rb_b, R.id.rb_c, R.id.rb_d,R.id.rb_e,R.id.img_pasring_g,R.id.img_pasring_v})
+    @OnClick({R.id.tv_last, R.id.tv_next, R.id.rb_a, R.id.rb_b, R.id.rb_c, R.id.rb_d, R.id.rb_e, R.id.img_pasring_g, R.id.img_pasring_v})
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -191,49 +201,50 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
 
                 break;
             case R.id.tv_next:
-                int yourCorrect=0;
-                if((current+2)==sumSelection){
+                int yourCorrect = 0;
+                if ((current + 2) == sumSelection) {
                     tvNext.setText("完成");
                 }
                 current++;
                 if (current >= sumSelection) {
                     current--;
-                    for(int i=0;i<listInt.size();i++){
-                        if(listInt.get(i)==0){
-                            ToastUtil.showShortToast("第"+(i+1)+"题未完成");
+                    for (int i = 0; i < listInt.size(); i++) {
+                        if (listInt.get(i) == 0) {
+                            ToastUtil.showShortToast("第" + (i + 1) + "题未完成");
                             return;
                         }
-                   String yourAnswer=listInt.get(i)+"";
-                        if(yourAnswer.equals("1")){
-                            yourAnswer="a";
-
-                        }  if(yourAnswer.equals("2")){
-                            yourAnswer="b";
+                        String yourAnswer = listInt.get(i) + "";
+                        if (yourAnswer.equals("1")) {
+                            yourAnswer = "a";
 
                         }
-                        if(yourAnswer.equals("3")){
-                            yourAnswer="c";
+                        if (yourAnswer.equals("2")) {
+                            yourAnswer = "b";
 
                         }
-                        if(yourAnswer.equals("4")){
-                            yourAnswer="d";
+                        if (yourAnswer.equals("3")) {
+                            yourAnswer = "c";
 
                         }
-                        if(yourAnswer.equals("5")){
-                            yourAnswer="e";
+                        if (yourAnswer.equals("4")) {
+                            yourAnswer = "d";
+
+                        }
+                        if (yourAnswer.equals("5")) {
+                            yourAnswer = "e";
 
                         }
 
-                     String  correctAnswer=   list.get(i).getAnswer();
+                        String correctAnswer = list.get(i).getAnswer();
 
-                        if(yourAnswer.equals(correctAnswer)){
+                        if (yourAnswer.equals(correctAnswer)) {
                             yourCorrect++;
                         }
                     }
-                    Bundle bundle=new Bundle();
-                    bundle.putString("correct",yourCorrect+"");
-                    bundle.putString("error",list.size()-yourCorrect+"");
-                   startActivity(PreviewQuestionsCompleteActivity.class,bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("correct", yourCorrect + "");
+                    bundle.putString("error", list.size() - yourCorrect + "");
+                    startActivity(PreviewQuestionsCompleteActivity.class, bundle);
                     finish_Activity(PreviewQuestionsActivity.this);
                     return;
                 }
@@ -305,7 +316,6 @@ public class PreviewQuestionsActivity extends BaseActivity<PreviewQuestionsPrens
             mLoadingDialog.cancelDialog();
         }
     }
-
 
 
 }

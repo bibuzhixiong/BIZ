@@ -16,6 +16,8 @@ public class QuestionListBean implements Serializable {
     private String thumb;
     private String add_time;
     private String goods_code;
+    private String free_type;
+    private float money;
 
     public int getFree() {
         return free;
@@ -89,6 +91,22 @@ public class QuestionListBean implements Serializable {
         this.goods_code = goods_code;
     }
 
+    public String getFree_type() {
+        return free_type;
+    }
+
+    public void setFree_type(String free_type) {
+        this.free_type = free_type;
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
+    public void setMoney(float money) {
+        this.money = money;
+    }
+
     @Override
     public String toString() {
         return "QuestionListBean{" +
@@ -101,6 +119,8 @@ public class QuestionListBean implements Serializable {
                 ", thumb='" + thumb + '\'' +
                 ", add_time='" + add_time + '\'' +
                 ", goods_code='" + goods_code + '\'' +
+                ", free_type='" + free_type + '\'' +
+                ", money=" + money +
                 '}';
     }
 

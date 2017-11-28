@@ -39,6 +39,7 @@ android {
         abortOnError false
         disable 'MissingTranslation'
     }
+
 }
 
 dependencies {
@@ -76,4 +77,6 @@ dependencies {
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/libammsdk.jar')
     compile files('libs/alipaySdk-20170922.jar')
+    compile files('libs/jpush-android-3.0.9.jar')
+    compile files('libs/jcore-android-1.1.7.jar')
 }

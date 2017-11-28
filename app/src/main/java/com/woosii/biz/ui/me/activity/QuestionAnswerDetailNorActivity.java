@@ -329,14 +329,12 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
                             @Override
                             public void run() {
                                 try {
-
                                     for (int i = 1; i <= progress; i++) {
                                         Thread.sleep(100);
                                         Message message = handler.obtainMessage();
                                         message.what = 1;
                                         message.arg1 = i;
                                         handler.sendMessage(message);
-
                                     }
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
@@ -444,7 +442,6 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
                 if (mediaPlayer != null) {
                     Message message = handler.obtainMessage();
                     message.what = 2;
-
                     handler.sendMessage(message);
                 }
                 mAudioRecoderUtils.stopRecord();
@@ -456,7 +453,5 @@ public class QuestionAnswerDetailNorActivity extends BaseActivity<QuestionAnswer
         } else {
             return super.onKeyDown(keyCode, event);
         }
-
     }
-
 }

@@ -27,10 +27,10 @@ public class AnswerBranchAdapter extends BaseQuickAdapter<QuestionListBean,BaseV
         helper.setText(R.id.tv_name,item.getNick_name()+"  的回答");
         helper.setText(R.id.tv_time,item.getAdd_time()+"  提问");
 
-        if(item.getFree()==1){
-            helper.setText(R.id.tv_free_or_no,"语音播放免费");
+        if(item.getFree()==1||item.getFree_type().equals("0")){
+            helper.setText(R.id.tv_free_or_no,"点击语音播放");
         }else{
-            helper.setText(R.id.tv_free_or_no,"语音播放需要9.9元");
+            helper.setText(R.id.tv_free_or_no,"语音播放需要"+item.getMoney()+"元");
         }
         ImageView imageView=helper.getView(R.id.img_head);
         GlideUtil.getInstance().LoadContextCircleBitmap(mContext,item.getThumb(),imageView,R.drawable.icon_head_normal,R.drawable.icon_head_normal);

@@ -13,6 +13,8 @@ public class QuestionAnswerDetailBean {
     private String teacher_thumb;
     private String add_time;
     private String user_name;
+    private int free_type;
+    private float money;
 
     public int getFree() {
         return free;
@@ -78,6 +80,22 @@ public class QuestionAnswerDetailBean {
         this.user_name = user_name;
     }
 
+    public int getFree_type() {
+        return free_type;
+    }
+
+    public void setFree_type(int free_type) {
+        this.free_type = free_type;
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
+    public void setMoney(float money) {
+        this.money = money;
+    }
+
     @Override
     public String toString() {
         return "QuestionAnswerDetailBean{" +
@@ -89,10 +107,12 @@ public class QuestionAnswerDetailBean {
                 ", teacher_thumb='" + teacher_thumb + '\'' +
                 ", add_time='" + add_time + '\'' +
                 ", user_name='" + user_name + '\'' +
+                ", free_type=" + free_type +
+                ", money=" + money +
                 '}';
     }
 
-    public QuestionAnswerDetailBean(int free, int buy, String problem, String audio, String teacher_name, String teacher_thumb, String add_time, String user_name) {
+    public QuestionAnswerDetailBean(int free, int buy, String problem, String audio, String teacher_name, String teacher_thumb, String add_time, String user_name, int free_type, float money) {
         this.free = free;
         this.buy = buy;
         this.problem = problem;
@@ -101,5 +121,7 @@ public class QuestionAnswerDetailBean {
         this.teacher_thumb = teacher_thumb;
         this.add_time = add_time;
         this.user_name = user_name;
+        this.free_type = free_type;
+        this.money = money;
     }
 }

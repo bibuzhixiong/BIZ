@@ -1,10 +1,12 @@
 package com.woosii.biz.ui.me.activity;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.woosii.biz.R;
 import com.woosii.biz.base.BaseActivity;
 import com.woosii.biz.base.BaseToolbar;
+import com.woosii.biz.manager.DeviceUtils;
 
 import butterknife.Bind;
 
@@ -15,6 +17,8 @@ import butterknife.Bind;
 public class AboutUsActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     BaseToolbar toolbar;
+    @Bind(R.id.tv_section)
+    TextView tvSection;
 
     @Override
     protected int getLayoutId() {
@@ -33,7 +37,8 @@ public class AboutUsActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        tvSection.setText("V"+ DeviceUtils.getVersionName(AboutUsActivity.this));
     }
+
 
 }

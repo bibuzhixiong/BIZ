@@ -72,10 +72,14 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
     TextView tvVip;
     @Bind(R.id.bt_kaitong)
     Button btKaitong;
+    @Bind(R.id.img_menber)
+    ImageView imgMenber;
+    @Bind(R.id.img_tiao)
+    ImageView imgTiao;
     private LoadingDialog mLoadingDialog;
 
-    private String class_id="";
-    private int pay_type=1;//1是微信，2是支付宝
+    private String class_id = "";
+    private int pay_type = 1;//1是微信，2是支付宝
     private PopupWindow mPopupWindow;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
@@ -107,7 +111,6 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                     @SuppressWarnings("unchecked")
                     AuthResult authResult = new AuthResult((Map<String, String>) msg.obj, true);
                     String resultStatus = authResult.getResultStatus();
-
                     // 判断resultStatus 为“9000”且result_code
                     // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
                     if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
@@ -120,7 +123,6 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                         // 其他状态值则为授权失败
                         Toast.makeText(OpenMembershipActivity.this,
                                 "授权失败" + String.format("authCode:%s", authResult.getAuthCode()), Toast.LENGTH_SHORT).show();
-
                     }
                     break;
                 }
@@ -131,6 +133,7 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
 
         ;
     };
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_open_menbreship;
@@ -150,29 +153,36 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
     protected void initView() {
         String nickname = SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.NICK_NAME, "") + "";
         String headpath = SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.HEAD_PATH, "") + "";
-        String vip = SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.HEAD_PATH, "") + "";
+        String vip = SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.VIP, "") + "";
         if (!nickname.equals("")) {
             tvNickName.setText(nickname);
         }
 
         if (!headpath.equals("")) {
-            if(!headpath.contains("http")){
-                headpath= AppConstant.BASE_URL+headpath;
+            if (!headpath.contains("http")) {
+                headpath = AppConstant.BASE_URL + headpath;
             }
             GlideUtil.getInstance().LoadContextCircleBitmap(OpenMembershipActivity.this, headpath, imgHead, R.drawable.def_touxiang, R.drawable.def_touxiang);
         }
         if (!vip.equals("1")) {
             tvVip.setText("您当前未开通VIP会员");
-
+            imgMenber.setVisibility(View.GONE);
         } else {
-            tvVip.setText("您当前已经开通VIP会员");
+            tvVip.setText("您当前已经开通VIP会员(" + SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.VIP_TIME, "") + "到期)");
+            imgMenber.setVisibility(View.VISIBLE);
+            tvCollege.setText(SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.CLASS_NAME, "") + "");
+            ll_select_college.setBackgroundResource(R.color.white);
+            ll_select_college.setEnabled(false);
+            imgTiao.setVisibility(View.GONE);
         }
         btKaitong.setBackgroundResource(R.color.gray);
         btKaitong.setEnabled(false);
 //        String SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.NICK_NAME,"")+"";
         event();
     }
+
     private Subscription subscription;
+
     private void event() {
         subscription = RxBus.$().toObservable(WeChatPayEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -185,24 +195,25 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                 });
     }
 
-    private void showPopuwindow(){
-        SharedPreferencesUtil.putValue(OpenMembershipActivity.this,SharedPreferencesUtil.VIP,"1");
+    private void showPopuwindow() {
+        SharedPreferencesUtil.putValue(OpenMembershipActivity.this, SharedPreferencesUtil.VIP, "1");
         //修改个人中心信息
-        RxBus.$().postEvent(new UserInfoEvent(new LoginBean(0,"",SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.TOKEN,"")+"",SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"")));
+        RxBus.$().postEvent(new UserInfoEvent(new LoginBean(0, "", SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.TOKEN, "") + "", SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.USER_ID, "") + "")));
         LayoutInflater mLayoutInflater = (LayoutInflater) this
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
         View music_popunwindwow = mLayoutInflater.inflate(
                 R.layout.popuwindow_payment, null);
         mPopupWindow = new PopupWindow(music_popunwindwow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-         music_popunwindwow.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 finish_Activity(OpenMembershipActivity.this);
-             }
-         });
+        music_popunwindwow.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish_Activity(OpenMembershipActivity.this);
+            }
+        });
         mPopupWindow.showAtLocation(findViewById(R.id.ll_select_college), Gravity.CENTER, 0, 0);
     }
-    @OnClick({R.id.ll_select_college,R.id.bt_kaitong})
+
+    @OnClick({R.id.ll_select_college, R.id.bt_kaitong})
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -213,10 +224,10 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                 break;
 
             case R.id.bt_kaitong:
-             if((SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.VIP,"")+"").equals("1")){
-                 ToastUtil.showShortToast("您已经是VIP会员");
-                 return;
-             }
+                if ((SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.VIP, "") + "").equals("1")) {
+                    ToastUtil.showShortToast("您已经是VIP会员");
+                    return;
+                }
                 List<String> headData = new ArrayList<>();
                 headData.add("微信支付");
                 headData.add("支付宝支付");
@@ -232,27 +243,27 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                                 switch (position) {
                                     case 0:
 //                                        ToastUtil.showShortToast("微信");
-                                        pay_type=1;
+                                        pay_type = 1;
 
-                                            Map<String, String> map = new HashMap<>();
-                                            map.put("user_id", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
-                                            map.put("subject", "沃噻开通会员");
-                                            map.put("c_id",class_id);
-                                            map.put("goods_type", "1");
-                                            map.put("goods_code", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
-                                            mPresenter.getWeChatOrderInfo(map);
+                                        Map<String, String> map = new HashMap<>();
+                                        map.put("user_id", SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.USER_ID, "") + "");
+                                        map.put("subject", "沃噻开通会员");
+                                        map.put("c_id", class_id);
+                                        map.put("goods_type", "1");
+                                        map.put("goods_code", SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.USER_ID, "") + "");
+                                        mPresenter.getWeChatOrderInfo(map);
 
                                         dialog.dismiss();
                                         break;
                                     case 1:
 //                                        ToastUtil.showShortToast("支付宝");
-                                        pay_type=2;
+                                        pay_type = 2;
                                         Map<String, String> map1 = new HashMap<>();
-                                        map1.put("user_id", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
+                                        map1.put("user_id", SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.USER_ID, "") + "");
                                         map1.put("subject", "沃噻开通会员");
-                                        map1.put("c_id",class_id);
+                                        map1.put("c_id", class_id);
                                         map1.put("goods_type", "1");
-                                        map1.put("goods_code", SharedPreferencesUtil.getValue(OpenMembershipActivity.this,SharedPreferencesUtil.USER_ID,"")+"");
+                                        map1.put("goods_code", SharedPreferencesUtil.getValue(OpenMembershipActivity.this, SharedPreferencesUtil.USER_ID, "") + "");
                                         mPresenter.getPayOrderInfo(map1);
                                         dialog.dismiss();
                                         break;
@@ -310,23 +321,23 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
     @Override
     public void getWeChatOrderInfoSuccess(PayReqBean bean) {
         PayReq req = new PayReq();
-        req.appId			= bean.getAppid();
-        req.partnerId		= bean.getPartnerid();
-        req.prepayId		= bean.getPrepayid();
-        req.nonceStr		= bean.getNoncestr();
-        req.timeStamp		= bean.getTimestamp();
-        req.packageValue	= "Sign=WXPay";
-        req.sign			= bean.getSign();
-        req.extData			= "app data"; // optional
+        req.appId = bean.getAppid();
+        req.partnerId = bean.getPartnerid();
+        req.prepayId = bean.getPrepayid();
+        req.nonceStr = bean.getNoncestr();
+        req.timeStamp = bean.getTimestamp();
+        req.packageValue = "Sign=WXPay";
+        req.sign = bean.getSign();
+        req.extData = "app data"; // optional
 
         toWeiXinPay(req);
     }
+
     //调起微信支付
-    private void toWeiXinPay(PayReq req){
+    private void toWeiXinPay(PayReq req) {
         IWXAPI api = WXAPIFactory.createWXAPI(this, AppConstant.WEIXIN_APP_ID);
         api.registerApp(AppConstant.WEIXIN_APP_ID);
-        if(!api.isWXAppInstalled())
-        {
+        if (!api.isWXAppInstalled()) {
             NormalAlertDialog dialog = new NormalAlertDialog.Builder(this)
                     .setBoolTitle(false)
                     .setContentText("检测到手机没有安转微信")
@@ -344,8 +355,7 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
             dialog.show();
             return;
         }
-        if(!api.isWXAppSupportAPI())
-        {
+        if (!api.isWXAppSupportAPI()) {
             new NormalAlertDialog.Builder(this)
                     .setBoolTitle(false)
                     .setContentText("当前版本不支持支付功能")
@@ -362,13 +372,15 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
                     .build().show();
             return;
         }
-        Log.e("EEE","来了");
+        Log.e("EEE", "来了");
         api.sendReq(req);
     }
+
     @Override
     public void loadFail(String msg) {
 
     }
+
     @Override
     public void showLoading() {
         mLoadingDialog = new LoadingDialog(OpenMembershipActivity.this, "加载中...", false);
@@ -385,9 +397,11 @@ public class OpenMembershipActivity extends BaseActivity<OpenMenbershipPresenter
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (subscription != null&&!subscription.isUnsubscribed()) {
+        if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
     }
+
+
 
 }

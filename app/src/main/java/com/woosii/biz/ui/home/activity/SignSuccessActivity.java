@@ -38,8 +38,10 @@ public class SignSuccessActivity extends BaseActivity {
     @Override
     protected void initView() {
         Bundle bundle = getIntent().getExtras();
-        String num = bundle.getString("NUM");
-        tvSignNum.setText(num+"次");
+            String num = bundle.getString("NUM");
+            tvSignNum.setText(num+"次");
+
+
     }
 
 

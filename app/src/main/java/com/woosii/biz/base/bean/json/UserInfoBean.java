@@ -15,6 +15,7 @@ public class UserInfoBean extends BaseInfoBean{
     private String vip;
     private String c_name;
     private String integral;
+    private String vip_time;
 
 
     public UserInfoBean(int code, String message) {
@@ -93,6 +94,14 @@ public class UserInfoBean extends BaseInfoBean{
         this.integral = integral;
     }
 
+    public String getVip_time() {
+        return vip_time;
+    }
+
+    public void setVip_time(String vip_time) {
+        this.vip_time = vip_time;
+    }
+
     @Override
     public String toString() {
         return "UserInfoBean{" +
@@ -105,6 +114,7 @@ public class UserInfoBean extends BaseInfoBean{
                 ", vip='" + vip + '\'' +
                 ", c_name='" + c_name + '\'' +
                 ", integral='" + integral + '\'' +
+                ", vip_time='" + vip_time + '\'' +
                 '}';
     }
 }

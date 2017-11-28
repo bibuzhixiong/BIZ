@@ -37,6 +37,8 @@ public class CourseListAdapter extends BaseQuickAdapter<CourseListBean,BaseViewH
             imgMsg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.msg_yuyue_selected));
         }else  if(item.getType().equals("1")){
             imgMsg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.msg_yuyue_disabled));
+        }else  if(item.getType().equals("3")){
+            imgMsg.setImageDrawable(mContext.getResources().getDrawable(R.drawable.msg_yuyue_yijieshu));
         }
 
         ss= DensityUtil.getScreenWidth(mContext);

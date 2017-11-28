@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:src="@drawable/app_icon_big"/>
         <TextView
             android:layout_width="wrap_content"
@@ -28,23 +28,32 @@
             android:textSize="20sp"
             android:layout_marginTop="10dp"
             android:textColor="@color/black1"
-            android:text="沃噻营销企业学院"/>
+            android:text="沃噻智能共享学院"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+           android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="28dp"
+            android:lineSpacingMultiplier="1.4"
+            android:text="      “沃噻智能共享学院”专注品牌、营销、模式创新，17项技术专利，27年深厚积淀，终成中国最强魔脑。是中国最早结合人工智能和深度学习的高端教育平台，让企业将最强大脑搬回家。通过智能共享视频会议系统，面向全球最高端的企业家和高管，让企业老板、高管、员工能够同频同道，接受最强大脑的洗礼，不断充电学习升级。"/>
         <View
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"/>
         <TextView
-
+            android:id="@+id/tv_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/black1"
             android:text="V1.0"/>
         <TextView
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:text="广州掌沃科技有限公司"/>

@@ -153,6 +153,6 @@
             android:layout_marginRight="20dp"
             android:textColor="@color/common_h2"
             android:layout_marginTop="20dp"
-            android:text="新用户首次开通会员可到当前商学院分院班主任处领取书籍一本，本活动解释权归沃噻移动企业商学院所有"/>
+            android:text="新用户首次开通会员可到当前商学院分院班主任处领取书籍一本，本活动解释权归沃噻智能共享学院所有"/>
     </LinearLayout>
 </LinearLayout>

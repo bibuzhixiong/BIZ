@@ -98,11 +98,12 @@ public class SuggestionFeedbackActivity extends BaseActivity<SuggestionFeedbackP
                                 Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + "020-29078931"));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                                dialog.show();
+                             dialog.dismiss();
                             }
                         })
                         .setTouchOutside(false)
                         .build();
+                dialog.show();
 
             }
         });

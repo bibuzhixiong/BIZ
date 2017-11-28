@@ -29,10 +29,10 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="36dp"
             android:text="内容"
             android:textColor="@color/white"
-            android:textSize="@dimen/dp_22" />
+            android:textSize="@dimen/dp_20" />
 
         <TextView
             android:id="@+id/tv_time"
@@ -41,7 +41,7 @@
             android:layout_alignLeft="@+id/tv_content"
             android:layout_alignStart="@+id/tv_content"
             android:layout_below="@+id/tv_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="14dp"
             android:text="2016"
             android:textColor="@color/white"
             android:textSize="@dimen/dp_16" />

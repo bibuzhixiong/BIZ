@@ -133,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/common_h1"
-            android:text="元"/>
+            android:text="元(24小时内未回答,自动退款)"/>
     </LinearLayout>
 
 

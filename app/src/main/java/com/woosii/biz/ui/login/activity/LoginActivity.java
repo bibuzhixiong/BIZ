@@ -381,7 +381,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 llLogin.setVisibility(View.VISIBLE);
                 llWeixin.setVisibility(View.VISIBLE);
                 imgWeixin.setVisibility(View.VISIBLE);
-                llRegister.setVisibility(View.VISIBLE);
+                llRegister.setVisibility(View.GONE);
             } else {
                 finish_Activity(LoginActivity.this);
             }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,7 +72,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         // 无标题
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 设置竖屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     /**
      * 通过Class跳转界面

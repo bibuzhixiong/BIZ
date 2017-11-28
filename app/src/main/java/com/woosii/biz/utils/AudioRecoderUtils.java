@@ -69,7 +69,7 @@ public class AudioRecoderUtils {
              */
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
-            filePath = FolderPath + TimeUtils.getCurrentTime() + ".mp3" ;
+            filePath = FolderPath + TimeUtils.getCurrentTime() + ".aac" ;
             /* ③准备 */
             mMediaRecorder.setOutputFile(filePath);
             mMediaRecorder.setMaxDuration(MAX_LENGTH);
@@ -95,7 +95,6 @@ public class AudioRecoderUtils {
         if (mMediaRecorder == null)
             return 0L;
         endTime = System.currentTimeMillis();
-
         try {
 
             mMediaRecorder.stop();
